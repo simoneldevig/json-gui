@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <el-row class="tac" :gutter="20">
+      <el-col :span="4">
+        <el-menu :router="true">
+          <el-menu-item>
+            <h3>JSON Server GUI</h3>
+          </el-menu-item>
+          <el-menu-item v-for="(value, propertyName) in endpoints" :index="'/entry/' + propertyName">
+            <i class="el-icon-setting"></i>
+            <span>{{ '/' + propertyName }}</span>
+          </el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-col :span="18">
+        <router-view/>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  export default {
+    name: 'app',
+    computed: {
+      endpoints() {
+        return this.$store.state.db;
+      }
+    },
+    created() {
+      this.$store.dispatch('setDb');
+    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
 </style>
