@@ -1,36 +1,28 @@
 <template>
   <div>
-    <h1>{{ id }}</h1>
-    <el-collapse>
-      <el-collapse-item v-for="entry in entry[id]" :title="id" name="1">
-        <template slot="title">
-          /{{ id }}
-          <el-tag type="success">/GET</el-tag>
-
-          <div>
-            <el-tooltip class="item" effect="dark" content="Duplicate" placement="top">
-              <el-button type="primary" size="medium" icon="el-icon-document-copy" circle></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="Add new entry" placement="top">
-              <el-button type="success" size="medium" icon="el-icon-document-add" circle></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="Delete" placement="top">
-              <el-button type="danger" size="medium" icon="el-icon-delete-solid" circle></el-button>
-            </el-tooltip>
-          </div>
-        </template>
-        <div v-for="property in entry">
-          <el-input v-if="typeof(property) === 'string'" :value="property"></el-input>
-          <p v-else>{{property}}</p>
-        </div>
-      </el-collapse-item>
-    </el-collapse>
+    <el-row class="tac" :gutter="20">
+      <el-col :span="16">
+        <h1>{{ id }}</h1>
+        <collapse :data="entry[id]" :title="id" :id="id" :is-sub-child="false"></collapse>
+      </el-col>
+      <el-col :span="8">
+        <h1>Raw</h1>
+        <el-card class="box-card">
+          <pre v-for="entry in entry[id]">{{entry}}</pre>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+  import collapse from '@/components/RecursiveCollapse';
+
   export default {
     name: 'Entry',
+    components: {
+      collapse
+    },
     props: {
       id: {
         requirred: true,

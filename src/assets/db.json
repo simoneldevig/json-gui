@@ -1,9 +1,28 @@
 {
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode", "someBool": true }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" }
+  "posts": [{
+    "id": 1,
+    "title": "json-server",
+    "author": "typicode",
+    "someBool": true,
+    "postsers": [{
+      "id": 34,
+      "title": "nested",
+      "author": "ede",
+      "someBool": false
+    },
+    {
+      "id": 34,
+      "title": "nested",
+      "author": "ede",
+      "someBool": false
+    }]
+  }],
+  "comments": [{
+    "id": 1,
+    "body": "some comment",
+    "postId": 1
+  }],
+  "profile": {
+    "name": "typicode"
+  }
 }
