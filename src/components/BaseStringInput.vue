@@ -1,7 +1,7 @@
 <template>
-  <div>
-      <p><strong>{{propertyName}}</strong></p>
-      <el-input type="textarea" :autosize="{ minRows: 1}" v-model="inputValue"></el-input>
+  <div class="mb2">
+      <p class="text-capitalize mt0 mb0"><strong>{{propertyName}}</strong></p>
+      <el-input type="textarea" @blur="parseToParent" :autosize="{ minRows: 1}" v-model="inputValue"></el-input>
   </div>
 </template>
 
@@ -16,6 +16,10 @@
       propertyName: {
         requirred: true,
         type: String
+      },
+      parentIndex: {
+        requirred: true,
+        type: Number
       }
     },
     data () {
@@ -25,6 +29,11 @@
     },
     created () {
       this.inputValue = this.value;
+    },
+    methods: {
+      parseToParent () {
+        this.$emit('value-changed', {propertyName: this.propertyName, value: this.inputValue, parentIndex: this.parentIndex})
+      }
     }
   }
 </script>

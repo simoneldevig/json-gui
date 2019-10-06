@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.0",
+    "basscss": "^8.0.2",
     "core-js": "^2.6.5",
     "element-ui": "^2.4.5",
     "es6-promise": "^4.2.8",
@@ -33,10 +35,29 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/recommended",
       "eslint:recommended"
     ],
-    "rules": {},
+    "plugins": [
+      "vue"
+    ],
+    "rules": {
+      "indent": ["warn", 2, { "SwitchCase": 1 }],
+      "keyword-spacing": "warn",
+      "no-multiple-empty-lines": "warn",
+      "padded-blocks": "off",
+      "semi": [
+        "warn",
+        "always"
+      ],
+      "space-before-blocks": "warn",
+      "space-before-function-paren": "warn",
+      "space-infix-ops": "warn",
+      "space-unary-ops": "warn",
+      "spaced-comment": "warn",
+      "vue/max-attributes-per-line": "off",
+      "vue/singleline-html-element-content-newline": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

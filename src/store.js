@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 Vue.use(Vuex)
-
-import db from './assets/db.json';
 
 // root state object.
 // each Vuex instance is just a single state tree.
@@ -17,9 +16,8 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
-  setDb (state) {
-    console.log(db);
-    state.db = db;
+  setDb (state, response) {
+    state.db = response.data;
   }
 }
 
@@ -27,8 +25,21 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   setDb (context) {
-    context.commit('setDb');
-  }
+    axios.get('http://localhost:3000/db')
+      .then(function (response) {
+        context.commit('setDb', response);
+      });
+  },
+  updateEntry (context, props) {
+    axios({
+      method: 'patch',
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+      url: 'http://localhost:3000/' + props.url,
+      data: props.payload
+    }).then(function (response) {
+      console.log(response)
+    });
+  },
 }
 
 // getters are functions

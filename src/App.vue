@@ -10,6 +10,10 @@
             <i class="el-icon-setting"></i>
             <span>{{ '/' + propertyName }}</span>
           </el-menu-item>
+          <el-menu-item class="primary">
+            <i class="el-icon-plus"></i>
+            <span>Add new route</span>
+          </el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="20">
