@@ -24,6 +24,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "json-server": "^0.15.1",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
     "vue-cli-plugin-element": "^1.0.1",
@@ -42,7 +43,13 @@
       "vue"
     ],
     "rules": {
-      "indent": ["warn", 2, { "SwitchCase": 1 }],
+      "indent": [
+        "warn",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
       "keyword-spacing": "warn",
       "no-multiple-empty-lines": "warn",
       "padded-blocks": "off",

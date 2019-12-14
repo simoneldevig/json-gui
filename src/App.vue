@@ -10,7 +10,7 @@
             <i class="el-icon-setting"></i>
             <span>{{ '/' + propertyName }}</span>
           </el-menu-item>
-          <el-menu-item class="primary">
+          <el-menu-item class="primary" @click="dialogVisible=true">
             <i class="el-icon-plus"></i>
             <span>Add new route</span>
           </el-menu-item>
@@ -20,12 +20,32 @@
         <router-view/>
       </el-col>
     </el-row>
+      <el-dialog
+        title="Create new entry"
+        :visible.sync="dialogVisible"
+        width="75%">
+        <create-route-content />
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible=false">Cancel</el-button>
+          <el-button type="primary" @click="dialogVisible=false">Create</el-button>
+        </span>
+      </el-dialog>
   </div>
 </template>
 
 <script>
+  import createRouteContent from '@/components/CreateRouteContent';
+
   export default {
     name: 'app',
+    components: {
+      createRouteContent
+    },
+    data() {
+      return {
+        dialogVisible: false
+      };
+    },
     computed: {
       endpoints() {
         return this.$store.state.db;

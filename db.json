@@ -1,9 +1,19 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "guid": "diedhhhhiem",
+      "id": "posts",
+      "title": "json-server test",
+      "author": "typicode",
+      "someBool": true,
+      "postsers": [
+        {
+          "id": 34,
+          "title": "nested",
+          "author": "ede",
+          "someBool": false
+        }
+      ]
     }
   ],
   "comments": [
