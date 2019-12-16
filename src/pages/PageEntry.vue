@@ -17,9 +17,9 @@
       </el-col>
       <el-col :span="8">
         <h1 class=" mt2">Raw JSON model</h1>
-        <el-card class="box-card">
+        <!-- <el-card class="box-card">
           <pre>{{ entryModel }}</pre>
-        </el-card>
+        </el-card> -->
       </el-col>
     </el-row>
   </div>
@@ -48,27 +48,27 @@ export default {
     entry () {
       return this.$store.state.db;
     },
-    entryModel () {
-      let model = {};
-      Object.values(this.entry[this.id]).forEach(entry => {
-        Object.values(entry).forEach((entryVal, index, entryProp) => {
-          if (typeof (entryVal) === 'object') {
-            let subModel = {};
+    // entryModel () {
+    //   let model = {};
+    //   Object.values(this.entry[this.id]).forEach(entry => {
+    //     Object.values(entry).forEach((entryVal, index, entryProp) => {
+    //       if (typeof (entryVal) === 'object') {
+    //         let subModel = {};
 
-            // Object.values(entryProp[index]).forEach((subEntryVal, subIndex, subEntryProp) => {
-            //   subModel[subEntryProp[subIndex]] = typeof (subEntryVal);
-            // });
+    //         // Object.values(entryProp[index]).forEach((subEntryVal, subIndex, subEntryProp) => {
+    //         //   subModel[subEntryProp[subIndex]] = typeof (subEntryVal);
+    //         // });
             
-            // model[entryProp[index]] = subModel;
-          } else {
-            if (entryVal) {
-              model[Object.keys(entry)[index]] = typeof (entryVal);
-            }
-          }
-        });
-      });
-      return model;
-    }
+    //         // model[entryProp[index]] = subModel;
+    //       } else {
+    //         if (entryVal) {
+    //           model[Object.keys(entry)[index]] = typeof (entryVal);
+    //         }
+    //       }
+    //     });
+    //   });
+    //   return model;
+    // }
   }
 };
 </script>

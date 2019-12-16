@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card v-for="(entry, index) in dataValue" :key="entry.guid" class="box-card">
+    <el-card :key="dataValue.guid" class="box-card">
       <template slot="header">
         <div class="flex justify-between items-center">
           <div class="ml1">
@@ -10,17 +10,17 @@
 
           <div>
             <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" />
+            <el-input-number v-model="timesToRepeat" class="mr2" @change="setTimesToRepeat" size="mini" controls-position="right" :min="1" />
             <el-tooltip class="item" effect="dark" content="Add new property" placement="top">
               <el-button type="success" size="medium" icon="el-icon-document-add" circle />
             </el-tooltip>
             <el-tooltip class="item" effect="dark" content="Delete" placement="top">
-              <el-button type="danger" size="medium" icon="el-icon-delete-solid" circle @click="deleteEntry(index)" />
+              <!-- <el-button type="danger" size="medium" icon="el-icon-delete-solid" circle @click="deleteEntry(index)" /> -->
             </el-tooltip>
           </div>
         </div>
       </template>
-      <div v-for="(property, propertyName) in entry">
+      <div v-for="(property, propertyName) in dataValue">
         <string v-if="typeof (property) === 'string'" :value="property" :parent-index="index" :property-name="propertyName" @value-changed="setValue" />
         <number v-if="typeof (property) === 'number'" :value="property" :parent-index="index" :property-name="propertyName" @value-changed="setValue" />
         <boolean v-if="typeof (property) === 'boolean'" :value="property" :parent-index="index" :property-name="propertyName" @value-changed="setValue" />
@@ -64,16 +64,17 @@ export default {
   data () {
     return {
       dataValue: '',
-      timesToRepeat: 1
+      timesToRepeat: 0
     };
   },
   watch: {
     data () {
-      this.dataValue = this.data;
+      this.dataValue = this.data[0];
     }
   },
   created () {
-    this.dataValue = this.data;
+    this.dataValue = this.data[0];
+    this.timesToRepeat = this.data.length;
   },
   methods: {
     generateGuid () {
@@ -93,11 +94,18 @@ export default {
     deleteEntry (index) {
       console.log(index);
     },
+    setTimesToRepeat (number) {
+      let newData = [];
+      for (let i = 0; i < number; i++) {
+        const clonedObject = Object.assign({}, this.data[0]);
+        newData.push(clonedObject);
+      }
+      this.data = newData;
+    },
     setValue (newValue) {
       this.dataValue[newValue.parentIndex][newValue.propertyName] = newValue.value;
-      if (!this.hisSubChild) {
+      if (!this.isSubChild) {
         const entryName = typeof (this.id) !== 'undefined' ? this.id : this.parentEntry;
-        console.log(JSON.stringify(this.dataValue));
         this.$store.dispatch('updateEntry', {
           url: entryName + '/' + (newValue.parentIndex + 1),
           payload: this.dataValue[newValue.parentIndex]
