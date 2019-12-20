@@ -1,7 +1,8 @@
 <template>
   <div class="mb2">
-    <p class="text-capitalize mt0 mb1"><strong>{{ propertyName }}</strong></p>
-    <el-input-number v-model="inputValue" @blur="parseToParent" :min="0" @change="parseToParent"/>
+    <p v-show="!editPropertyName" class="mt0 mb1"><strong>{{ propertyName }}</strong><i class="ml1 el-icon-edit" @click="editPropName" /></p>
+    <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="parseToParent" @blur="editPropertyName = false" />
+    <el-input-number v-model="inputValue" size="small" :min="0" @blur="parseToParent" @change="parseToParent" />
   </div>
 </template>
 
@@ -16,23 +17,28 @@ export default {
     propertyName: {
       requirred: true,
       type: String
-    },
-    parentIndex: {
-      requirred: true,
-      type: Number
     }
   },
   data () {
     return {
-      inputValue: ''
+      inputValue: '',
+      newPropertyName: '',
+      editPropertyName: false
     };
   },
   created () {
     this.inputValue = this.value;
+    this.newPropertyName = this.propertyName;
   },
   methods: {
     parseToParent () {
-      this.$emit('value-changed', {propertyName: this.propertyName, value: this.inputValue, parentIndex: this.parentIndex});
+      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
+    },
+    editPropName () {
+      this.editPropertyName = !this.editPropertyName;
+      this.$nextTick(() => {
+        this.$refs.propertyName.focus();
+      });
     }
   }
 };

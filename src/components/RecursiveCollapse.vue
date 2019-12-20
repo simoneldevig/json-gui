@@ -1,16 +1,17 @@
 <template>
   <div>
-    <el-card :key="dataValue.guid" class="box-card">
+    <el-card class="box-card">
       <template slot="header">
         <div class="flex justify-between items-center">
           <div class="ml1">
             <p v-if="isSubChild" class="text-capitalize"><strong>{{ propertyName }}</strong></p>
             <p v-else class="text-capitalize"><strong>{{ id }}</strong></p>
+            {{ dataContent.length }}
           </div>
 
           <div>
             <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="timesToRepeat" class="mr2" @change="setTimesToRepeat" size="mini" controls-position="right" :min="1" />
+            <el-input-number v-model="timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel" />
             <el-tooltip class="item" effect="dark" content="Add new property" placement="top">
               <el-button type="success" size="medium" icon="el-icon-document-add" circle />
             </el-tooltip>
@@ -20,11 +21,11 @@
           </div>
         </div>
       </template>
-      <div v-for="(property, propertyName) in dataValue">
-        <string v-if="typeof (property) === 'string'" :value="property" :parent-index="index" :property-name="propertyName" @value-changed="setValue" />
-        <number v-if="typeof (property) === 'number'" :value="property" :parent-index="index" :property-name="propertyName" @value-changed="setValue" />
-        <boolean v-if="typeof (property) === 'boolean'" :value="property" :parent-index="index" :property-name="propertyName" @value-changed="setValue" />
-        <recursive-collapse v-if="typeof (property) === 'object'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setValue" />
+      <div v-for="(property, propertyName, index) in dataModel">
+        <string v-if="typeof (property) === 'string'" :value="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
+        <number v-if="typeof (property) === 'number'" :value="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
+        <boolean v-if="typeof (property) === 'boolean'" :value="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
+        <recursive-collapse v-if="typeof (property) === 'object'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
       </div>
     </el-card>
   </div>
@@ -34,6 +35,8 @@
 import string from '@/components/BaseStringInput';
 import number from '@/components/BaseNumberInput';
 import boolean from '@/components/BaseBooleanInput';
+import { renameObjectKey } from '@/utils';
+
 
 export default {
   name: 'RecursiveCollapse',
@@ -63,17 +66,20 @@ export default {
   },
   data () {
     return {
-      dataValue: '',
+      dataModel: null,
+      dataContent: null,
       timesToRepeat: 0
     };
   },
   watch: {
     data () {
-      this.dataValue = this.data[0];
+      this.dataModel = this.data[0];
     }
   },
   created () {
-    this.dataValue = this.data[0];
+    this.dataModel = this.data[0];
+    this.dataContent = this.data;
+
     this.timesToRepeat = this.data.length;
   },
   methods: {
@@ -88,29 +94,27 @@ export default {
     //   let duplicateEntry = {};
     //   duplicateEntry = entry;
     //   duplicateEntry.guid = this.generateGuid();
-    //   this.dataValue.push(entry);
-    //   console.log(this.dataValue);
+    //   this.dataModel.push(entry);
+    //   console.log(this.dataModel);
     // },
-    deleteEntry (index) {
-      console.log(index);
-    },
-    setTimesToRepeat (number) {
+    updateDataContentToDataModel () {
       let newData = [];
-      for (let i = 0; i < number; i++) {
-        const clonedObject = Object.assign({}, this.data[0]);
+      for (let i = 0; i < this.timesToRepeat; i++) {
+        const clonedObject = Object.assign({}, this.dataModel);
         newData.push(clonedObject);
       }
-      this.data = newData;
+      this.dataContent = newData;
     },
-    setValue (newValue) {
-      this.dataValue[newValue.parentIndex][newValue.propertyName] = newValue.value;
-      if (!this.isSubChild) {
-        const entryName = typeof (this.id) !== 'undefined' ? this.id : this.parentEntry;
-        this.$store.dispatch('updateEntry', {
-          url: entryName + '/' + (newValue.parentIndex + 1),
-          payload: this.dataValue[newValue.parentIndex]
-        });
+    setDataModelValue (changedValueObject) {
+      if (changedValueObject.propertyName !== changedValueObject.oldPropertyName) {
+        this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
       }
+      this.dataModel[changedValueObject.propertyName] = changedValueObject.value;
+      this.updateDataContentToDataModel();
+    },
+    deleteProperty (propertyName) {
+      delete this.dataModel[propertyName];
+      this.updateDataContentToDataModel();
     }
   }
 };

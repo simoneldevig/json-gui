@@ -13,7 +13,7 @@
           </div>
         </div>
 
-        <collapse :id="id" :data="entry[id]" :title="id" :index="0" :is-sub-child="false" />
+        <collapse v-if="entry[id]" :id="id" :data="entry[id]" :title="id" :index="0" :is-sub-child="false" />
       </el-col>
       <el-col :span="8">
         <h1 class=" mt2">Raw JSON model</h1>
