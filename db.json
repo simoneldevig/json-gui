@@ -1,4 +1,53 @@
 {
+  "models": {
+    "posts": [
+      {
+        "guid": {
+          "type": "string",
+          "value": "diedhhhhiem"
+        },
+        "id": {
+          "type": "string",
+          "value": "posts"
+        },
+        "title": {
+          "type": "string",
+          "value": "json-server test"
+        },
+        "author": {
+          "type": "string",
+          "value": "typicode"
+        },
+        "someBool": {
+          "type": "boolean",
+          "value": "random"
+        },
+        "postsers": {
+          "type": "array",
+          "value": [
+            {
+              "id": {
+                "type": "number",
+                "value": 34
+              },
+              "title": {
+                "type": "string",
+                "value": "nested"
+              },
+              "author": {
+                "type": "string",
+                "value": "ede"
+              },
+              "someBool": {
+                "type": "boolean",
+                "value": false
+              }
+            }
+          ]
+        } 
+      }
+    ]
+  },
   "posts": [
     {
       "guid": "diedhhhhiem",
@@ -15,15 +64,5 @@
         }
       ]
     }
-  ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }

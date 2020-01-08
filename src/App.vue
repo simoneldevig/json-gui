@@ -6,7 +6,7 @@
           <el-menu-item>
             <h3>JSON Server GUI</h3>
           </el-menu-item>
-          <el-menu-item v-for="(value, propertyName) in endpoints" :index="'/entry/' + propertyName">
+          <el-menu-item v-if="propertyName !== 'models'" v-for="(value, propertyName) in endpoints" :index="'/entry/' + propertyName">
             <i class="el-icon-setting"></i>
             <span>{{ '/' + propertyName }}</span>
           </el-menu-item>

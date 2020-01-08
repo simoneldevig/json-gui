@@ -1,13 +1,18 @@
 <template>
   <div class="mb2">
-    <p v-show="!editPropertyName" class="mt0 mb1"><strong>{{ propertyName }}</strong><i class="ml1 el-icon-edit" @click="editPropName" /></p>
-    <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="parseToParent" @blur="editPropertyName = false" />
-    <el-switch
-      v-model="inputValue"
-      active-text="true"
-      inactive-text="false"
-      @change="parseToParent"
-    />
+    <div class="mb1 flex justify-between items-center">
+      <div>
+        <p v-show="!editPropertyName" class="mt0 mb0"><strong>{{ propertyName }}</strong></p>
+        <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="parseToParent" @blur="editPropertyName = false" />
+      </div>
+      <div>
+        <el-button class="ml1" type="warning" size="mini" icon="el-icon-edit" circle @click="editPropName" />
+        <el-button class="ml1" type="danger" size="mini" icon="el-icon-delete" circle @click="deleteProp" />
+      </div>
+    </div>
+    <el-radio v-model="inputValue" :value="true" :label="true" class="mr1" size="small" border @change="parseToParent">true</el-radio>
+    <el-radio v-model="inputValue" :value="false" :label="false" class="mr1" size="small" border @change="parseToParent">false</el-radio>
+    <el-radio v-model="inputValue" :value="'random'" :label="'random'" class="mr1" size="small" border @change="parseToParent">random</el-radio>
   </div>
 </template>
 
@@ -15,11 +20,13 @@
 export default {
   name: 'BooleanInput',
   props: {
-    value: {
+    model: {
+      default: null,
       requirred: true,
-      type: Boolean
+      type: Object
     },
     propertyName: {
+      default: null,
       requirred: true,
       type: String
     }
@@ -32,15 +39,15 @@ export default {
     };
   },
   created () {
-    this.inputValue = this.value;
+    this.inputValue = this.model.value;
     this.newPropertyName = this.propertyName;
   },
   methods: {
     parseToParent () {
-      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
+      // this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
     },
     editPropName () {
-      this.editPropertyName = !this.editPropertyName;
+      this.editPropertyName = true;
       this.$nextTick(() => {
         this.$refs.propertyName.focus();
       });

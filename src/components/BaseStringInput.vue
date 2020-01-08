@@ -10,7 +10,7 @@
         <el-button class="ml1" type="danger" size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
-    <el-input v-model="inputValue" type="textarea" :autosize="{ minRows: 1}" @blur="parseToParent" />
+    <el-input v-model="inputValue" ref="input" type="textarea" :autosize="{ minRows: 1}" @blur="parseToParent" />
   </div>
 </template>
 
@@ -18,9 +18,9 @@
 export default {
   name: 'BaseStringInput',
   props: {
-    value: {
+    model: {
       requirred: true,
-      type: String
+      type: Object
     },
     propertyName: {
       requirred: true,
@@ -35,12 +35,12 @@ export default {
     };
   },
   created () {
-    this.inputValue = this.value;
+    this.inputValue = this.model.value;
     this.newPropertyName = this.propertyName;
   },
   methods: {
     parseToParent () {
-      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
+      // this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
     },
     editPropName () {
       this.editPropertyName = !this.editPropertyName;
