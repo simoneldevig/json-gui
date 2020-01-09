@@ -4,15 +4,15 @@
       {
         "guid": {
           "type": "string",
-          "value": "diedhhhhiem"
+          "value": "faker.name.findName"
         },
         "id": {
           "type": "string",
           "value": "posts"
         },
         "title": {
-          "type": "string",
-          "value": "json-server test"
+          "type": "number",
+          "value": "faker.random.number"
         },
         "author": {
           "type": "string",

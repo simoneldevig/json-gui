@@ -13,42 +13,50 @@
             <span class="pr1"><strong>Times to repeat</strong></span>
             <el-input-number v-model="timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel" />
             <!-- <el-button type="success" size="medium" icon="el-icon-document-add" circle /> -->
-            <el-popover
-              v-model="stringDialogVisible"
-              placement="bottom"
-              width="400"
-            >
+            <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
-              <el-input ref="newStringProp" v-model=newPropertyName class="mb2" size="small" />
+              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
 
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="stringDialogVisible = false">Cancel</el-button>
                 <el-button type="primary" size="mini" @click="stringDialogVisible = false, addNewProperty('string')">Add</el-button>
               </div>
-              <el-button slot="reference" @click="$refs.newStringProp.focus()" icon="el-icon-document-add" class="ml1" size="small" type="default">String</el-button>
+              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default" @click="$refs.newStringProp.focus()">String</el-button>
             </el-popover>
-            <!-- <el-popover
-                placement="bottom"
-                title="Title"
-                width="200"
-                trigger="click"
-                content="this is content, this is content, this is content">
-                <el-button slot="reference">Click to activate</el-button>
-                <el-button slot="reference" icon="el-icon-document-add" @click="addNewProperty('string')" class="ml1" size="small" type="default">String</el-button>
-              </el-popover> -->
+            
+            <el-popover v-model="numberDialogVisible" placement="bottom" width="400">
+              <p class="mt0 mb1"><strong>Property name?</strong></p>
+              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="numberDialogVisible = false, addNewProperty('number')" />
 
-            <el-button icon="el-icon-document-add" class="ml1" size="small" type="default" @click="addNewProperty('number')">Number</el-button>
-            <el-button icon="el-icon-document-add" class="ml1" size="small" type="default" @click="addNewProperty('boolean')">Boolean</el-button>
-            <el-button icon="el-icon-document-add" size="small" type="default" @click="addNewProperty('object/array')">Object</el-button>
-            <!-- <el-dropdown trigger="click" @command="addNewProperty">
-              <el-button type="success" size="medium" icon="el-icon-document-add" circle />
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="string">Add string</el-dropdown-item>
-                <el-dropdown-item command="number">Add number</el-dropdown-item>
-                <el-dropdown-item command="boolen">Add boolean</el-dropdown-item>
-                <el-dropdown-item command="object">Add object</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown> -->
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="numberDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" size="mini" @click="numberDialogVisible = false, addNewProperty('number')">Add</el-button>
+              </div>
+              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Number</el-button>
+            </el-popover>
+
+            <el-popover v-model="booleanDialogVisible" placement="bottom" width="400">
+              <p class="mt0 mb1"><strong>Property name?</strong></p>
+              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="booleanDialogVisible = false, addNewProperty('boolean')" />
+
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="booleanDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" size="mini" @click="booleanDialogVisible = false, addNewProperty('boolean')">Add</el-button>
+              </div>
+              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Boolean</el-button>
+            </el-popover>
+
+            <el-popover v-model="objectDialogVisible" placement="bottom" width="400">
+              <p class="mt0 mb1"><strong>Property name?</strong></p>
+              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="objectDialogVisible = false, addNewProperty('object')" />
+
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="objectDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" size="mini" @click="objectDialogVisible = false, addNewProperty('object')">Add</el-button>
+              </div>
+              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Object</el-button>
+            </el-popover>
+      
             <el-tooltip class="item" effect="dark" content="Delete" placement="top">
               <!-- <el-button type="danger" size="medium" icon="el-icon-delete-solid" circle @click="deleteEntry(index)" /> -->
             </el-tooltip>
@@ -56,7 +64,7 @@
         </div>
       </template>
       <div v-for="(property, propertyName, index) in dataModel" :key="propertyName">
-        <string ref="string" v-if="property.type === 'string' || property.type === 'number'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
+        <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <!-- <number v-if="property.type === 'number'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" /> -->
         <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <recursive-collapse v-if="property.type === 'object' || property.type === 'array'" :data="property.value" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
@@ -70,6 +78,7 @@ import string from '@/components/BaseStringInput';
 // import number from '@/components/BaseNumberInput';
 import boolean from '@/components/BaseBooleanInput';
 import { renameObjectKey } from '@/utils';
+const faker = require('faker');
 
 export default {
   name: 'RecursiveCollapse',
@@ -108,6 +117,9 @@ export default {
       dataContent: null,
       timesToRepeat: 0,
       stringDialogVisible: false,
+      numberDialogVisible: false,
+      booleanDialogVisible: false,
+      objectDialogVisible: false,
       newPropertyName: ''
     };
   },
@@ -150,14 +162,13 @@ export default {
           newProperty.value = false;
           break;
         case 'object':
-          newProperty.value = {};
+          newProperty.value = [{}];
           break;
       }
 
-      this.dataModel[this.newPropertyName] = newProperty;
+      Object.assign(this.dataModel, {[this.newPropertyName]: newProperty});
+
       this.newPropertyName = '';
-      this.$refs[type][this.$refs[type].length - 1].$el.scrollIntoView({behavior: 'smooth', block: 'center'}); 
-      this.$refs[type][this.$refs[type].length - 1].$refs.input.focus(); 
     },
     // saveNewProperty () {
     //   console.log(this.propertyValuesDialogData);
@@ -175,6 +186,13 @@ export default {
       let newData = [];
       for (let i = 0; i < this.timesToRepeat; i++) {
         const clonedObject = Object.assign({}, this.dataModel);
+        Object.keys(clonedObject).forEach((propertyName, index, values) => { 
+          if (typeof (clonedObject[propertyName].type) === 'string' && clonedObject[propertyName].value.startsWith('faker') || typeof (clonedObject[propertyName].type) === 'number' && clonedObject[propertyName].value.startsWith('faker')) {
+            const fakerData = clonedObject[propertyName].value + '();';
+            console.log(fakerData);
+            clonedObject[propertyName].value = eval(fakerData);
+          }
+        });
         newData.push(clonedObject);
       }
       this.dataContent = newData;
