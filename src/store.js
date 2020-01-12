@@ -7,7 +7,7 @@ Vue.use(Vuex);
 // each Vuex instance is just a single state tree.
 const state = {
   count: 0,
-  db: {}
+  models: {}
 };
 
 // mutations are operations that actually mutates the state.
@@ -16,28 +16,37 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
-  setDb (state, response) {
-    state.db = response.data;
+  setModels (state, response) {
+    state.models = response.data;
+  },
+  setData (state, response) {
+    state.models = response.data;
   }
 };
 
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
-  setDb (context) {
-    axios.get('http://localhost:3000/api/db')
+  getModels (context) {
+    axios.get('http://localhost:3000/models')
       .then(function (response) {
-        context.commit('setDb', response);
+        context.commit('setModels', response);
       });
   },
   updateEntry (context, props) {
     axios({
-      method: 'patch',
+      method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3000/api/' + props.url,
-      data: props.payload
+      url: 'http://localhost:3000/api/' + props.url
     }).then(function (response) {
-      console.log(response);
+      axios({
+        method: 'push',
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+        url: 'http://localhost:3000/api/' + props.url,
+        data: props.payload
+      }).then(function (response) {
+        console.log(response);
+      });
     });
   },
 };

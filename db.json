@@ -28,7 +28,7 @@
             {
               "id": {
                 "type": "number",
-                "value": 34
+                "value": "faker.random.number"
               },
               "title": {
                 "type": "string",
@@ -44,25 +44,74 @@
               }
             }
           ]
-        } 
+        }
       }
     ]
   },
-  "posts": [
-    {
-      "guid": "diedhhhhiem",
-      "id": "posts",
-      "title": "json-server test",
-      "author": "typicode",
-      "someBool": true,
-      "postsers": [
+  "api": {
+    "posts": [
+      {
+        "guid": "diedhhhhiem",
+        "id": "posts",
+        "title": "json-server test",
+        "author": "typicode",
+        "someBool": true,
+        "postsers": [
+          {
+            "id": 34,
+            "title": "nested",
+            "author": "ede",
+            "someBool": false
+          }
+        ]
+      },
+      [
         {
-          "id": 34,
-          "title": "nested",
-          "author": "ede",
-          "someBool": false
+          "guid": {
+            "type": "string",
+            "value": "Mustafa Hermiston"
+          },
+          "id": {
+            "type": "string",
+            "value": "posts"
+          },
+          "title": {
+            "type": "number",
+            "value": 41054
+          },
+          "author": {
+            "type": "string",
+            "value": "typicode"
+          },
+          "someBool": {
+            "type": "boolean",
+            "value": false
+          },
+          "postsers": {
+            "type": "array",
+            "value": [
+              {
+                "id": {
+                  "type": "number",
+                  "value": "faker.random.number"
+                },
+                "title": {
+                  "type": "string",
+                  "value": "nested"
+                },
+                "author": {
+                  "type": "string",
+                  "value": "ede"
+                },
+                "someBool": {
+                  "type": "boolean",
+                  "value": false
+                }
+              }
+            ]
+          }
         }
       ]
-    }
-  ]
+    ]
+  }
 }

@@ -7,6 +7,15 @@ import './basscss.scss'
 import store from './store'
 import router from "./router"
 
+// Import lodash
+import cloneDeep from 'lodash.clonedeep';
+
+const lodashBundle = {
+  cloneDeep
+};
+
+Object.defineProperty(Vue.prototype, '$lodash', { value: lodashBundle });
+
 Vue.use(Vuex)
 
 Vue.config.productionTip = false

@@ -6,13 +6,11 @@
           <div class="ml1">
             <p v-if="isSubChild" class="text-capitalize"><strong>{{ propertyName }}</strong></p>
             <p v-else class="text-capitalize"><strong>{{ id }}</strong></p>
-            {{ dataContent.length }}
           </div>
 
           <div>
             <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel" />
-            <!-- <el-button type="success" size="medium" icon="el-icon-document-add" circle /> -->
+            <el-input-number v-model="timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel(dataModel)" />
             <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
@@ -56,16 +54,11 @@
               </div>
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Object</el-button>
             </el-popover>
-      
-            <el-tooltip class="item" effect="dark" content="Delete" placement="top">
-              <!-- <el-button type="danger" size="medium" icon="el-icon-delete-solid" circle @click="deleteEntry(index)" /> -->
-            </el-tooltip>
           </div>
         </div>
       </template>
       <div v-for="(property, propertyName, index) in dataModel" :key="propertyName">
         <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
-        <!-- <number v-if="property.type === 'number'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" /> -->
         <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <recursive-collapse v-if="property.type === 'object' || property.type === 'array'" :data="property.value" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
       </div>
@@ -115,7 +108,7 @@ export default {
     return {
       dataModel: null,
       dataContent: null,
-      timesToRepeat: 0,
+      timesToRepeat: 1,
       stringDialogVisible: false,
       numberDialogVisible: false,
       booleanDialogVisible: false,
@@ -135,8 +128,8 @@ export default {
   },
   created () {
     this.dataModel = this.data[0];
-
-    this.dataContent = this.data;
+    
+    this.updateDataContentToDataModel(this.dataModel);
 
     this.timesToRepeat = this.data.length;
   },
@@ -182,31 +175,37 @@ export default {
     //   this.dataModel.push(entry);
     //   console.log(this.dataModel);
     // },
-    updateDataContentToDataModel () {
+    updateDataContentToDataModel (dataModel) {
       let newData = [];
       for (let i = 0; i < this.timesToRepeat; i++) {
-        const clonedObject = Object.assign({}, this.dataModel);
+        let clonedObject = this.$lodash.cloneDeep(dataModel);
         Object.keys(clonedObject).forEach((propertyName, index, values) => { 
-          if (typeof (clonedObject[propertyName].type) === 'string' && clonedObject[propertyName].value.startsWith('faker') || typeof (clonedObject[propertyName].type) === 'number' && clonedObject[propertyName].value.startsWith('faker')) {
+          if (clonedObject[propertyName].type === 'string' && clonedObject[propertyName].value.toString().startsWith('faker') || clonedObject[propertyName].type === 'number' && clonedObject[propertyName].value.toString().startsWith('faker')) {
             const fakerData = clonedObject[propertyName].value + '();';
-            console.log(fakerData);
             clonedObject[propertyName].value = eval(fakerData);
+          }
+          if (clonedObject[propertyName].type === 'boolean' && clonedObject[propertyName].value === 'random') {
+            clonedObject[propertyName].value = faker.random.boolean();
+          }
+          if (clonedObject[propertyName].type === 'object' || clonedObject[propertyName].type === 'array') {
+            this.updateDataContentToDataModel(clonedObject[propertyName].value[0]);
           }
         });
         newData.push(clonedObject);
       }
       this.dataContent = newData;
+      this.$emit('updateData', this.dataContent);
     },
     setDataModelValue (changedValueObject) {
       if (changedValueObject.propertyName !== changedValueObject.oldPropertyName) {
         this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
       }
       this.dataModel[changedValueObject.propertyName] = changedValueObject.value;
-      this.updateDataContentToDataModel();
+      this.updateDataContentToDataModel(this.dataModel);
     },
     deleteProperty (propertyName) {
       delete this.dataModel[propertyName];
-      this.updateDataContentToDataModel();
+      this.updateDataContentToDataModel(this.dataModel);
     }
   }
 };
