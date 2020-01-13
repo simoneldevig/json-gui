@@ -47,6 +47,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.propertyName.focus();
       });
+    },
+    deleteProp () {
+      this.$emit('delete-property', this.newPropertyName);
     }
   }
 };

@@ -180,7 +180,7 @@ export default {
       for (let i = 0; i < this.timesToRepeat; i++) {
         const clonedObject = this.$lodash.cloneDeep(dataModel);
         const generatedObject = this.generateFakerValues(clonedObject);
-        generatedData.push(clonedObject);
+        generatedData.push(generatedObject);
       }
       this.dataContent = generatedData;
       this.$emit('updateData', this.dataContent);
@@ -200,7 +200,7 @@ export default {
               obj.value = eval(fakerData);
             }
             if (obj.type === 'boolean' && obj.value === 'random') {
-              clonedObject[propertyName].value = faker.random.boolean();
+              obj.value = faker.random.boolean();
             }
           }
         }

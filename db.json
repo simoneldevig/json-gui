@@ -23,7 +23,7 @@
           "value": "faker.lorem.sentence"
         },
         "isVisible": {
-          "type": "bool",
+          "type": "boolean",
           "value": "random"
         },
         "relatedPosts": {
@@ -51,8 +51,8 @@
                 "value": "faker.lorem.sentence"
               },
               "isVisible": {
-                "type": "bool",
-                "value": "true"
+                "type": "boolean",
+                "value": true
               },
               "url": {
                 "type": "string",
