@@ -1,28 +1,32 @@
 {
   "models": {
-    "posts": [
+    "getPosts": [
       {
-        "guid": {
-          "type": "string",
-          "value": "faker.name.findName"
-        },
         "id": {
-          "type": "string",
-          "value": "posts"
-        },
-        "title": {
           "type": "number",
           "value": "faker.random.number"
         },
+        "title": {
+          "type": "number",
+          "value": "faker.random.words"
+        },
         "author": {
           "type": "string",
-          "value": "typicode"
+          "value": "faker.name.findName"
         },
-        "someBool": {
-          "type": "boolean",
+        "publishDate": {
+          "type": "string",
+          "value": "faker.date.past"
+        },
+        "text": {
+          "type": "string",
+          "value": "faker.lorem.sentence"
+        },
+        "isVisible": {
+          "type": "bool",
           "value": "random"
         },
-        "postsers": {
+        "relatedPosts": {
           "type": "array",
           "value": [
             {
@@ -31,16 +35,28 @@
                 "value": "faker.random.number"
               },
               "title": {
-                "type": "string",
-                "value": "nested"
+                "type": "number",
+                "value": "faker.random.words"
               },
               "author": {
                 "type": "string",
-                "value": "ede"
+                "value": "faker.name.findName"
               },
-              "someBool": {
-                "type": "boolean",
-                "value": false
+              "publishDate": {
+                "type": "string",
+                "value": "faker.date.past"
+              },
+              "text": {
+                "type": "string",
+                "value": "faker.lorem.sentence"
+              },
+              "isVisible": {
+                "type": "bool",
+                "value": "true"
+              },
+              "url": {
+                "type": "string",
+                "value": "#"
               }
             }
           ]
@@ -49,7 +65,7 @@
     ]
   },
   "api": {
-    "posts": [
+    "getPosts": [
       {
         "guid": "diedhhhhiem",
         "id": "posts",

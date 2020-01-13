@@ -4,8 +4,8 @@
       <template slot="header">
         <div class="flex justify-between items-center">
           <div class="ml1">
-            <p v-if="isSubChild" class="text-capitalize"><strong>{{ propertyName }}</strong></p>
-            <p v-else class="text-capitalize"><strong>{{ id }}</strong></p>
+            <p v-if="isSubChild"><strong>{{ propertyName }}</strong></p>
+            <p v-else><strong>{{ id }}</strong></p>
           </div>
 
           <div>
@@ -176,25 +176,36 @@ export default {
     //   console.log(this.dataModel);
     // },
     updateDataContentToDataModel (dataModel) {
-      let newData = [];
+      let generatedData = [];
       for (let i = 0; i < this.timesToRepeat; i++) {
-        let clonedObject = this.$lodash.cloneDeep(dataModel);
-        Object.keys(clonedObject).forEach((propertyName, index, values) => { 
-          if (clonedObject[propertyName].type === 'string' && clonedObject[propertyName].value.toString().startsWith('faker') || clonedObject[propertyName].type === 'number' && clonedObject[propertyName].value.toString().startsWith('faker')) {
-            const fakerData = clonedObject[propertyName].value + '();';
-            clonedObject[propertyName].value = eval(fakerData);
-          }
-          if (clonedObject[propertyName].type === 'boolean' && clonedObject[propertyName].value === 'random') {
-            clonedObject[propertyName].value = faker.random.boolean();
-          }
-          if (clonedObject[propertyName].type === 'object' || clonedObject[propertyName].type === 'array') {
-            this.updateDataContentToDataModel(clonedObject[propertyName].value[0]);
-          }
-        });
-        newData.push(clonedObject);
+        const clonedObject = this.$lodash.cloneDeep(dataModel);
+        const generatedObject = this.generateFakerValues(clonedObject);
+        generatedData.push(clonedObject);
       }
-      this.dataContent = newData;
+      this.dataContent = generatedData;
       this.$emit('updateData', this.dataContent);
+    },
+    generateFakerValues(obj) {
+      if (typeof obj === 'object') {
+        // iterating over the object using for..in
+        for (let keys in obj) {
+          //checking if the current value is an object itself
+          if (typeof (obj[keys]) === 'object') {
+            // if so then again calling the same function
+            this.generateFakerValues(obj[keys])
+          } else {
+            // else getting the value and replacing single { with {{ and so on
+            if (obj.type === 'string' && obj.value.toString().startsWith('faker') || obj.type === 'number' && obj.value.toString().startsWith('faker')) {
+              const fakerData = obj.value + '();';
+              obj.value = eval(fakerData);
+            }
+            if (obj.type === 'boolean' && obj.value === 'random') {
+              clonedObject[propertyName].value = faker.random.boolean();
+            }
+          }
+        }
+      }
+      return obj;
     },
     setDataModelValue (changedValueObject) {
       if (changedValueObject.propertyName !== changedValueObject.oldPropertyName) {

@@ -4,7 +4,7 @@
       <el-col :span="16">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="mb0"><span class="text-capitalize">{{ id }}</span> model</h1>
+            <h1 class="mb0"><span>{{ id }}</span> model</h1>
             <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
         </div>
@@ -12,14 +12,14 @@
         <collapse v-if="entry[id] && entry[id] !== 'models'" :id="id" :data="entry[id]" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
       </el-col>
       <el-col :span="8">
-        <h1 class=" mt2">Raw JSON model</h1>
+        <h1 class=" mt2">Model</h1>
         <!-- <el-card class="box-card">
           <pre>{{ entryModel }}</pre>
         </el-card> -->
       </el-col>
     </el-row>
 
-    <el-row class="fixed bottom-0 left-0 z2 entry__save py1">
+    <el-row class="fixed bottom-0 left-0 z2 entry__save py1" :class="{'is-active' : changesNotSaved}">
       <el-col :offset="4" :span="14">
         <div class="flex items-center justify-between">
           <p class="mr3 ml1">You have unsaved changes on this entry. <strong>Rememember to save!</strong></p>
@@ -49,7 +49,8 @@ export default {
   data () {
     return {
       loading: false,
-      dataContent: null
+      dataContent: null,
+      changesNotSaved: false
     };
   },
   computed: {
@@ -81,13 +82,16 @@ export default {
   methods: {
     updateData (data) {
       this.dataContent = data;
+      this.changesNotSaved = true;
     },
     saveData () {
-      this.$store.dispatch('updateEntry', {
-        url: this.id,
-        payload: this.dataContent
-      });
-    }
+      var myjson = JSON.stringify(this.dataContent, null, 2);
+      var x = window.open();
+      x.document.open();
+      x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
+      x.document.close();
+        this.changesNotSaved = false;
+      }
   }
 };
 </script>
@@ -97,5 +101,9 @@ export default {
     width: 100%;
     background: #fff;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    transform: translateY(80px);
+    transition: transform 0.3s;
+
+    &.is-active { transform: translateY(0); }
   }
 </style>
