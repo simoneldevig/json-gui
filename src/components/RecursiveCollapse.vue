@@ -196,8 +196,10 @@ export default {
           } else {
             // else getting the value and replacing single { with {{ and so on
             if (obj.type === 'string' && obj.value.toString().startsWith('faker') || obj.type === 'number' && obj.value.toString().startsWith('faker')) {
-              const fakerData = obj.value + '();';
-              obj.value = eval(fakerData);
+              obj.value = eval(obj.value);
+            }
+            if (obj.type === 'number' && !obj.value.toString().startsWith('faker')) {
+              obj.value = parseInt(obj.value);
             }
             if (obj.type === 'boolean' && obj.value === 'random') {
               obj.value = faker.random.boolean();
@@ -211,7 +213,7 @@ export default {
       if (changedValueObject.propertyName !== changedValueObject.oldPropertyName) {
         this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
       }
-      this.dataModel[changedValueObject.propertyName] = changedValueObject.value;
+      this.dataModel[changedValueObject.propertyName].value = changedValueObject.value;
       this.updateDataContentToDataModel(this.dataModel);
     },
     deleteProperty (propertyName) {

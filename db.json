@@ -4,23 +4,23 @@
       {
         "id": {
           "type": "number",
-          "value": "faker.random.number"
+          "value": "faker.random.number()"
         },
         "title": {
-          "type": "number",
-          "value": "faker.random.words"
+          "type": "string",
+          "value": "faker.random.words()"
         },
         "author": {
           "type": "string",
-          "value": "faker.name.findName"
+          "value": "faker.name.findName()"
         },
         "publishDate": {
           "type": "string",
-          "value": "faker.date.past"
+          "value": "faker.date.past()"
         },
         "text": {
           "type": "string",
-          "value": "faker.lorem.sentence"
+          "value": "faker.lorem.sentence()"
         },
         "isVisible": {
           "type": "boolean",
@@ -32,23 +32,23 @@
             {
               "id": {
                 "type": "number",
-                "value": "faker.random.number"
+                "value": "faker.random.number()"
               },
               "title": {
-                "type": "number",
-                "value": "faker.random.words"
+                "type": "string",
+                "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])"
               },
               "author": {
                 "type": "string",
-                "value": "faker.name.findName"
+                "value": "faker.name.findName()"
               },
               "publishDate": {
                 "type": "string",
-                "value": "faker.date.past"
+                "value": "faker.date.past()"
               },
               "text": {
                 "type": "string",
-                "value": "faker.lorem.sentence"
+                "value": "faker.lorem.sentence()"
               },
               "isVisible": {
                 "type": "boolean",

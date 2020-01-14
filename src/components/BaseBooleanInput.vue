@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     parseToParent () {
-      // this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
+      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
     },
     editPropName () {
       this.editPropertyName = true;
