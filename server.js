@@ -6,26 +6,37 @@ var middlewares = jsonServer.defaults();
 
 server.use(middlewares);
 
-server.post('/:name', function (req, res) {
-  var obj = {};
-  obj[req.params.name] = req.body;
-  router.db.defaults(obj).value();
-  router.db.write();
-  res.sendStatus(201);
-});
+server.use(jsonServer.bodyParser);
 
-server.delete('/:name', function (req, res) {
-  var state = router.db.getState(); 
-  delete state[req.params.name]; 
-  router.db.setState(state);
-  router.db.write();
-  res.sendStatus(204);
-});
+server.all('/:name', function (req, res) {
+  const isPost = req.method === 'POST';
+  const isPut = req.method === 'PUT';
+  const isDelete = req.method === 'DELETE';
 
-server.put('/:name', function (req, res) {
-  router.db.set(req.params.name, req.query).value();
-  router.db.write();
-  res.sendStatus(200);
+  if (isPost || isPut) {
+    try {
+      router.db.set(req.params.name, req.body).value();
+      router.db.write();
+      if (isPost) {
+        res.sendStatus(201);
+      } else if (isPut) {
+        res.sendStatus(204);
+      }
+    } catch (error) {
+      res.sendStatus(400);
+    }
+  } else if (isDelete) {
+    try {
+      let state = router.db.getState(); 
+      delete state[req.params.name]; 
+      router.db.setState(state);
+      router.db.write();
+      res.sendStatus(204);
+    } catch (error) {
+      res.sendStatus(400);
+    }
+  }
+
 });
 
 server.use(router);
