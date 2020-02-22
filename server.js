@@ -1,24 +1,35 @@
 // server.js
-const jsonServer = require('json-server')
-const server = jsonServer.create()
-const router = jsonServer.router('db.json')
-const middlewares = jsonServer.defaults()
+const jsonServer = require('json-server');
+const server = jsonServer.create();
+const router = jsonServer.router('db.json');
+var middlewares = jsonServer.defaults();
 
-server.use(middlewares)
-server.use(router)
-// To handle POST, PUT and PATCH you need to use a body-parser
-// You can use the one used by JSON Server
-server.use(jsonServer.bodyParser)
-server.use((req, res, next) => {
-  console.log(req.body)
-  // if (req.method === 'POST') {
-  //   req.body.createdAt = Date.now()
-  // }
-  // Continue to JSON Server router
-  next()
-})
+server.use(middlewares);
 
+server.post('/:name', function (req, res) {
+  var obj = {};
+  obj[req.params.name] = req.body;
+  router.db.defaults(obj).value();
+  router.db.write();
+  res.sendStatus(201);
+});
+
+server.delete('/:name', function (req, res) {
+  var state = router.db.getState(); 
+  delete state[req.params.name]; 
+  router.db.setState(state);
+  router.db.write();
+  res.sendStatus(204);
+});
+
+server.put('/:name', function (req, res) {
+  router.db.set(req.params.name, req.query).value();
+  router.db.write();
+  res.sendStatus(200);
+});
+
+server.use(router);
 
 server.listen(3000, () => {
-  console.log('JSON Server is running')
-})
+  console.log('JSON Server is running');
+});
