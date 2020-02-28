@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import router from './router';
+
 Vue.use(Vuex);
 
 // root state object.
@@ -28,16 +30,30 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getModels (context) {
-    axios.get('http://localhost:3000/models')
+    axios.get('http://localhost:3000/db')
       .then(function (response) {
         context.commit('setModels', response);
       });
   },
+  
+  createNewRoute (context, props) {
+    console.log(props)
+    axios({
+      method: 'post',
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+      url: 'http://localhost:3000/' + props
+    }).then(function (response) {
+      context.dispatch('getModels').then(function () {
+        router.push({ path: props })
+      });
+    });
+  },
+
   updateEntry (context, props) {
     axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3000/api/' + props.url
+      url: 'http://localhost:3000/' + props.url
     }).then(function (response) {
       axios({
         method: 'push',

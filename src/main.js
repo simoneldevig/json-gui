@@ -16,6 +16,7 @@ const lodashBundle = {
 
 Object.defineProperty(Vue.prototype, '$lodash', { value: lodashBundle });
 
+
 Vue.use(Vuex)
 
 Vue.config.productionTip = false

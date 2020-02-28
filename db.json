@@ -1,14 +1,41 @@
 {
-  "models": {
-    "getPosts": [
-      {
+  "getPosts": {
+    "timesToRepeat": 1,
+    "id": {
+      "type": "number",
+      "value": "faker.random.number()"
+    },
+    "title": {
+      "type": "string",
+      "value": "faker.random.words()"
+    },
+    "author": {
+      "type": "string",
+      "value": "faker.name.findName()"
+    },
+    "publishDate": {
+      "type": "string",
+      "value": "faker.date.past()"
+    },
+    "text": {
+      "type": "string",
+      "value": "faker.lorem.sentence()"
+    },
+    "isVisible": {
+      "type": "boolean",
+      "value": "random"
+    },
+    "relatedPosts": {
+      "type": "array",
+      "value": {
+        "timesToRepeat": 1,
         "id": {
           "type": "number",
           "value": "faker.random.number()"
         },
         "title": {
           "type": "string",
-          "value": "faker.random.words()"
+          "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])"
         },
         "author": {
           "type": "string",
@@ -24,110 +51,13 @@
         },
         "isVisible": {
           "type": "boolean",
-          "value": "random"
+          "value": true
         },
-        "relatedPosts": {
-          "type": "array",
-          "value": [
-            {
-              "id": {
-                "type": "number",
-                "value": "faker.random.number()"
-              },
-              "title": {
-                "type": "string",
-                "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])"
-              },
-              "author": {
-                "type": "string",
-                "value": "faker.name.findName()"
-              },
-              "publishDate": {
-                "type": "string",
-                "value": "faker.date.past()"
-              },
-              "text": {
-                "type": "string",
-                "value": "faker.lorem.sentence()"
-              },
-              "isVisible": {
-                "type": "boolean",
-                "value": true
-              },
-              "url": {
-                "type": "string",
-                "value": "#"
-              }
-            }
-          ]
+        "url": {
+          "type": "string",
+          "value": "#"
         }
       }
-    ]
-  },
-  "api": {
-    "getPosts": [
-      {
-        "guid": "diedhhhhiem",
-        "id": "posts",
-        "title": "json-server test",
-        "author": "typicode",
-        "someBool": true,
-        "postsers": [
-          {
-            "id": 34,
-            "title": "nested",
-            "author": "ede",
-            "someBool": false
-          }
-        ]
-      },
-      [
-        {
-          "guid": {
-            "type": "string",
-            "value": "Mustafa Hermiston"
-          },
-          "id": {
-            "type": "string",
-            "value": "posts"
-          },
-          "title": {
-            "type": "number",
-            "value": 41054
-          },
-          "author": {
-            "type": "string",
-            "value": "typicode"
-          },
-          "someBool": {
-            "type": "boolean",
-            "value": false
-          },
-          "postsers": {
-            "type": "array",
-            "value": [
-              {
-                "id": {
-                  "type": "number",
-                  "value": "faker.random.number"
-                },
-                "title": {
-                  "type": "string",
-                  "value": "nested"
-                },
-                "author": {
-                  "type": "string",
-                  "value": "ede"
-                },
-                "someBool": {
-                  "type": "boolean",
-                  "value": false
-                }
-              }
-            ]
-          }
-        }
-      ]
-    ]
+    }
   }
 }

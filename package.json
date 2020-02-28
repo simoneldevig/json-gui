@@ -15,6 +15,7 @@
     "es6-promise": "^4.2.8",
     "faker": "^4.1.0",
     "lodash.clonedeep": "^4.5.0",
+    "quicktype-core": "^6.0.52",
     "vue": "^2.6.10",
     "vue-router": "^3.1.2",
     "vuedraggable": "^2.23.2",

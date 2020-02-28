@@ -24,7 +24,8 @@
         <div class="flex items-center justify-between">
           <p class="mr3 ml1">You have unsaved changes on this entry. <strong>Rememember to save!</strong></p>
           <div class="mr2">
-            <el-button class="mr4" :loading="loading" type="success" @click="saveData">Save</el-button>
+            <el-button class="mr1" :loading="loading" type="default" @click="save">Save</el-button>
+            <el-button class="mr3" :loading="loading" type="success" @click="saveAndGenerate">Save and generate</el-button>
           </div>
         </div>
       </el-col>
@@ -34,6 +35,13 @@
 
 <script>
 import collapse from '@/components/RecursiveCollapse';
+const {
+  quicktype,
+  InputData,
+  jsonInputForTargetLanguage,
+  JSONSchemaInput,
+  JSONSchemaStore
+} = require("quicktype-core");
 
 export default {
   name: 'Entry',
@@ -52,6 +60,15 @@ export default {
       dataContent: null,
       changesNotSaved: false
     };
+  },
+  async created () {
+    const jsonString =  JSON.stringify({test: 2})
+  const { lines: swiftPerson } = await this.quicktypeJSON(
+    "csharp",
+    "Post",
+    jsonString
+  );
+  console.log(swiftPerson.join("\n"));
   },
   computed: {
     entry () {
@@ -80,11 +97,33 @@ export default {
     // }
   },
   methods: {
+   async quicktypeJSON (targetLanguage, typeName, jsonString) {
+    const jsonInput = jsonInputForTargetLanguage(targetLanguage);
+
+    // We could add multiple samples for the same desired
+    // type, or many sources for other types. Here we're
+    // just making one type from one piece of sample JSON.
+    await jsonInput.addSource({
+      name: typeName,
+      samples: [jsonString]
+    });
+
+    const inputData = new InputData();
+    inputData.addInput(jsonInput);
+
+    return await quicktype({
+      inputData,
+      lang: targetLanguage
+    });
+    },
     updateData (data) {
       this.dataContent = data;
       this.changesNotSaved = true;
     },
-    saveData () {
+    save () {
+      console.log('saaave');
+    },
+    saveAndGenerate () {
       var myjson = JSON.stringify(this.dataContent, null, 2);
       var x = window.open();
       x.document.open();
