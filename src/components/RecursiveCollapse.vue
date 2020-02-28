@@ -3,7 +3,7 @@
     <el-card class="box-card mb2">
       <template slot="header">
         <div class="flex justify-between items-center">
-          <div class="ml1">
+          <div>
             <p v-if="isSubChild"><strong>{{ propertyName }}</strong></p>
             <p v-else><strong>{{ id }}</strong></p>
           </div>
@@ -123,15 +123,15 @@ export default {
   },
   watch: {
     data () {
-      this.dataModel = this.data[0];
+      this.dataModel = this.data;
     }
   },
   created () {
-    this.dataModel = this.data[0];
+    this.dataModel = this.data;
     
     this.updateDataContentToDataModel(this.dataModel);
 
-    this.timesToRepeat = this.data.length;
+    this.timesToRepeat = this.data.timesToRepeat;
   },
   methods: {
     generateGuid () {
@@ -155,7 +155,9 @@ export default {
           newProperty.value = false;
           break;
         case 'object':
-          newProperty.value = [{}];
+          newProperty.value = {
+            timesToRepeat: 1
+          };
           break;
       }
 

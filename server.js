@@ -8,14 +8,18 @@ server.use(middlewares);
 
 server.use(jsonServer.bodyParser);
 
-server.all('/:name', function (req, res) {
+server.all('/:name', function (req, res, next) {
   const isPost = req.method === 'POST';
   const isPut = req.method === 'PUT';
   const isDelete = req.method === 'DELETE';
+  const defaultObject = {
+    "timesToRepeat": 1
+  }
+  const body = req.body.length ? req.body : defaultObject;
 
   if (isPost || isPut) {
     try {
-      router.db.set(req.params.name, req.body).value();
+      router.db.set(req.params.name, body).value();
       router.db.write();
       if (isPost) {
         res.sendStatus(201);
@@ -35,8 +39,9 @@ server.all('/:name', function (req, res) {
     } catch (error) {
       res.sendStatus(400);
     }
+  } else {
+    next();
   }
-
 });
 
 server.use(router);

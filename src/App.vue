@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <el-row class="tac" :gutter="20">
-      <el-col :span="4">
-        <el-menu :router="true">
+      <el-col :span="4" class="navigation">
+        <el-menu :router="true" class="navigation__menu"> 
           <el-menu-item>
             <h3>JSON Server GUI</h3>
           </el-menu-item>
@@ -16,18 +16,17 @@
           </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="20">
+      <el-col :offset="4" :span="20">
         <router-view/>
       </el-col>
     </el-row>
       <el-dialog
         title="Create new entry"
-        :visible.sync="dialogVisible"
-        width="75%">
-        <create-route-content />
+        :visible.sync="dialogVisible">
+        <create-route-content @add-route="setNewRouteName" />
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible=false">Cancel</el-button>
-          <el-button type="primary" @click="dialogVisible=false">Create</el-button>
+          <el-button type="primary" @click="createRoute">Create</el-button>
         </span>
       </el-dialog>
   </div>
@@ -43,7 +42,8 @@
     },
     data() {
       return {
-        dialogVisible: false
+        dialogVisible: false,
+        newRouteName:''
       };
     },
     computed: {
@@ -53,15 +53,32 @@
     },
     created() {
       this.$store.dispatch('getModels');
+    },
+    methods: {
+      setNewRouteName (newRouteName) {
+        this.newRouteName = newRouteName;
+      },
+      createRoute () {
+        this.dialogVisible = false;
+        this.$store.dispatch('createNewRoute', this.newRouteName);
+      }
     }
   }
 </script>
 
-<style>
+<style lang="scss"> 
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden;
+  }
+  .navigation {
+    position: fixed;
+    height: 100%;
+
+    &__menu {
+      height: 100%;
+    }
   }
 </style>
