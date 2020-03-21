@@ -33,7 +33,7 @@
           "type": "number",
           "value": "faker.random.number()"
         },
-        "title": {
+        "headline": {
           "type": "string",
           "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])"
         },
@@ -45,7 +45,7 @@
           "type": "string",
           "value": "faker.date.past()"
         },
-        "text": {
+        "content": {
           "type": "string",
           "value": "faker.lorem.sentence()"
         },

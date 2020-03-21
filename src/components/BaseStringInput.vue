@@ -10,17 +10,17 @@
         <el-button class="ml1" type="danger" size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
-        <el-autocomplete
+    <el-autocomplete
+      ref="input"
       v-model="inputValue"
       class="w-100"
-      ref="input"
       placeholder="Please Input"
       :trigger-on-focus="true"
-            :fetch-suggestions="querySearch"
-type="textarea"
-:autosize="{ minRows: 1}"
+      :fetch-suggestions="querySearch"
+      type="textarea"
+      :autosize="{ minRows: 1}"
       @blur="parseToParent"
-    ></el-autocomplete>
+    />
     <!-- <el-input v-model="inputValue" ref="input" type="textarea" :autosize="{ minRows: 1}" @blur="parseToParent" /> -->
   </div>
 </template>
@@ -54,22 +54,22 @@ export default {
     this.generateFakerList();
   },
   methods: {
-    querySearch(queryString, cb) {
-        var fakerList = this.fakerList;
-        var results = queryString ? fakerList.filter(this.createFilter(queryString)) : fakerList;
-        // call callback function to return suggestions
-        cb(results);
-      },
-      createFilter(queryString) {
-        return (fakerMethod) => {
-          return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
-        };
-      },
+    querySearch (queryString, cb) {
+      var fakerList = this.fakerList;
+      var results = queryString ? fakerList.filter(this.createFilter(queryString)) : fakerList;
+      // call callback function to return suggestions
+      cb(results);
+    },
+    createFilter (queryString) {
+      return (fakerMethod) => {
+        return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
+      };
+    },
     generateFakerList () {
       let modules = Object.keys(faker);
       let _self = this;
       modules = modules.sort();
-      modules.forEach(function(module){
+      modules.forEach(function (module) {
         const ignore = ['locale', 'locales', 'localeFallback', 'definitions', 'fake'];
         if (ignore.indexOf(module) !== -1) {
           return;
@@ -79,11 +79,11 @@ export default {
             let fakerMethod = {};
             fakerMethod.value = 'faker.' + module + '.' + method + '()';
             if (_self.fakerList.indexOf(fakerMethod) === -1) {
-              _self.fakerList.push(fakerMethod)
+              _self.fakerList.push(fakerMethod);
             }
           }
         }
-      })
+      });
     },
     parseToParent () {
       this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});

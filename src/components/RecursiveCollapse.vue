@@ -187,14 +187,14 @@ export default {
       this.dataContent = generatedData;
       this.$emit('updateData', this.dataContent);
     },
-    generateFakerValues(obj) {
+    generateFakerValues (obj) {
       if (typeof obj === 'object') {
         // iterating over the object using for..in
         for (let keys in obj) {
-          //checking if the current value is an object itself
+          // checking if the current value is an object itself
           if (typeof (obj[keys]) === 'object') {
             // if so then again calling the same function
-            this.generateFakerValues(obj[keys])
+            this.generateFakerValues(obj[keys]);
           } else {
             // else getting the value and replacing single { with {{ and so on
             if (obj.type === 'string' && obj.value.toString().startsWith('faker') || obj.type === 'number' && obj.value.toString().startsWith('faker')) {

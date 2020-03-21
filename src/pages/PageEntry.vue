@@ -8,14 +8,19 @@
             <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
         </div>
-
         <collapse v-if="entry[id] && entry[id] !== 'models'" :id="id" :data="entry[id]" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
       </el-col>
+
       <el-col :span="8">
-        <h1 class=" mt2">Model</h1>
-        <!-- <el-card class="box-card">
-          <pre>{{ entryModel }}</pre>
-        </el-card> -->
+        <h1 class="mt2">Model</h1>
+        <el-button-group class="mt2">
+          <el-button type="default" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
+          <el-button type="default" size="small" @click="selectedModelType = 'typescript'">TypeScript</el-button>
+        </el-button-group>
+
+        <el-card class="p0" :body-style="{ padding: '0' }">
+          <highlight class="m0" :code="entryModel ":language="selectedModelType" />
+        </el-card>
       </el-col>
     </el-row>
 
@@ -40,13 +45,16 @@ const {
   InputData,
   jsonInputForTargetLanguage,
   JSONSchemaInput,
-  JSONSchemaStore
+  JSONSchemaStore,
+  cSharpOptions
 } = require("quicktype-core");
-
+import hljs from 'highlight.js';
+import Highlight from 'vue-highlight-component';
 export default {
   name: 'Entry',
   components: {
-    collapse
+    collapse,
+    Highlight
   },
   props: {
     id: {
@@ -58,67 +66,112 @@ export default {
     return {
       loading: false,
       dataContent: null,
-      changesNotSaved: false
+      changesNotSaved: false,
+      entryModel: null,
+      entryModels: null,
+      selectedModelType: 'csharp'
     };
-  },
-  async created () {
-    const jsonString =  JSON.stringify({test: 2})
-  const { lines: swiftPerson } = await this.quicktypeJSON(
-    "csharp",
-    "Post",
-    jsonString
-  );
-  console.log(swiftPerson.join("\n"));
   },
   computed: {
     entry () {
       return this.$store.state.models;
     },
-    // entryModel () {
-    //   let model = {};
-    //   Object.values(this.entry[this.id]).forEach(entry => {
-    //     Object.values(entry).forEach((entryVal, index, entryProp) => {
-    //       if (typeof (entryVal) === 'object') {
-    //         let subModel = {};
-
-    //         // Object.values(entryProp[index]).forEach((subEntryVal, subIndex, subEntryProp) => {
-    //         //   subModel[subEntryProp[subIndex]] = typeof (subEntryVal);
-    //         // });
-            
-    //         // model[entryProp[index]] = subModel;
-    //       } else {
-    //         if (entryVal) {
-    //           model[Object.keys(entry)[index]] = typeof (entryVal);
-    //         }
-    //       }
-    //     });
-    //   });
-    //   return model;
-    // }
+  },
+  watch: {
+    entry () {
+      this.setEntryModels();
+    },
+    entryModels () {
+      this.generateModels();
+    },
+    selectedModelType () {
+      this.generateModels();
+    }
   },
   methods: {
-   async quicktypeJSON (targetLanguage, typeName, jsonString) {
-    const jsonInput = jsonInputForTargetLanguage(targetLanguage);
+    remapValues (obj) {
+      if (typeof obj === 'object') {
+        // console.log(obj);
+        for (let key in obj) {
+          if (key === 'timesToRepeat') {
+            delete obj[key];
+          } else {
+            if (obj[key].type === 'array') {
+              let remappedValues = this.remapValues(obj[key].value);
+              delete obj[key];
+              obj[key] = remappedValues;
+            }
+  
+            if (obj[key].type === 'string') {
+              delete obj[key];
+              obj[key] = "";
+            }
+  
+            if (obj[key].type === 'boolean') {
+              delete obj[key];
+              obj[key] = false;
+            }
+  
+            if (obj[key].type === 'number') {
+              delete obj[key];
+              obj[key] = 0;
+            }
+          }
+        }
+      }
+      return obj;
+    },
+    async generateModels () {
+      if (this.entryModels) {
+        const jsonString =  JSON.stringify(this.entryModels);
+        const modelSettings = {
+          csharp: {
+            features: 'attributes-only',
+            'no-combine-classes': 'true',
+          },
+          typescript: {
+            'just-types': 'true',
+          }
+        };
 
-    // We could add multiple samples for the same desired
-    // type, or many sources for other types. Here we're
-    // just making one type from one piece of sample JSON.
-    await jsonInput.addSource({
-      name: typeName,
-      samples: [jsonString]
-    });
+        const { lines: csharpModel } = await this.quicktypeJSON(
+          this.selectedModelType,
+          "Post",
+          modelSettings[this.selectedModelType],
+          jsonString
+        );
+    
+        this.entryModel = csharpModel.join("\n");
+      }
+    },
+    async quicktypeJSON (targetLanguage, typeName, rendererOptions, jsonString) {
+      const jsonInput = jsonInputForTargetLanguage(targetLanguage);
 
-    const inputData = new InputData();
-    inputData.addInput(jsonInput);
+      // We could add multiple samples for the same desired
+      // type, or many sources for other types. Here we're
+      // just making one type from one piece of sample JSON.
+      await jsonInput.addSource({
+        name: typeName,
+        samples: [jsonString]
+      });
 
-    return await quicktype({
-      inputData,
-      lang: targetLanguage
-    });
+      const inputData = new InputData();
+      inputData.addInput(jsonInput);
+
+      return await quicktype({
+        inputData,
+        lang: targetLanguage,
+        rendererOptions: rendererOptions
+      });
     },
     updateData (data) {
       this.dataContent = data;
       this.changesNotSaved = true;
+    },
+    setEntryModels () {
+      const clonedObject = this.$lodash.cloneDeep(this.entry[this.id]);
+      const remapedValues = this.remapValues(clonedObject);
+      this.entryModels = remapedValues;
     },
     save () {
       console.log('saaave');
@@ -129,8 +182,8 @@ export default {
       x.document.open();
       x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
       x.document.close();
-        this.changesNotSaved = false;
-      }
+      this.changesNotSaved = false;
+    }
   }
 };
 </script>
@@ -145,4 +198,9 @@ export default {
 
     &.is-active { transform: translateY(0); }
   }
+
+  .hljs {
+    padding: 20px !important;
+  }
 </style>
+<style src="highlight.js/styles/monokai-sublime.css"></style>
