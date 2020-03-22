@@ -8,10 +8,10 @@
             <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
         </div>
-        <collapse v-if="entry[id] && entry[id] !== 'models'" :id="id" :data="entry[id]" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
+        <collapse v-if="entry && entry !== 'models'" :id="id" :data="entry" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
       </el-col>
 
-      <el-col :span="8">
+      <el-col v-if="quicktypeModel" :span="8">
         <h1 class="mt2">Model</h1>
         <el-button-group class="my1">
           <el-button :type="selectedModelType === 'csharp' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
@@ -23,7 +23,7 @@
             <el-button class="model__copy" icon="el-icon-document-copy" circle @click.prevent="copyModel" />
           </el-tooltip>
 
-          <highlight v-if="entryModel" class="m0" :code="entryModel" :language="selectedModelType" />
+          <highlight class="m0" :code="quicktypeModel" :language="selectedModelType" />
         </el-card>
       </el-col>
     </el-row>
@@ -62,7 +62,8 @@ export default {
   props: {
     id: {
       requirred: true,
-      type: String
+      type: String,
+      default: null
     }
   },
   data () {
@@ -70,30 +71,27 @@ export default {
       loading: false,
       dataContent: null,
       changesNotSaved: false,
-      entryModel: null,
-      entryModels: null,
+      cleanedModel: null,
+      quicktypeModel: null,
       selectedModelType: 'csharp',
       showCopyTooltip: false
     };
   },
   computed: {
     entry () {
-      return this.$store.state.models;
+      return this.$store.state.models[this.id];
     },
   },
   watch: {
     entry () {
-      this.setEntryModels();
-    },
-    entryModels () {
-      this.generateModels();
+      this.generateQuicktypeModel();
     },
     selectedModelType () {
-      this.generateModels();
+      this.generateQuicktypeModel();
     }
   },
   methods: {
-    remapValues (obj) {
+    cleanModel (obj) {
       if (typeof obj === 'object') {
         // console.log(obj);
         for (const key in obj) {
@@ -101,7 +99,7 @@ export default {
             delete obj[key];
           } else {
             if (obj[key].type === 'object' || obj[key].type === 'array') {
-              const remappedValues = this.remapValues(obj[key].value);
+              const remappedValues = this.cleanModel(obj[key].value);
               delete obj[key];
               obj[key] = remappedValues;
             }
@@ -125,9 +123,12 @@ export default {
       }
       return obj;
     },
-    async generateModels () {
-      if (this.entryModels) {
-        const jsonString =  JSON.stringify(this.entryModels);
+    async generateQuicktypeModel () {
+      const clonedObject = this.$lodash.cloneDeep(this.entry);
+      const cleanModel = this.cleanModel(clonedObject);
+      this.cleanedModel = cleanModel;
+      if (this.cleanedModel) {
+        const jsonString =  JSON.stringify(this.cleanedModel);
         const modelSettings = {
           csharp: {
             features: 'attributes-only',
@@ -138,14 +139,14 @@ export default {
           }
         };
 
-        const { lines: csharpModel } = await this.quicktypeJSON(
+        const { lines: model } = await this.quicktypeJSON(
           this.selectedModelType,
           this.id,
           modelSettings[this.selectedModelType],
           jsonString
         );
     
-        this.entryModel = csharpModel.join("\n");
+        this.quicktypeModel = model.join("\n");
       }
     },
     async quicktypeJSON (targetLanguage, typeName, rendererOptions, jsonString) {
@@ -172,11 +173,6 @@ export default {
       this.dataContent = data;
       this.changesNotSaved = true;
     },
-    setEntryModels () {
-      const clonedObject = this.$lodash.cloneDeep(this.entry[this.id]);
-      const remapedValues = this.remapValues(clonedObject);
-      this.entryModels = remapedValues;
-    },
     save () {
       console.log('saaave');
     },
@@ -189,7 +185,7 @@ export default {
       this.changesNotSaved = false;
     },
     copyModel () {
-      const newClip = this.entryModel;
+      const newClip = this.quicktypeModel;
       navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
         if (result.state == 'granted' || result.state == 'prompt') {
           navigator.clipboard.writeText(newClip).then(() => {

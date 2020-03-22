@@ -37,14 +37,13 @@ const actions = {
   },
   
   createNewRoute (context, props) {
-    console.log(props)
     axios({
       method: 'post',
       headers: { 'content-type': 'application/json; charset=utf-8' },
       url: 'http://localhost:3000/' + props
     }).then(function (response) {
       context.dispatch('getModels').then(function () {
-        router.push({ path: props })
+        router.push({ path: props });
       });
     });
   },
