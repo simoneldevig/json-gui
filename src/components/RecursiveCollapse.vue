@@ -10,7 +10,7 @@
 
           <div>
             <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel(dataModel)" />
+            <el-input-number v-model="dataModel.timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel(dataModel)" />
             <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
@@ -131,8 +131,6 @@ export default {
     this.dataModel = this.data;
     
     this.updateDataContentToDataModel(this.dataModel);
-
-    this.timesToRepeat = this.data.timesToRepeat;
   },
   methods: {
     generateGuid () {
@@ -180,7 +178,7 @@ export default {
     // },
     updateDataContentToDataModel (dataModel) {
       let generatedData = [];
-      for (let i = 0; i < this.timesToRepeat; i++) {
+      for (let i = 0; i < this.dataModel.timesToRepeat; i++) {
         const clonedObject = this.$lodash.cloneDeep(dataModel);
         const generatedObject = this.generateFakerValues(clonedObject);
         generatedData.push(generatedObject);

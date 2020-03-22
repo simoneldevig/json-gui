@@ -13,7 +13,7 @@
     },
     "title": {
       "type": "string",
-      "value": "faker.random.uuid()"
+      "value": "faker.random.word()"
     },
     "author": {
       "type": "string",
