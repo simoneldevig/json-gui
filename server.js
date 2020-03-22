@@ -3,6 +3,7 @@
  */
 const path = require('path');
 const fs = require('fs');
+const _ = require('lodash');
 const jsonServer = require('json-server');
 const dbPath = './json-server/db/';
 const portMapping = {
@@ -30,8 +31,9 @@ files.forEach((file) => {
       const defaultObject = {
         "timesToRepeat": 1
       };
-      const body = req.body.length ? req.body : defaultObject;
 
+      const body = !_.isEmpty(req.body) ? req.body : defaultObject;
+      
       if (isPost || isPut) {
         try {
           router.db.set(req.params.name, body).value();

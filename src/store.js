@@ -53,12 +53,28 @@ const actions = {
     axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3001/' + props
+      url: 'http://localhost:3001/' + props.id
     }).then(function (response) {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:3001/' + props
+        url: 'http://localhost:3001/' + props.id,
+        data: props.content
+      });
+    });
+  },
+
+  saveAndGenerate (context, props) {
+    axios({
+      method: 'delete',
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+      url: 'http://localhost:3000/' + props.id
+    }).then(function (response) {
+      axios({
+        method: 'post',
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+        url: 'http://localhost:3000/' + props.id,
+        data: props.content
       });
     });
   },

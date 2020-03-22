@@ -174,14 +174,22 @@ export default {
       this.changesNotSaved = true;
     },
     save () {
-      console.log('saaave');
+      this.$store.dispatch('saveModel', {
+        id: this.id,
+        content: this.entry
+      });
     },
     saveAndGenerate () {
-      var myjson = JSON.stringify(this.dataContent, null, 2);
-      var x = window.open();
-      x.document.open();
-      x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
-      x.document.close();
+      this.save();
+      this.$store.dispatch('saveAndGenerate', {
+        id: this.id,
+        content: this.dataContent
+      });
+      // var myjson = JSON.stringify(this.dataContent, null, 2);
+      // var x = window.open();
+      // x.document.open();
+      // x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
+      // x.document.close();
       this.changesNotSaved = false;
     },
     copyModel () {
