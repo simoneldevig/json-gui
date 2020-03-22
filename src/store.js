@@ -31,7 +31,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getModels (context) {
-    axios.get('http://localhost:3000/models')
+    axios.get('http://localhost:3001/db')
       .then(function (response) {
         context.commit('setModels', response);
       });
@@ -41,10 +41,24 @@ const actions = {
     axios({
       method: 'post',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3000/' + props
+      url: 'http://localhost:3001/' + props
     }).then(function (response) {
       context.dispatch('getModels').then(function () {
         router.push({ path: props });
+      });
+    });
+  },
+
+  saveModel (context, props) {
+    axios({
+      method: 'delete',
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+      url: 'http://localhost:3001/' + props
+    }).then(function (response) {
+      axios({
+        method: 'post',
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+        url: 'http://localhost:3001/' + props
       });
     });
   },

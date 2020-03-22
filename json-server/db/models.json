@@ -1,65 +1,66 @@
 {
-  "getPosts": [
-    {
-      "id": {
-        "type": "number",
-        "value": "faker.random.number()"
-      },
-      "title": {
-        "type": "string",
-        "value": "faker.random.words()"
-      },
-      "author": {
-        "type": "string",
-        "value": "faker.name.findName()"
-      },
-      "publishDate": {
-        "type": "string",
-        "value": "faker.date.past()"
-      },
-      "text": {
-        "type": "string",
-        "value": "faker.lorem.sentence()"
-      },
-      "isVisible": {
-        "type": "boolean",
-        "value": "random"
-      },
-      "relatedPosts": {
-        "type": "array",
-        "value": [
-          {
-            "id": {
-              "type": "number",
-              "value": "faker.random.number()"
-            },
-            "title": {
-              "type": "string",
-              "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])"
-            },
-            "author": {
-              "type": "string",
-              "value": "faker.name.findName()"
-            },
-            "publishDate": {
-              "type": "string",
-              "value": "faker.date.past()"
-            },
-            "text": {
-              "type": "string",
-              "value": "faker.lorem.sentence()"
-            },
-            "isVisible": {
-              "type": "boolean",
-              "value": true
-            },
-            "url": {
-              "type": "string",
-              "value": "#"
-            }
-          }
-        ]
+  "getPosts": {
+    "timesToRepeat": 1,
+    "id": {
+      "type": "number",
+      "value": "faker.random.number()"
+    },
+    "title": {
+      "type": "string",
+      "value": "faker.random.words()"
+    },
+    "author": {
+      "type": "string",
+      "value": "faker.name.findName()"
+    },
+    "publishDate": {
+      "type": "string",
+      "value": "faker.date.past()"
+    },
+    "text": {
+      "type": "string",
+      "value": "faker.lorem.sentence()"
+    },
+    "isVisible": {
+      "type": "boolean",
+      "value": "random"
+    },
+    "relatedPosts": {
+      "type": "array",
+      "value": {
+        "timesToRepeat": 1,
+        "id": {
+          "type": "number",
+          "value": "faker.random.number()"
+        },
+        "headline": {
+          "type": "string",
+          "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])"
+        },
+        "author": {
+          "type": "string",
+          "value": "faker.name.findName()"
+        },
+        "publishDate": {
+          "type": "string",
+          "value": "faker.date.past()"
+        },
+        "content": {
+          "type": "string",
+          "value": "faker.lorem.sentence()"
+        },
+        "isVisible": {
+          "type": "boolean",
+          "value": true
+        },
+        "url": {
+          "type": "string",
+          "value": "#"
+        }
       }
     }
-  ]
+  },
+  "getTest": {
+    "timesToRepeat": 1
+  }
 }
