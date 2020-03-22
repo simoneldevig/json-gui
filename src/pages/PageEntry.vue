@@ -96,12 +96,12 @@ export default {
     remapValues (obj) {
       if (typeof obj === 'object') {
         // console.log(obj);
-        for (let key in obj) {
-          if (key === 'timesToRepeat') {
+        for (const key in obj) {
+          if (typeof (obj[key]) !== 'object') {
             delete obj[key];
           } else {
-            if (obj[key].type === 'array') {
-              let remappedValues = this.remapValues(obj[key].value);
+            if (obj[key].type === 'object' || obj[key].type === 'array') {
+              const remappedValues = this.remapValues(obj[key].value);
               delete obj[key];
               obj[key] = remappedValues;
             }
@@ -219,6 +219,7 @@ export default {
 
   .hljs {
     padding: 20px !important;
+    font-size: 14px;
   }
 
   .model__copy {

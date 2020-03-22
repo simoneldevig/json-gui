@@ -189,23 +189,45 @@ export default {
     },
     generateFakerValues (obj) {
       if (typeof obj === 'object') {
-        // iterating over the object using for..in
-        for (let keys in obj) {
-          // checking if the current value is an object itself
-          if (typeof (obj[keys]) === 'object') {
-            // if so then again calling the same function
-            this.generateFakerValues(obj[keys]);
-          } else {
-            // else getting the value and replacing single { with {{ and so on
-            if (obj.type === 'string' && obj.value.toString().startsWith('faker') || obj.type === 'number' && obj.value.toString().startsWith('faker')) {
-              obj.value = eval(obj.value);
+        for (const key in obj) {
+          if (typeof (obj[key]) !== 'object') {
+            delete obj[key];
+          } 
+          else if (typeof (obj[key]) === 'object') {
+            if (obj[key].type === 'object' || obj[key].type === 'array') {
+              const generatedData = this.generateFakerValues(obj[key].value);
+              delete obj[key];
+              obj[key] = generatedData;
             }
-            if (obj.type === 'number' && !obj.value.toString().startsWith('faker')) {
-              obj.value = parseInt(obj.value);
+
+            if (obj[key].type === 'string' && obj[key].value.toString().startsWith('faker') || obj[key].type === 'number' && obj[key].value.toString().startsWith('faker')) {
+              try {
+                const fakerValue = eval(obj[key].value);
+                delete obj[key];
+                obj[key] = fakerValue;
+              } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error('Invalid faker function');
+              }
+            } 
+            else if (obj[key].type === 'string') {
+              const value = obj[key].value;
+              delete obj[key];
+              obj[key] = value;
             }
-            if (obj.type === 'boolean' && obj.value === 'random') {
-              obj.value = faker.random.boolean();
+
+            else if (obj[key].type === 'number') {
+              const value = obj[key].value;
+              delete obj[key];
+              obj[key] = parseInt(value);
             }
+
+            else if (obj[key].type === 'boolean') {
+              const value = obj[key].value === 'random' ? faker.random.boolean() : obj[key].value;
+              delete obj[key];
+              obj[key] = value;
+            }
+  
           }
         }
       }
