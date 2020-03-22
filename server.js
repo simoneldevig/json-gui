@@ -1,51 +1,96 @@
-// server.js
+/**
+ * json-server.index.js
+ */
+const path = require('path');
+const fs = require('fs');
 const jsonServer = require('json-server');
-const server = jsonServer.create();
-const router = jsonServer.router('db.json');
-var middlewares = jsonServer.defaults();
+const dbPath = './json-server/db/';
+const portMapping = {
+  db: 3000,
+  models: 3001
+};
 
-server.use(middlewares);
+let files = fs.readdirSync(path.resolve(__dirname, dbPath));
 
-server.use(jsonServer.bodyParser);
+files.forEach((file) => {
+  if (file.indexOf('.json') > -1) {
+    const serverName = file.slice(0, file.indexOf('.json'));
+    const server = jsonServer.create();
+    const router = jsonServer.router(dbPath + file);
+    const middlewares = jsonServer.defaults();
 
-server.all('/:name', function (req, res, next) {
-  const isPost = req.method === 'POST';
-  const isPut = req.method === 'PUT';
-  const isDelete = req.method === 'DELETE';
-  const defaultObject = {
-    "timesToRepeat": 1
-  }
-  const body = req.body.length ? req.body : defaultObject;
+    server.use(middlewares);
 
-  if (isPost || isPut) {
-    try {
-      router.db.set(req.params.name, body).value();
-      router.db.write();
-      if (isPost) {
-        res.sendStatus(201);
-      } else if (isPut) {
-        res.sendStatus(204);
+    server.use(jsonServer.bodyParser);
+
+    server.all('/:name', function (req, res, next) {
+      const isPost = req.method === 'POST';
+      const isPut = req.method === 'PUT';
+      const isDelete = req.method === 'DELETE';
+      const defaultObject = {
+        "timesToRepeat": 1
+      };
+      const body = req.body.length ? req.body : defaultObject;
+
+      if (isPost || isPut) {
+        try {
+          router.db.set(req.params.name, body).value();
+          router.db.write();
+          if (isPost) {
+            res.sendStatus(201);
+          } else if (isPut) {
+            res.sendStatus(204);
+          }
+        } catch (error) {
+          res.sendStatus(400);
+        }
+      } else if (isDelete) {
+        try {
+          let state = router.db.getState(); 
+          delete state[req.params.name]; 
+          router.db.setState(state);
+          router.db.write();
+          res.sendStatus(204);
+        } catch (error) {
+          res.sendStatus(400);
+        }
+      } else {
+        next();
       }
-    } catch (error) {
-      res.sendStatus(400);
-    }
-  } else if (isDelete) {
-    try {
-      let state = router.db.getState(); 
-      delete state[req.params.name]; 
-      router.db.setState(state);
-      router.db.write();
-      res.sendStatus(204);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-  } else {
-    next();
+    });
+
+    server.use(router);
+
+    server.listen(portMapping[serverName], () => {
+      console.log('\n⛴    ' + file + ' server is running');
+    });
+
   }
 });
 
-server.use(router);
+// const objOrdered = {};
+// Object.keys(obj).sort().forEach(function (key) {
+//   objOrdered[key] = obj[key];
+// });
 
-server.listen(3000, () => {
-  console.log('JSON Server is running');
-});
+// const router = jsonServer.router(objOrdered);
+
+// server.use(jsonServer.defaults());
+// server.use(router);
+
+// server.listen(port, () => {
+//   console.log('\n⛴    JSON Server is running at http://localhost:' + port );
+//   endpoints.sort();
+//   for (var i = 0; i < endpoints.length; i++) {
+//     console.info('🥁    Endpoint : http://localhost:' + port + '/' + endpoints[i]);
+//   }
+// });
+
+// function isJson (str) {
+//   try {
+//     JSON.parse(str);
+//   } catch (e) {
+//     return false;
+//   }
+//   return true;
+// }

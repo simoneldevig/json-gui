@@ -9,7 +9,8 @@ Vue.use(Vuex);
 // each Vuex instance is just a single state tree.
 const state = {
   count: 0,
-  models: {}
+  models: {},
+  cleanModels: {}
 };
 
 // mutations are operations that actually mutates the state.
@@ -30,7 +31,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getModels (context) {
-    axios.get('http://localhost:3000/db')
+    axios.get('http://localhost:3000/models')
       .then(function (response) {
         context.commit('setModels', response);
       });
