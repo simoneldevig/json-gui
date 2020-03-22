@@ -13,13 +13,17 @@
 
       <el-col :span="8">
         <h1 class="mt2">Model</h1>
-        <el-button-group class="mt2">
-          <el-button type="default" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
-          <el-button type="default" size="small" @click="selectedModelType = 'typescript'">TypeScript</el-button>
+        <el-button-group class="my1">
+          <el-button :type="selectedModelType === 'csharp' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
+          <el-button :type="selectedModelType === 'typescript' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'typescript'">TypeScript</el-button>
         </el-button-group>
 
-        <el-card class="p0" :body-style="{ padding: '0' }">
-          <highlight class="m0" :code="entryModel ":language="selectedModelType" />
+        <el-card class="p0 relative" :body-style="{ padding: '0' }">
+          <el-tooltip v-model="showCopyTooltip" class="item" :manual="true" effect="dark" content="Copied!" placement="top-start">
+            <el-button class="model__copy" icon="el-icon-document-copy" circle @click.prevent="copyModel" />
+          </el-tooltip>
+
+          <highlight v-if="entryModel" class="m0" :code="entryModel" :language="selectedModelType" />
         </el-card>
       </el-col>
     </el-row>
@@ -48,7 +52,6 @@ const {
   JSONSchemaStore,
   cSharpOptions
 } = require("quicktype-core");
-import hljs from 'highlight.js';
 import Highlight from 'vue-highlight-component';
 export default {
   name: 'Entry',
@@ -69,7 +72,8 @@ export default {
       changesNotSaved: false,
       entryModel: null,
       entryModels: null,
-      selectedModelType: 'csharp'
+      selectedModelType: 'csharp',
+      showCopyTooltip: false
     };
   },
   computed: {
@@ -136,7 +140,7 @@ export default {
 
         const { lines: csharpModel } = await this.quicktypeJSON(
           this.selectedModelType,
-          "Post",
+          this.id,
           modelSettings[this.selectedModelType],
           jsonString
         );
@@ -183,6 +187,20 @@ export default {
       x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
       x.document.close();
       this.changesNotSaved = false;
+    },
+    copyModel () {
+      const newClip = this.entryModel;
+      navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
+        if (result.state == 'granted' || result.state == 'prompt') {
+          navigator.clipboard.writeText(newClip).then(() => {
+            this.showCopyTooltip = true;
+
+            setTimeout(() => {
+              this.showCopyTooltip = false;
+            }, 1000);
+          });
+        }
+      });
     }
   }
 };
@@ -201,6 +219,12 @@ export default {
 
   .hljs {
     padding: 20px !important;
+  }
+
+  .model__copy {
+    position: absolute;
+    right: 5px;
+    top: 5px;
   }
 </style>
 <style src="highlight.js/styles/monokai-sublime.css"></style>
