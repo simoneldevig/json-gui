@@ -1,14 +1,16 @@
 /**
  * json-server.index.js
  */
+const handler = require('serve-handler');
+const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
 const jsonServer = require('json-server');
 const dbPath = './json-server/db/';
 const portMapping = {
-  db: 3000,
-  models: 3001
+  db: 8000,
+  models: 8002
 };
 
 let files = fs.readdirSync(path.resolve(__dirname, dbPath));
@@ -33,7 +35,7 @@ files.forEach((file) => {
       };
 
       const body = !_.isEmpty(req.body) ? req.body : defaultObject;
-      
+
       if (isPost || isPut) {
         try {
           router.db.set(req.params.name, body).value();
@@ -70,29 +72,18 @@ files.forEach((file) => {
   }
 });
 
-// const objOrdered = {};
-// Object.keys(obj).sort().forEach(function (key) {
-//   objOrdered[key] = obj[key];
-// });
+const serveOptions = { 
+  public: "./dist/",
+  renderSingle: true,
+  rewrites: [
+    { "source": "/**", "destination": "/index.html" }
+  ]
+}; 
 
-// const router = jsonServer.router(objOrdered);
+const httpServer = http.createServer((request, response) => {
+  return handler(request, response, serveOptions);
+});
 
-// server.use(jsonServer.defaults());
-// server.use(router);
-
-// server.listen(port, () => {
-//   console.log('\n⛴    JSON Server is running at http://localhost:' + port );
-//   endpoints.sort();
-//   for (var i = 0; i < endpoints.length; i++) {
-//     console.info('🥁    Endpoint : http://localhost:' + port + '/' + endpoints[i]);
-//   }
-// });
-
-// function isJson (str) {
-//   try {
-//     JSON.parse(str);
-//   } catch (e) {
-//     return false;
-//   }
-//   return true;
-// }
+httpServer.listen(8001, () => {
+  console.log('Running at http://localhost:3000');
+});

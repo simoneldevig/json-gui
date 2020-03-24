@@ -1,11 +1,16 @@
 {
   "name": "json-server-gui",
+  "description": "",
   "version": "0.1.0",
   "private": true,
+  "main": "server.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
+  },
+  "bin": {
+    "json-server-gui": "./cli.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -15,8 +20,10 @@
     "es6-promise": "^4.2.8",
     "faker": "^4.1.0",
     "highlight.js": "^9.18.1",
+    "http": "0.0.1-security",
     "lodash.clonedeep": "^4.5.0",
     "quicktype-core": "^6.0.52",
+    "serve-handler": "^6.1.2",
     "vue": "^2.6.10",
     "vue-highlight-component": "^1.0.0",
     "vue-router": "^3.1.2",
@@ -36,6 +43,9 @@
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.10"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "eslintConfig": {
     "root": true,
     "env": {
