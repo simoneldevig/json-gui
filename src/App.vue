@@ -3,8 +3,8 @@
     <el-row class="tac" :gutter="20">
       <el-col :lg="4" :xl="3" class="navigation">
         <el-menu :default-active="$route.path" :router="true" class="navigation__menu"> 
-          <el-menu-item index="/">
-            <h3>JSON Server GUI</h3>
+          <el-menu-item class="center" index="/">
+            <img class="navigation__logo" src="./assets/logo.png" alt="">
           </el-menu-item>
           <el-menu-item v-for="(value, propertyName) in endpoints" v-if="propertyName !== 'models'" :index="'/entry/' + propertyName">
             <i class="el-icon-setting" />
@@ -81,6 +81,10 @@ export default {
 
     &__menu {
       height: 100%;
+    }
+
+    &__logo {
+      width: 120px;
     }
   }
 </style>
