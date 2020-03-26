@@ -73,7 +73,7 @@ files.forEach((file) => {
 });
 
 const serveOptions = { 
-  public: "./dist/",
+  public: path.resolve(__dirname, './dist'),
   renderSingle: true,
   rewrites: [
     { "source": "/**", "destination": "/index.html" }

@@ -2,12 +2,13 @@
   "name": "json-server-gui",
   "description": "",
   "version": "0.1.0",
-  "private": true,
   "main": "server.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "node ./postinstall.js",
+    "start": "node server.js"
   },
   "bin": {
     "json-server-gui": "./cli.js"
@@ -15,6 +16,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "basscss": "^8.0.2",
+    "copyfiles": "^2.2.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.4.5",
     "es6-promise": "^4.2.8",
@@ -93,5 +95,15 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simoneldevig/json-server-gui.git"
+  },
+  "author": "Simon Eldevig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simoneldevig/json-server-gui/issues"
+  },
+  "homepage": "https://github.com/simoneldevig/json-server-gui#readme"
 }
