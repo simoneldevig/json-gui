@@ -182,10 +182,27 @@ export default {
       this.dataContent = data;
       this.changesNotSaved = true;
     },
-    save () {
-      this.$store.dispatch('saveModel', {
-        id: this.id
-      });
+    async save () {
+      this.loading = true;
+      try {
+        await this.$store.dispatch('saveModel', {
+          id: this.id
+        }).then(() => {
+          this.$notify({
+            title: 'Success',
+            message: 'Your model changes was saved!',
+            type: 'success'
+          });
+        });
+      } catch (ex) {
+        this.$notify({
+          title: 'Warning',
+          message: ex,
+          type: 'warning'
+        });
+      } finally {
+        this.loading = false;
+      }
     },
     saveAndGenerate () {
       this.save();

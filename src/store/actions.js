@@ -10,6 +10,7 @@ export default {
         context.commit('setModels', response);
       });
   },
+
   updateModelProperty (context, props) {
     let clonedObject = cloneDeep(state.currentModel);
     if (props.propertyName !== props.oldPropertyName) {
@@ -18,6 +19,7 @@ export default {
     clonedObject = setObjectValue(clonedObject, props.value);
     context.commit('setCurrentModel', clonedObject);
   },
+
   createNewRoute (context, props) {
     axios({
       method: 'post',
@@ -30,8 +32,8 @@ export default {
     });
   },
 
-  saveModel (context, props) {
-    axios({
+  async saveModel (context, props) {
+    await axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
       url: 'http://localhost:8002/' + props.id
@@ -40,7 +42,7 @@ export default {
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
         url: 'http://localhost:8002/' + props.id,
-        data: state.currentModel
+        data: context.state.currentModel
       });
     });
   },
