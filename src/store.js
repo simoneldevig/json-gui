@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import router from './router';
+import { renameObjectKey, setObjectValue } from '@/utils';
+import cloneDeep from 'lodash.clonedeep';
 
 Vue.use(Vuex);
 
@@ -10,7 +12,8 @@ Vue.use(Vuex);
 const state = {
   count: 0,
   models: {},
-  cleanModels: {}
+  cleanModels: {},
+  currentModel: {}
 };
 
 // mutations are operations that actually mutates the state.
@@ -24,6 +27,18 @@ const mutations = {
   },
   setData (state, response) {
     state.models = response.data;
+  },
+  setCurrentModel (state, data) {
+    state.currentModel = data;
+  },
+  updateProperty (state, data) {
+    let clonedObject = cloneDeep(state.currentModel);
+    if (data.propertyName !== data.oldPropertyName) {
+      clonedObject = renameObjectKey(clonedObject, data.oldPropertyName, data.propertyName);
+    }
+    console.log('da');
+    console.log(setObjectValue(clonedObject, data.value));
+    // setCurrentModel(setObjectValue(clonedObject, data.value));
   }
 };
 
@@ -31,17 +46,24 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   getModels (context) {
-    axios.get('http://localhost:3001/db')
+    axios.get('http://localhost:8002/db')
       .then(function (response) {
         context.commit('setModels', response);
       });
   },
-  
+  updateModelProperty (context, props) {
+    let clonedObject = cloneDeep(state.currentModel);
+    if (props.propertyName !== props.oldPropertyName) {
+      clonedObject = renameObjectKey(clonedObject, props.oldPropertyName, props.propertyName);
+    }
+    clonedObject = setObjectValue(clonedObject, props.value);
+    context.commit('setCurrentModel', clonedObject);
+  },
   createNewRoute (context, props) {
     axios({
       method: 'post',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3001/' + props
+      url: 'http://localhost:8002/' + props
     }).then(function (response) {
       context.dispatch('getModels').then(function () {
         router.push({ path: props });
@@ -53,12 +75,12 @@ const actions = {
     axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3001/' + props.id
+      url: 'http://localhost:8002/' + props.id
     }).then(function (response) {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:3001/' + props.id,
+        url: 'http://localhost:8001/' + props.id,
         data: props.content
       });
     });
@@ -68,12 +90,12 @@ const actions = {
     axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:3000/' + props.id
+      url: 'http://localhost:8000/' + props.id
     }).then(function (response) {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:3000/' + props.id,
+        url: 'http://localhost:8000/' + props.id,
         data: props.content
       });
     });
@@ -94,7 +116,7 @@ const actions = {
         console.log(response);
       });
     });
-  },
+  }
 };
 
 // getters are functions

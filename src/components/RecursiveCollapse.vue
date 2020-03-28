@@ -227,7 +227,6 @@ export default {
               delete obj[key];
               obj[key] = value;
             }
-  
           }
         }
       }
@@ -238,7 +237,7 @@ export default {
         this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
       }
       this.dataModel[changedValueObject.propertyName].value = changedValueObject.value;
-      this.updateDataContentToDataModel(this.dataModel);
+      // this.updateDataContentToDataModel(this.dataModel);
     },
     deleteProperty (propertyName) {
       delete this.dataModel[propertyName];

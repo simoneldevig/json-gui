@@ -44,6 +44,8 @@
 
 <script>
 import collapse from '@/components/RecursiveCollapse';
+import { mapMutations } from 'vuex';
+
 const {
   quicktype,
   InputData,
@@ -85,12 +87,19 @@ export default {
   watch: {
     entry () {
       this.generateQuicktypeModel();
+      this.setModel();
     },
     selectedModelType () {
       this.generateQuicktypeModel();
     }
   },
   methods: {
+    ...mapMutations([
+      'setCurrentModel'
+    ]),
+    setModel () {
+      this.setCurrentModel(this.entry);
+    },
     cleanModel (obj) {
       if (typeof obj === 'object') {
         // console.log(obj);

@@ -13,4 +13,17 @@ const renameObjectKey = (oldObject, oldKey, newKey) => {
   return newObject;
 };
 
-export { renameObjectKey };
+const setObjectValue = (obj, newObj) => {
+  if (typeof obj === 'object') {
+    for (const key in obj) {
+      if (typeof obj[key] == "object") {
+        setObjectValue(obj[key], newObj);
+      } else if (key === 'value' && obj.id === newObj.id) {
+        obj[key] = newObj.value;
+      }
+    }
+  }
+  return obj;
+};
+
+export { renameObjectKey, setObjectValue };
