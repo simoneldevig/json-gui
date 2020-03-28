@@ -142,6 +142,7 @@ export default {
     addNewProperty (type) {
       let newProperty = {};
       newProperty.type = type;
+      newProperty.id = this.generateGuid();
 
       switch (type) {
         case 'string':
