@@ -1,4 +1,4 @@
-# rest-mocker
+# json-server-gui
 
 ## Project setup
 ```
