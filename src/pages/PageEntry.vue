@@ -184,8 +184,7 @@ export default {
     },
     save () {
       this.$store.dispatch('saveModel', {
-        id: this.id,
-        content: this.entry
+        id: this.id
       });
     },
     saveAndGenerate () {
