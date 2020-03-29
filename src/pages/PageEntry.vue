@@ -11,20 +11,8 @@
         <collapse v-if="entry && entry !== 'models'" :id="id" :data="entry" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
       </el-col>
 
-      <el-col v-if="quicktypeModel" :span="8">
-        <h1 class="mt2">Model</h1>
-        <el-button-group class="my1">
-          <el-button :type="selectedModelType === 'csharp' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
-          <el-button :type="selectedModelType === 'typescript' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'typescript'">TypeScript</el-button>
-        </el-button-group>
-
-        <el-card class="p0 relative" :body-style="{ padding: '0' }">
-          <el-tooltip v-model="showCopyTooltip" class="item" :manual="true" effect="dark" content="Copied!" placement="top-start">
-            <el-button class="model__copy" icon="el-icon-document-copy" circle @click.prevent="copyModel" />
-          </el-tooltip>
-
-          <highlight class="m0" :code="quicktypeModel" :language="selectedModelType" />
-        </el-card>
+      <el-col :span="8">
+        <quicktype-model :id="id" />
       </el-col>
     </el-row>
 
@@ -44,22 +32,14 @@
 
 <script>
 import collapse from '@/components/RecursiveCollapse';
+import quicktypeModel from '@/components/QuicktypeModel';
 import { mapMutations } from 'vuex';
 
-const {
-  quicktype,
-  InputData,
-  jsonInputForTargetLanguage,
-  JSONSchemaInput,
-  JSONSchemaStore,
-  cSharpOptions
-} = require("quicktype-core");
-import Highlight from 'vue-highlight-component';
 export default {
   name: 'Entry',
   components: {
     collapse,
-    Highlight
+    quicktypeModel
   },
   props: {
     id: {
@@ -72,11 +52,7 @@ export default {
     return {
       loading: false,
       dataContent: null,
-      changesNotSaved: false,
-      cleanedModel: null,
-      quicktypeModel: null,
-      selectedModelType: 'csharp',
-      showCopyTooltip: false
+      changesNotSaved: false
     };
   },
   computed: {
@@ -86,11 +62,7 @@ export default {
   },
   watch: {
     entry () {
-      this.generateQuicktypeModel();
       this.setModel();
-    },
-    selectedModelType () {
-      this.generateQuicktypeModel();
     }
   },
   methods: {
@@ -99,84 +71,6 @@ export default {
     ]),
     setModel () {
       this.setCurrentModel(this.entry);
-    },
-    cleanModel (obj) {
-      if (typeof obj === 'object') {
-        // console.log(obj);
-        for (const key in obj) {
-          if (typeof (obj[key]) !== 'object') {
-            delete obj[key];
-          } else {
-            if (obj[key].type === 'object' || obj[key].type === 'array') {
-              const remappedValues = this.cleanModel(obj[key].value);
-              delete obj[key];
-              obj[key] = remappedValues;
-            }
-  
-            if (obj[key].type === 'string') {
-              delete obj[key];
-              obj[key] = "";
-            }
-  
-            if (obj[key].type === 'boolean') {
-              delete obj[key];
-              obj[key] = false;
-            }
-  
-            if (obj[key].type === 'number') {
-              delete obj[key];
-              obj[key] = 0;
-            }
-          }
-        }
-      }
-      return obj;
-    },
-    async generateQuicktypeModel () {
-      const clonedObject = this.$lodash.cloneDeep(this.entry);
-      const cleanModel = this.cleanModel(clonedObject);
-      this.cleanedModel = cleanModel;
-      if (this.cleanedModel) {
-        const jsonString =  JSON.stringify(this.cleanedModel);
-        const modelSettings = {
-          csharp: {
-            features: 'attributes-only',
-            'no-combine-classes': 'true',
-          },
-          typescript: {
-            'just-types': 'true',
-          }
-        };
-
-        const { lines: model } = await this.quicktypeJSON(
-          this.selectedModelType,
-          this.id,
-          modelSettings[this.selectedModelType],
-          jsonString
-        );
-    
-        this.quicktypeModel = model.join("\n");
-      }
-    },
-    async quicktypeJSON (targetLanguage, typeName, rendererOptions, jsonString) {
-      const jsonInput = jsonInputForTargetLanguage(targetLanguage);
-
-      // We could add multiple samples for the same desired
-      // type, or many sources for other types. Here we're
-      // just making one type from one piece of sample JSON.
-      await jsonInput.addSource({
-        name: typeName,
-        samples: [jsonString]
-      });
-
-      const inputData = new InputData();
-      inputData.addInput(jsonInput);
-
-      return await quicktype({
-        inputData,
-        lang: targetLanguage,
-        rendererOptions: rendererOptions
-      });
     },
     updateData (data) {
       this.dataContent = data;
@@ -195,9 +89,10 @@ export default {
           });
         });
       } catch (ex) {
+        console.error(ex);
         this.$notify({
           title: 'Warning',
-          message: ex,
+          message: 'An error happened. Please check the console$',
           type: 'warning'
         });
       } finally {
@@ -217,20 +112,7 @@ export default {
       // x.document.close();
       this.changesNotSaved = false;
     },
-    copyModel () {
-      const newClip = this.quicktypeModel;
-      navigator.permissions.query({ name: 'clipboard-write' }).then(result => {
-        if (result.state == 'granted' || result.state == 'prompt') {
-          navigator.clipboard.writeText(newClip).then(() => {
-            this.showCopyTooltip = true;
-
-            setTimeout(() => {
-              this.showCopyTooltip = false;
-            }, 1000);
-          });
-        }
-      });
-    }
+    
   }
 };
 </script>
