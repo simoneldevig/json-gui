@@ -70,7 +70,7 @@
 import string from '@/components/BaseStringInput';
 // import number from '@/components/BaseNumberInput';
 import boolean from '@/components/BaseBooleanInput';
-import { renameObjectKey } from '@/utils';
+import { renameObjectKey, generateGuid } from '@/utils';
 const faker = require('faker');
 
 export default {
@@ -133,16 +133,10 @@ export default {
     this.updateDataContentToDataModel(this.dataModel);
   },
   methods: {
-    generateGuid () {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-    },
     addNewProperty (type) {
       let newProperty = {};
       newProperty.type = type;
-      newProperty.id = this.generateGuid();
+      newProperty.id = generateGuid();
 
       switch (type) {
         case 'string':

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import router from '../router';
 import { renameObjectKey, setObjectValue } from '@/utils';
-import cloneDeep from 'lodash.clonedeep';
+import Vue from 'vue';
 
 export default {
   getModels (context) {
@@ -12,7 +12,7 @@ export default {
   },
 
   updateModelProperty (context, props) {
-    let clonedObject = cloneDeep(state.currentModel);
+    let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
     if (props.propertyName !== props.oldPropertyName) {
       clonedObject = renameObjectKey(clonedObject, props.oldPropertyName, props.propertyName);
     }
