@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../router';
-import { renameObjectKey, setObjectValue } from '@/utils';
+import { renameObjectKey, setObjectValue, deleteObject } from '@/utils';
 import Vue from 'vue';
 
 export default {
@@ -17,6 +17,12 @@ export default {
       clonedObject = renameObjectKey(clonedObject, props.oldPropertyName, props.propertyName);
     }
     clonedObject = setObjectValue(clonedObject, props.value);
+    context.commit('setCurrentModel', clonedObject);
+  },
+
+  deleteModelProperty (context, props) {
+    let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
+    clonedObject = deleteObject(clonedObject, props.obj);
     context.commit('setCurrentModel', clonedObject);
   },
 
@@ -37,12 +43,14 @@ export default {
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
       url: 'http://localhost:8002/' + props.id
-    }).then(function (response) {
+    }).then(function () {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
         url: 'http://localhost:8002/' + props.id,
         data: context.state.currentModel
+      }).then(function () {
+        context.dispatch('getModels');
       });
     });
   },

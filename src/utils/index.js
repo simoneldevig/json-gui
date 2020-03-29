@@ -26,6 +26,19 @@ const setObjectValue = (obj, newObj) => {
   return obj;
 };
 
+const deleteObject = (obj, objToDelete) => {
+  if (typeof obj === 'object') {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (typeof obj[key] == "object" && obj[key].id === objToDelete.id) {
+          delete obj[key];
+        }
+      }
+    }
+  }
+  return obj;
+};
+
 const generateGuid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -33,4 +46,4 @@ const generateGuid = () => {
   });
 };
 
-export { renameObjectKey, setObjectValue, generateGuid };
+export { renameObjectKey, setObjectValue, generateGuid, deleteObject };

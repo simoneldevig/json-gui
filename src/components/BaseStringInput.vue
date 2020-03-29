@@ -32,10 +32,14 @@ export default {
   name: 'BaseStringInput',
   props: {
     model: {
+      default () {
+        return {};
+      },
       requirred: true,
       type: Object
     },
     propertyName: {
+      default: '',
       requirred: true,
       type: String
     }
@@ -86,9 +90,6 @@ export default {
         }
       });
     },
-    parseToParent () {
-      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
-    },
     updateModel () {
       this.$store.dispatch('updateModelProperty', {
         propertyName: this.newPropertyName,
@@ -103,7 +104,9 @@ export default {
       });
     },
     deleteProp () {
-      this.$emit('delete-property', this.newPropertyName);
+      this.$store.dispatch('deleteModelProperty', {
+        obj: this.objectModel
+      });
     }
   }
 };

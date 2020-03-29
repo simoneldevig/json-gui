@@ -47,10 +47,9 @@ export default {
   },
   watch: {
     currentModel: {
-      handler () {
-        this.generateQuicktypeModel();
-      },
-      deep: true
+      handler: 'generateQuicktypeModel',
+      deep: true,
+      immediate: true
     },
     selectedModelType () {
       this.generateQuicktypeModel();
