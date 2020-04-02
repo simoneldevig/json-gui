@@ -1,18 +1,18 @@
 {
   "getPosts": [
     {
-      "id": 38493,
-      "title": "084d8af4-d60b-4b73-add0-2ab777e09c2e",
-      "author": "Blanche Osinski",
-      "publishDate": "2019-05-01T10:41:17.782Z",
-      "text": "Voluptatibus id illo harum sed et et.",
-      "isVisible": false,
+      "id": 72516,
+      "title": "Reactive",
+      "author": "Otto Fisher",
+      "publishDate": "2020-03-26T05:28:05.174Z",
+      "text": "Est qui ea.",
+      "isVisible": true,
       "relatedPosts": {
-        "id": 88548,
+        "id": 2925,
         "headline": "Joe Goldenberg",
-        "author": "Vivienne McGlynn",
-        "publishDate": "2019-09-10T21:25:41.763Z",
-        "content": "Recusandae consequatur corporis.",
+        "author": "Mathilde Harber",
+        "publishDate": "2019-08-26T11:55:38.154Z",
+        "content": "quia enim aliquid",
         "isVisible": true,
         "url": "#"
       }

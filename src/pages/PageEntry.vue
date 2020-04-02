@@ -52,7 +52,7 @@ export default {
     return {
       loading: false,
       dataContent: null,
-      changesNotSaved: false
+      changesNotSaved: true
     };
   },
   computed: {
@@ -106,7 +106,6 @@ export default {
       this.save();
       this.$store.dispatch('saveAndGenerate', {
         id: this.id,
-        content: this.dataContent
       });
       // var myjson = JSON.stringify(this.dataContent, null, 2);
       // var x = window.open();
