@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dataModel">
+  <div v-if="dataModel[0]">
     <el-card class="box-card mb2">
       <template slot="header">
         <div class="flex justify-between items-center">
@@ -10,7 +10,7 @@
 
           <div>
             <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="dataModel.timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" />
+            <el-input-number v-model="dataModel[0].timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="setModel" />
             <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
@@ -57,10 +57,10 @@
           </div>
         </div>
       </template>
-      <div v-for="(property, propertyName) in dataModel.value" :key="propertyName">
+      <div v-for="(property, propertyName) in dataModel[0].value" :key="propertyName">
         <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
-        <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property[0]" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
+        <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
       </div>
     </el-card>
   </div>
@@ -68,10 +68,9 @@
 
 <script>
 import string from '@/components/BaseStringInput';
-// import number from '@/components/BaseNumberInput';
 import boolean from '@/components/BaseBooleanInput';
 import { renameObjectKey, generateGuid } from '@/utils';
-const faker = require('faker');
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'RecursiveCollapse',
@@ -84,7 +83,7 @@ export default {
     data: {
       default: null,
       requirred: true,
-      type: Object
+      type: Array
     },
     id: {
       default: null,
@@ -127,10 +126,14 @@ export default {
   },
   created () {
     this.dataModel = this.data;
-    
-    // this.updateDataContentToDataModel(this.dataModel);
   },
   methods: {
+    ...mapMutations([
+      'setCurrentModel'
+    ]),
+    setModel () {
+      this.setCurrentModel(this.dataModel);
+    },
     addNewProperty (type) {
       let newProperty = {};
       newProperty.type = type;
@@ -219,6 +222,7 @@ export default {
         this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
       }
       this.dataModel[changedValueObject.propertyName].value = changedValueObject.value;
+      this.setModel();
       // this.updateDataContentToDataModel(this.dataModel);
     },
     deleteProperty (propertyName) {

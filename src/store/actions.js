@@ -40,20 +40,20 @@ export default {
   },
 
   async saveModel (context, props) {
-    // await axios({
-    //   method: 'delete',
-    //   headers: { 'content-type': 'application/json; charset=utf-8' },
-    //   url: 'http://localhost:8002/' + props.id
-    // }).then(function () {
-    //   axios({
-    //     method: 'post',
-    //     headers: { 'content-type': 'application/json; charset=utf-8' },
-    //     url: 'http://localhost:8002/' + props.id,
-    //     data: context.state.currentModel
-    //   }).then(function () {
-    //     context.dispatch('getModels');
-    //   });
-    // });
+    await axios({
+      method: 'delete',
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+      url: 'http://localhost:8002/' + props.id
+    }).then(function () {
+      axios({
+        method: 'post',
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+        url: 'http://localhost:8002/' + props.id,
+        data: context.state.currentModel
+      }).then(function () {
+        context.dispatch('getModels');
+      });
+    });
   },
 
   saveAndGenerate (context, props) {
