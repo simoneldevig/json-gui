@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     currentModel () {
-      return this.$store.getters['getCurrentModel'];
+      return this.$store.getters['getCurrentModel'][0] ? this.$store.getters['getCurrentModel'][0].value : {};
     }
   },
   watch: {
@@ -58,13 +58,12 @@ export default {
   methods: {
     cleanModel (obj) {
       if (typeof obj === 'object') {
-        // console.log(obj);
         for (const key in obj) {
           if (typeof (obj[key]) !== 'object') {
             delete obj[key];
           } else {
-            if (obj[key].type === 'object' || obj[key].type === 'array') {
-              const remappedValues = this.cleanModel(obj[key].value);
+            if (Array.isArray(obj[key]) && obj[key][0].type === 'object' || Array.isArray(obj[key]) && obj[key][0].type === 'array') {
+              const remappedValues = this.cleanModel(obj[key][0].value);
               delete obj[key];
               obj[key] = remappedValues;
             }

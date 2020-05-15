@@ -9,9 +9,12 @@ import router from "./router";
 
 // Import lodash
 import cloneDeep from 'lodash.clonedeep';
+import lodash from 'lodash';
+
 
 const lodashBundle = {
-  cloneDeep
+  cloneDeep,
+  lodash
 };
 
 Object.defineProperty(Vue.prototype, '$lodash', { value: lodashBundle });

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="dataModel">
     <el-card class="box-card mb2">
       <template slot="header">
         <div class="flex justify-between items-center">
@@ -10,7 +10,7 @@
 
           <div>
             <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="dataModel.timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="updateDataContentToDataModel(dataModel)" />
+            <el-input-number v-model="dataModel.timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" />
             <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
@@ -108,8 +108,6 @@ export default {
   data () {
     return {
       dataModel: null,
-      dataContent: null,
-      timesToRepeat: 1,
       stringDialogVisible: false,
       numberDialogVisible: false,
       booleanDialogVisible: false,
@@ -130,7 +128,7 @@ export default {
   created () {
     this.dataModel = this.data;
     
-    this.updateDataContentToDataModel(this.dataModel);
+    // this.updateDataContentToDataModel(this.dataModel);
   },
   methods: {
     addNewProperty (type) {
@@ -171,62 +169,51 @@ export default {
     //   this.dataModel.push(entry);
     //   console.log(this.dataModel);
     // },
-    updateDataContentToDataModel (dataModel) {
-      // console.log(dataModel);
-      // let generatedData = [];
-      // for (let i = 0; i < this.dataModel.timesToRepeat; i++) {
-      //   const clonedObject = this.$lodash.cloneDeep(dataModel);
-      //   const generatedObject = this.generateFakerValues(clonedObject);
-      //   generatedData.push(generatedObject);
-      // }
-      // this.dataContent = generatedData;
-      // this.$emit('updateData', this.dataContent);
-    },
-    generateFakerValues (obj) {
-      if (typeof obj === 'object') {
-        for (const key in obj) {
-          if (typeof (obj[key]) !== 'object') {
-            delete obj[key];
-          } 
-          else if (typeof (obj[key]) === 'object') {
-            if (obj[key].type === 'object' || obj[key].type === 'array') {
-              const generatedData = this.generateFakerValues(obj[key].value);
-              delete obj[key];
-              obj[key] = generatedData;
-            }
+    // generateFakerValues (obj) {
+    //   if (typeof obj === 'object') {
+    //     for (const key in obj) {
+    //       if (typeof (obj[key]) !== 'object') {
+    //         delete obj[key];
+    //       } 
+    //       else if (typeof (obj[key]) === 'object') {
+    //         if (obj[key].type === 'object' || obj[key].type === 'array') {
+    //           const generatedData = this.generateFakerValues(obj[key].value);
+    //           delete obj[key];
+    //           obj[key] = generatedData;
+    //         }
 
-            if (obj[key].type === 'string' && obj[key].value.toString().startsWith('faker') || obj[key].type === 'number' && obj[key].value.toString().startsWith('faker')) {
-              try {
-                const fakerValue = eval(obj[key].value);
-                delete obj[key];
-                obj[key] = fakerValue;
-              } catch (err) {
-                // eslint-disable-next-line no-console
-                console.error('Invalid faker function');
-              }
-            } 
-            else if (obj[key].type === 'string') {
-              const value = obj[key].value;
-              delete obj[key];
-              obj[key] = value;
-            }
+    //         if (obj[key].type === 'string' && obj[key].value.toString().startsWith('faker') || obj[key].type === 'number' && obj[key].value.toString().startsWith('faker')) {
+    //           try {
+    //             const fakerValue = eval(obj[key].value);
+    //             delete obj[key];
+    //             obj[key] = fakerValue;
+    //           } catch (err) {
+    //             // eslint-disable-next-line no-console
+    //             console.error('Invalid faker function');
+    //           }
+    //         } 
+    //         else if (obj[key].type === 'string') {
+    //           const value = obj[key].value;
+    //           delete obj[key];
+    //           obj[key] = value;
+    //         }
 
-            else if (obj[key].type === 'number') {
-              const value = obj[key].value;
-              delete obj[key];
-              obj[key] = parseInt(value);
-            }
+    //         else if (obj[key].type === 'number') {
+    //           const value = obj[key].value;
+    //           delete obj[key];
+    //           obj[key] = parseInt(value);
+    //         }
 
-            else if (obj[key].type === 'boolean') {
-              const value = obj[key].value === 'random' ? faker.random.boolean() : obj[key].value;
-              delete obj[key];
-              obj[key] = value;
-            }
-          }
-        }
-      }
-      return obj;
-    },
+    //         else if (obj[key].type === 'boolean') {
+    //           const value = obj[key].value === 'random' ? faker.random.boolean() : obj[key].value;
+    //           delete obj[key];
+    //           obj[key] = value;
+    //         }
+    //       }
+    //     }
+    //   }
+    //   return obj;
+    // },
     setDataModelValue (changedValueObject) {
       if (changedValueObject.propertyName !== changedValueObject.oldPropertyName) {
         this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
@@ -236,7 +223,7 @@ export default {
     },
     deleteProperty (propertyName) {
       delete this.dataModel[propertyName];
-      this.updateDataContentToDataModel(this.dataModel);
+      // this.updateDataContentToDataModel(this.dataModel);
     }
   }
 };

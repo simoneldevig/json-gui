@@ -1,6 +1,7 @@
 import axios from 'axios';
 import router from '../router';
 import { renameObjectKey, setObjectValue, deleteObject } from '@/utils';
+import { generateFakerValues } from '@/utils/faker';
 import Vue from 'vue';
 
 export default {
@@ -39,33 +40,36 @@ export default {
   },
 
   async saveModel (context, props) {
-    await axios({
-      method: 'delete',
-      headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:8002/' + props.id
-    }).then(function () {
-      axios({
-        method: 'post',
-        headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:8002/' + props.id,
-        data: context.state.currentModel
-      }).then(function () {
-        context.dispatch('getModels');
-      });
-    });
+    // await axios({
+    //   method: 'delete',
+    //   headers: { 'content-type': 'application/json; charset=utf-8' },
+    //   url: 'http://localhost:8002/' + props.id
+    // }).then(function () {
+    //   axios({
+    //     method: 'post',
+    //     headers: { 'content-type': 'application/json; charset=utf-8' },
+    //     url: 'http://localhost:8002/' + props.id,
+    //     data: context.state.currentModel
+    //   }).then(function () {
+    //     context.dispatch('getModels');
+    //   });
+    // });
   },
 
   saveAndGenerate (context, props) {
+    let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
+    clonedObject = generateFakerValues(clonedObject, clonedObject[0].timesToRepeat);
+
     axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
       url: 'http://localhost:8000/' + props.id
-    }).then(function (response) {
+    }).then(function () {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
         url: 'http://localhost:8000/' + props.id,
-        data: props.content
+        data: clonedObject
       });
     });
   },

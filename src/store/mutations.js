@@ -6,6 +6,6 @@ export default {
     state.models = response.data;
   },
   setCurrentModel (state, data) {
-    state.currentModel = data[0];
+    state.currentModel = data;
   }
 };

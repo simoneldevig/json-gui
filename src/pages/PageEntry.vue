@@ -8,7 +8,7 @@
             <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
         </div>
-        <collapse v-if="currentModel && currentModel !== 'models'" :id="id" :data="currentModel" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
+        <collapse v-if="currentModel && currentModel !== 'models'" :id="id" :data="currentModel[0]" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
       </el-col>
 
       <el-col :span="8">

@@ -8,7 +8,7 @@
   "getPosts": [
     {
       "type": "array",
-      "timesToRepeat": 4,
+      "timesToRepeat": 10,
       "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
       "value": {
         "id": {
@@ -43,11 +43,10 @@
         },
         "relatedPosts": [
           {
-            "timesToRepeat": 2,
+            "timesToRepeat": 3,
             "type": "array",
             "id": "360b953a-dda9-4a1e-9f57-3537d1g2b815",
             "value": {
-              "timesToRepeat": 2,
               "id": {
                 "type": "number",
                 "value": "faker.random.number()",
@@ -82,18 +81,6 @@
                 "type": "string",
                 "value": "#",
                 "id": "70746fea-d5d8-47f8-9a7f-d4c832206f09"
-              },
-              "Tester": {
-                "type": "array",
-                "id": "2076242d-424d-4b2a-8964-faaa8821cf4e",
-                "value": {
-                  "timesToRepeat": 2,
-                  "stirng": {
-                    "type": "string",
-                    "id": "b879113c-b8d2-4183-8d1b-c68946102038",
-                    "value": "faker.address.zipCode()"
-                  }
-                }
               }
             }
           }
