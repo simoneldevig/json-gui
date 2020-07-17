@@ -8,6 +8,7 @@ export default {
   getModels (context) {
     axios.get('http://localhost:8002/db')
       .then(function (response) {
+        context.commit('setData', response);
         context.commit('setModels', response);
       });
   },

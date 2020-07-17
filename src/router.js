@@ -13,11 +13,11 @@ export default new Router({
       component: PageHome
     },
     {
-      path: "/entry/:id",
-      name: "Entry",
+      path: "/:type/:id",
+      name: "Endpoints",
       props: true,
       component: PageEntry
-    }
+    },
     // {
     //   path: "*",
     //   name: "NotFound",

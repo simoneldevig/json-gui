@@ -1,11 +1,12 @@
 export default {
-  setModels (state, response) {
-    state.models = response.data;
-  },
   setData (state, response) {
-    state.models = response.data;
+    state.data = response.data;
+  },
+  setModels (state, response) {
+    state.models = response.data.models;
   },
   setCurrentModel (state, data) {
+    console.log(data);
     state.currentModel = data;
   }
 };

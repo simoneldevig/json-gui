@@ -4,7 +4,7 @@
       <el-col :span="16">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="mb0"><span>{{ id }}</span> model</h1>
+            <h1 class="mb0"><span>{{ id }}</span></h1>
             <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
         </div>
@@ -42,6 +42,11 @@ export default {
     quicktypeModel
   },
   props: {
+    type: {
+      requirred: true,
+      type: String,
+      default: null
+    },
     id: {
       requirred: true,
       type: String,
@@ -57,7 +62,7 @@ export default {
   },
   computed: {
     entry () {
-      return this.$store.state.models[this.id];
+      return this.$store.state.data[this.type] ? this.$store.state.data[this.type][this.id] : null;
     },
     currentModel () {
       return this.$store.getters['getCurrentModel'];

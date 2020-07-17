@@ -6,14 +6,28 @@
           <el-menu-item class="center" index="/">
             <img class="navigation__logo" src="./assets/logo.png" alt="">
           </el-menu-item>
-          <el-menu-item v-for="(value, propertyName) in endpoints" v-if="propertyName !== 'models'" :index="'/entry/' + propertyName">
-            <i class="el-icon-setting" />
-            <span>{{ '/' + propertyName }}</span>
-          </el-menu-item>
-          <el-menu-item class="primary" @click="dialogVisible=true">
-            <i class="el-icon-plus" />
-            <span>Add new route</span>
-          </el-menu-item>
+          <el-collapse v-model="activeCollapse">
+            <el-collapse-item title="Endpoints" name="endpoints">
+              <el-menu-item v-for="(value, propertyName) in endpoints.endpoints" :index="'/endpoints/' + propertyName">
+                <i class="el-icon-guide" />
+                <span>{{ '/' + propertyName }}</span>
+              </el-menu-item>
+              <el-menu-item class="primary" @click="dialogVisible=true">
+                <i class="el-icon-plus" />
+                <span>Add new endpoint</span>
+              </el-menu-item>
+            </el-collapse-item>
+            <el-collapse-item title="Models" name="models">
+              <el-menu-item v-for="(value, propertyName) in endpoints.models" :index="'/models/' + propertyName">
+                <i class="el-icon-setting" />
+                <span>{{ '/' + propertyName }}</span>
+              </el-menu-item>
+              <el-menu-item class="primary" @click="dialogVisible=true">
+                <i class="el-icon-plus" />
+                <span>Add new model</span>
+              </el-menu-item>
+            </el-collapse-item>
+          </el-collapse>          
         </el-menu>
       </el-col>
       <el-col :lg="{span: 20, offset: 4}" :xl="{span: 21, offset: 3}">
@@ -45,16 +59,18 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      newRouteName:''
+      newRouteName:'',
+      activeCollapse: []
     };
   },
   computed: {
     endpoints () {
-      return this.$store.state.models;
+      return this.$store.state.data;
     }
   },
   created () {
     this.$store.dispatch('getModels');
+    this.activeCollapse.push(this.$route.params.type);
   },
   methods: {
     setNewRouteName (newRouteName) {
@@ -78,6 +94,7 @@ export default {
   .navigation {
     position: fixed;
     height: 100%;
+    padding-left: 0 !important;
 
     &__menu {
       height: 100%;
@@ -86,5 +103,26 @@ export default {
     &__logo {
       width: 120px;
     }
+  }
+
+  .el-collapse {
+    border: none !important;
+  }
+
+  .el-collapse-item__wrap {
+    border: none !important;
+  }
+
+  .el-collapse-item__header {
+    background: none !important;
+    border: none !important;
+    padding-left: 10px;
+    font-size: 16px !important;
+  }
+
+  .el-collapse-item__content {
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
   }
 </style>

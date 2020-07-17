@@ -2,15 +2,20 @@
   <div v-if="dataModel[0]">
     <el-card class="box-card mb2">
       <template slot="header">
-        <div class="flex justify-between items-center">
-          <div>
-            <p v-if="isSubChild"><strong>{{ propertyName }}</strong></p>
-            <p v-else><strong>{{ id }}</strong></p>
+        <div>
+          <div class="flex justify-between items-center">
+            <div>
+              <p v-if="isSubChild"><strong>{{ propertyName }}</strong></p>
+              <p v-else><strong>{{ id }}</strong></p>
+            </div>
+            <div>
+              <span class="pr1"><strong>Times to repeat</strong></span>
+              <el-input-number v-model="dataModel[0].timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
+            </div>
           </div>
+          <div class="flex justify-end items-center">
+            <span class="pr1"><strong>Add:</strong></span>
 
-          <div>
-            <span class="pr1"><strong>Times to repeat</strong></span>
-            <el-input-number v-model="dataModel[0].timesToRepeat" class="mr2" size="mini" controls-position="right" :min="1" @change="setModel" />
             <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
@@ -21,7 +26,6 @@
               </div>
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default" @click="$refs.newStringProp.focus()">String</el-button>
             </el-popover>
-            
             <el-popover v-model="numberDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="numberDialogVisible = false, addNewProperty('number')" />
@@ -54,6 +58,26 @@
               </div>
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Object</el-button>
             </el-popover>
+
+            <el-popover v-model="arrayDialogVisible" placement="bottom" width="400">
+              <p class="mt0 mb1"><strong>Property name?</strong></p>
+              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="arrayDialogVisible = false, addNewProperty('array')" />
+
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="arrayDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" size="mini" @click="arrayDialogVisible = false, addNewProperty('array')">Add</el-button>
+              </div>
+              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Array</el-button>
+            </el-popover>
+
+            <el-select filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
+              <el-option
+                v-for="item in Object.keys(models)"
+                :key="item"
+                :label="item"
+                :value="models[item]"
+              />
+            </el-select>
           </div>
         </div>
       </template>
@@ -111,12 +135,17 @@ export default {
       numberDialogVisible: false,
       booleanDialogVisible: false,
       objectDialogVisible: false,
+      arrayDialogVisible: false,
+      importDialogVisible: false,
       newPropertyName: ''
     };
   },
   computed: {
     dataModelSize () {
       return Object.keys(this.dataModel).length;
+    },
+    models () {
+      return this.$store.state.models;
     }
   },
   watch: {
@@ -159,6 +188,10 @@ export default {
       Object.assign(this.dataModel, {[this.newPropertyName]: newProperty});
 
       this.newPropertyName = '';
+    },
+    importModel (value) {
+      const importedModel = { ...value };
+      console.log(importedModel);
     },
     // saveNewProperty () {
     //   console.log(this.propertyValuesDialogData);
