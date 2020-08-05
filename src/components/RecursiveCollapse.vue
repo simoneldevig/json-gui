@@ -8,7 +8,7 @@
               <p v-if="isSubChild"><strong>{{ propertyName }}</strong></p>
               <p v-else><strong>{{ id }}</strong></p>
             </div>
-            <div>
+            <div v-if="isEndpoint">
               <span class="pr1"><strong>Times to repeat</strong></span>
               <el-input-number v-model="dataModel[0].timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
             </div>
@@ -141,6 +141,9 @@ export default {
     };
   },
   computed: {
+    isEndpoint () {
+      return this.$route.params.type === 'endpoint';
+    },
     dataModelSize () {
       return Object.keys(this.dataModel).length;
     },

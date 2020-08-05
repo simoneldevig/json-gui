@@ -91,8 +91,18 @@
     ]
   },
   "models": {
-    "post": {
-      "test": true
-    }
+    "post": [
+      {
+        "type": "object",
+        "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
+        "value": {
+          "id": {
+            "type": "boolean",
+            "value": "random",
+            "id": "b232e21a-4cd4-48ce-9753-c48fb94e74b8"
+          }
+        }
+      }
+    ]
   }
 }
