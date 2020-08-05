@@ -8,8 +8,14 @@ export default {
   getModels (context) {
     axios.get('http://localhost:8002/db')
       .then(function (response) {
-        context.commit('setData', response);
         context.commit('setModels', response);
+      });
+  },
+  
+  getEndpoints (context) {
+    axios.get('http://localhost:8004/db')
+      .then(function (response) {
+        context.commit('setData', response);
       });
   },
 
@@ -40,16 +46,16 @@ export default {
     });
   },
 
-  async saveModel (context, props) {
+  async saveData (context, props) {
     await axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:8002/' + props.id
+      url: 'http://localhost:8002' + props.path
     }).then(function () {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:8002/' + props.id,
+        url: 'http://localhost:8002' + props.path,
         data: context.state.currentModel
       }).then(function () {
         context.dispatch('getModels');

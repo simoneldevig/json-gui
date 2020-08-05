@@ -87,8 +87,8 @@ export default {
     async save () {
       this.loading = true;
       try {
-        await this.$store.dispatch('saveModel', {
-          id: this.id
+        await this.$store.dispatch('saveData', {
+          path: this.$route.fullPath
         }).then(() => {
           this.$notify({
             title: 'Success',
@@ -97,6 +97,7 @@ export default {
           });
         });
       } catch (ex) {
+        // eslint-disable-next-line no-console
         console.error(ex);
         this.$notify({
           title: 'Warning',

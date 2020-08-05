@@ -8,7 +8,7 @@
           </el-menu-item>
           <el-collapse v-model="activeCollapse">
             <el-collapse-item title="Endpoints" name="endpoints">
-              <el-menu-item v-for="(value, propertyName) in endpoints.endpoints" :index="'/endpoints/' + propertyName">
+              <el-menu-item v-for="(value, propertyName) in endpoints" :index="'/endpoints/' + propertyName">
                 <i class="el-icon-guide" />
                 <span>{{ '/' + propertyName }}</span>
               </el-menu-item>
@@ -18,7 +18,7 @@
               </el-menu-item>
             </el-collapse-item>
             <el-collapse-item title="Models" name="models">
-              <el-menu-item v-for="(value, propertyName) in endpoints.models" :index="'/models/' + propertyName">
+              <el-menu-item v-for="(value, propertyName) in models" :index="'/models/' + propertyName">
                 <i class="el-icon-setting" />
                 <span>{{ '/' + propertyName }}</span>
               </el-menu-item>
@@ -66,10 +66,14 @@ export default {
   computed: {
     endpoints () {
       return this.$store.state.data;
+    },
+    models () {
+      return this.$store.state.models;
     }
   },
   created () {
     this.$store.dispatch('getModels');
+    this.$store.dispatch('getEndpoints');
     this.activeCollapse.push(this.$route.params.type);
   },
   methods: {

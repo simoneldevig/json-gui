@@ -14,8 +14,6 @@
             </div>
           </div>
           <div class="flex justify-end items-center">
-            <span class="pr1"><strong>Add:</strong></span>
-
             <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
               <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />

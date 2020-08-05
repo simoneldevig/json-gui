@@ -3,7 +3,7 @@ export default {
     state.data = response.data;
   },
   setModels (state, response) {
-    state.models = response.data.models;
+    state.models = response.data;
   },
   setCurrentModel (state, data) {
     console.log(data);

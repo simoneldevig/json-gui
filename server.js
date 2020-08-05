@@ -10,7 +10,8 @@ const jsonServer = require('json-server');
 const dbPath = './json-server/db/';
 const portMapping = {
   db: 8000,
-  models: 8002
+  models: 8002,
+  endpoints: 8004
 };
 
 let files = fs.readdirSync(path.resolve(__dirname, dbPath));
