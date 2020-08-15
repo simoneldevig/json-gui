@@ -8,11 +8,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const jsonServer = require('json-server');
 const dbPath = './json-server/db/';
-const portMapping = {
-  db: 8000,
-  models: 8002,
-  endpoints: 8004
-};
+const portMapping = require('./portMapping');
 
 let files = fs.readdirSync(path.resolve(__dirname, dbPath));
 

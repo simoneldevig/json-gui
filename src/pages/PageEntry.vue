@@ -88,7 +88,8 @@ export default {
       this.loading = true;
       try {
         await this.$store.dispatch('saveData', {
-          path: this.$route.fullPath
+          type: this.type,
+          id: this.id
         }).then(() => {
           this.$notify({
             title: 'Success',

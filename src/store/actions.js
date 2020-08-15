@@ -3,6 +3,7 @@ import router from '../router';
 import { renameObjectKey, setObjectValue, deleteObject } from '@/utils';
 import { generateFakerValues } from '@/utils/faker';
 import Vue from 'vue';
+const serverPorts = require('../../portMapping');
 
 export default {
   getModels (context) {
@@ -47,15 +48,17 @@ export default {
   },
 
   async saveData (context, props) {
+    const port = serverPorts[props.type];
+
     await axios({
       method: 'delete',
       headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:8002' + props.path
+      url: `http://localhost:${port}/${props.id}`
     }).then(function () {
       axios({
         method: 'post',
         headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:8002' + props.path,
+        url: `http://localhost:${port}/${props.id}`,
         data: context.state.currentModel
       }).then(function () {
         context.dispatch('getModels');

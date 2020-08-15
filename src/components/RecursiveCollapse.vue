@@ -68,12 +68,12 @@
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Array</el-button>
             </el-popover>
 
-            <el-select v-if="isEndpoint" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
+            <el-select v-if="isEndpoint && models" v-model="modelToImport" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
               <el-option
-                v-for="item in Object.keys(models)"
-                :key="item"
+                v-for="(item, index) in Object.keys(models)"
+                :key="index"
                 :label="item"
-                :value="models[item]"
+                :value="item"
               />
             </el-select>
           </div>
@@ -82,6 +82,7 @@
       <div v-for="(property, propertyName) in dataModel[0].value" :key="propertyName">
         <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
+        <model v-if="property.type === 'model'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
       </div>
     </el-card>
@@ -91,6 +92,7 @@
 <script>
 import string from '@/components/BaseStringInput';
 import boolean from '@/components/BaseBooleanInput';
+import model from '@/components/ReferencedModel';
 import { renameObjectKey, generateGuid } from '@/utils';
 import { mapMutations } from 'vuex';
 
@@ -98,7 +100,7 @@ export default {
   name: 'RecursiveCollapse',
   components: {
     string,
-    // number,
+    model,
     boolean
   },
   props: {
@@ -135,12 +137,13 @@ export default {
       objectDialogVisible: false,
       arrayDialogVisible: false,
       importDialogVisible: false,
-      newPropertyName: ''
+      newPropertyName: '',
+      modelToImport: null
     };
   },
   computed: {
     isEndpoint () {
-      return this.$route.params.type === 'endpoint';
+      return this.$route.params.type === 'endpoints';
     },
     dataModelSize () {
       return Object.keys(this.dataModel).length;
@@ -164,7 +167,7 @@ export default {
     setModel () {
       this.setCurrentModel(this.dataModel);
     },
-    addNewProperty (type) {
+    addNewProperty (type, value) {
       let newProperty = {};
       newProperty.type = type;
       newProperty.id = generateGuid();
@@ -179,6 +182,9 @@ export default {
         case 'boolean':
           newProperty.value = false;
           break;
+        case 'model':
+          newProperty.value = value;
+          break;
         case 'object':
           newProperty.value = {
             timesToRepeat: 1
@@ -186,13 +192,14 @@ export default {
           break;
       }
 
-      Object.assign(this.dataModel, {[this.newPropertyName]: newProperty});
+      Object.assign(this.dataModel[0].value, {[this.newPropertyName]: newProperty});
 
       this.newPropertyName = '';
     },
-    importModel (value) {
-      const importedModel = { ...value };
-      console.log(importedModel);
+    importModel () {
+      this.newPropertyName = this.modelToImport;
+      this.addNewProperty('model', this.models[this.modelToImport][0].id);
+      this.modelToImport = null;
     },
     // saveNewProperty () {
     //   console.log(this.propertyValuesDialogData);

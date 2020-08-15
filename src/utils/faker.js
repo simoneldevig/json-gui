@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from '../store';
 const faker = require('faker');
 
 const generateFakerValues = (obj, timesToRepeat) => {
@@ -28,6 +29,13 @@ const setFakerValues = (obj) => {
       // } 
       // else
       if (typeof (obj[key]) === 'object') {
+        if (obj[key].type === 'model') {
+          const referencedModel = Object.values(store.state.models)[0].find(x => x.id === obj[key].value);
+          const generatedData = setFakerValues(referencedModel.value);
+          delete obj[key];
+          obj[key] = generatedData;
+        }
+
         if (obj[key].type === 'object' || obj[key].type === 'array') {
           const generatedData = setFakerValues(obj[key].value);
           delete obj[key];

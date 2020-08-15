@@ -6,7 +6,6 @@ export default {
     state.models = response.data;
   },
   setCurrentModel (state, data) {
-    console.log(data);
     state.currentModel = data;
   }
 };
