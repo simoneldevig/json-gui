@@ -68,7 +68,7 @@
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Array</el-button>
             </el-popover>
 
-            <el-select filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
+            <el-select v-if="isEndpoint" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
               <el-option
                 v-for="item in Object.keys(models)"
                 :key="item"

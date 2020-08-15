@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     endpoints () {
-      return this.$store.state.data;
+      return this.$store.state.endpoints;
     },
     models () {
       return this.$store.state.models;

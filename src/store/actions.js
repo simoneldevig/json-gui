@@ -15,7 +15,7 @@ export default {
   getEndpoints (context) {
     axios.get('http://localhost:8004/db')
       .then(function (response) {
-        context.commit('setData', response);
+        context.commit('setEndpoints', response);
       });
   },
 
