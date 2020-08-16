@@ -21,7 +21,6 @@
       :autosize="{ minRows: 1}"
       @blur="updateModel"
     />
-    <!-- <el-input v-model="inputValue" ref="input" type="textarea" :autosize="{ minRows: 1}" @blur="parseToParent" /> -->
   </div>
 </template>
 

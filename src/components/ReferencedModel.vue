@@ -2,7 +2,7 @@
   <div class="mb2">
     <div class="mb1 flex justify-between items-center">
       <div>
-        <p v-show="!editPropertyName" class="mt0 mb1"><strong>{{ propertyName }}</strong></p>
+        <p class="mt0 mb1"><strong>{{ propertyName }}</strong></p>
         <router-link
           :to="`/models/${propertyName}`"
         >
@@ -31,27 +31,7 @@ export default {
       type: String
     }
   },
-  data () {
-    return {
-      inputValue: '',
-      newPropertyName: '',
-      editPropertyName: false
-    };
-  },
-  created () {
-    this.inputValue = this.model.value;
-    this.newPropertyName = this.propertyName;
-  },
   methods: {
-    parseToParent () {
-      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
-    },
-    editPropName () {
-      this.editPropertyName = !this.editPropertyName;
-      this.$nextTick(() => {
-        this.$refs.propertyName.focus();
-      });
-    },
     deleteProp () {
       this.$emit('delete-property', this.newPropertyName);
     }

@@ -82,7 +82,7 @@
       <div v-for="(property, propertyName) in dataModel[0].value" :key="propertyName">
         <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
         <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
-        <model v-if="property.type === 'model'" :model="property" :property-name="propertyName" @value-changed="setDataModelValue" @delete-property="deleteProperty" />
+        <model v-if="property.type === 'model'" :model="property" :property-name="propertyName" @delete-property="deleteProperty" />
         <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propertyName" @value-changed="setDataModelValue" />
       </div>
     </el-card>
@@ -259,6 +259,7 @@ export default {
     //   return obj;
     // },
     setDataModelValue (changedValueObject) {
+      console.log(changedValueObject)
       if (changedValueObject.propertyName !== changedValueObject.oldPropertyName) {
         this.dataModel = renameObjectKey(this.dataModel, changedValueObject.oldPropertyName, changedValueObject.propertyName);
       }

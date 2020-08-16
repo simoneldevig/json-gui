@@ -52,7 +52,7 @@
                 "value": "faker.random.number()",
                 "id": "edbd4147-1eba-420f-8f70-9f705ba150a0"
               },
-              "headline": {
+              "headlines": {
                 "type": "string",
                 "value": "faker.helpers.randomize(['John Doe', 'Jane Doe', 'Joe Goldenberg'])",
                 "id": "8e467a45-76b4-4c21-94cf-b9ce854415f0"
