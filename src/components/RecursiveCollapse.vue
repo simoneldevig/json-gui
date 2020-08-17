@@ -14,19 +14,19 @@
             </div>
           </div>
           <div class="flex justify-end items-center">
-            <el-popover v-model="stringDialogVisible" placement="bottom" width="400">
+            <el-popover @after-enter="setFocus" v-model="stringDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
-              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="stringDialogVisible = false, addNewProperty('string')" />
+              <el-input v-if="stringDialogVisible" ref="newPropField" v-model="newPropertyName" class="mb2" size="small" @keyup.enter.native="stringDialogVisible = false, addNewProperty('string')" />
 
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="stringDialogVisible = false">Cancel</el-button>
                 <el-button type="primary" size="mini" @click="stringDialogVisible = false, addNewProperty('string')">Add</el-button>
               </div>
-              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default" @click="$refs.newStringProp.focus()">String</el-button>
+              <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">String</el-button>
             </el-popover>
-            <el-popover v-model="numberDialogVisible" placement="bottom" width="400">
+            <el-popover @after-enter="setFocus" v-model="numberDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
-              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="numberDialogVisible = false, addNewProperty('number')" />
+              <el-input v-if="numberDialogVisible" ref="newPropField" v-model="newPropertyName" class="mb2" size="small" @keyup.enter.native="numberDialogVisible = false, addNewProperty('number')" />
 
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="numberDialogVisible = false">Cancel</el-button>
@@ -35,9 +35,9 @@
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Number</el-button>
             </el-popover>
 
-            <el-popover v-model="booleanDialogVisible" placement="bottom" width="400">
+            <el-popover @after-enter="setFocus" v-model="booleanDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
-              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="booleanDialogVisible = false, addNewProperty('boolean')" />
+              <el-input v-if="booleanDialogVisible" ref="newPropField" v-model="newPropertyName" class="mb2" size="small" @keyup.enter.native="booleanDialogVisible = false, addNewProperty('boolean')" />
 
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="booleanDialogVisible = false">Cancel</el-button>
@@ -46,9 +46,9 @@
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Boolean</el-button>
             </el-popover>
 
-            <el-popover v-model="objectDialogVisible" placement="bottom" width="400">
+            <el-popover @after-enter="setFocus" v-model="objectDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
-              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="objectDialogVisible = false, addNewProperty('object')" />
+              <el-input v-if="objectDialogVisible" ref="newPropField" v-model="newPropertyName" class="mb2" size="small" @keyup.enter.native="objectDialogVisible = false, addNewProperty('object')" />
 
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="objectDialogVisible = false">Cancel</el-button>
@@ -57,9 +57,9 @@
               <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">Object</el-button>
             </el-popover>
 
-            <el-popover v-model="arrayDialogVisible" placement="bottom" width="400">
+            <el-popover @after-enter="setFocus" v-model="arrayDialogVisible" placement="bottom" width="400">
               <p class="mt0 mb1"><strong>Property name?</strong></p>
-              <el-input ref="newStringProp" v-model="newPropertyName" class="mb2" size="small" @keyup.enter="arrayDialogVisible = false, addNewProperty('array')" />
+              <el-input v-if="arrayDialogVisible" ref="newPropField" v-model="newPropertyName" class="mb2" size="small" @keyup.enter.native="arrayDialogVisible = false, addNewProperty('array')" />
 
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="arrayDialogVisible = false">Cancel</el-button>
@@ -107,7 +107,7 @@ export default {
     data: {
       default: null,
       requirred: true,
-      type: Array
+      type: [Array, Object]
     },
     id: {
       default: null,
@@ -168,28 +168,35 @@ export default {
       this.setCurrentModel(this.dataModel);
     },
     addNewProperty (type, value) {
-      let newProperty = {};
-      newProperty.type = type;
-      newProperty.id = generateGuid();
+      let newProperty;
+      if (type !== 'object' && type !== 'array') {
+        newProperty = {};
+        newProperty.type = type;
+        newProperty.id = generateGuid();
 
-      switch (type) {
-        case 'string':
-          newProperty.value = '';
-          break;
-        case 'number':
-          newProperty.value = 0;
-          break;
-        case 'boolean':
-          newProperty.value = false;
-          break;
-        case 'model':
-          newProperty.value = value;
-          break;
-        case 'object':
-          newProperty.value = {
-            timesToRepeat: 1
-          };
-          break;
+        switch (type) {
+          case 'string':
+            newProperty.value = '';
+            break;
+          case 'number':
+            newProperty.value = 0;
+            break;
+          case 'boolean':
+            newProperty.value = false;
+            break;
+          case 'model':
+            newProperty.value = value;
+            break;
+        }
+      } else {
+        newProperty = [];
+        let newPropertyObject = {};
+        newPropertyObject.type = type;
+        newPropertyObject.id = generateGuid();
+        newPropertyObject.value = {
+          timesToRepeat: 1
+        };
+        newProperty.push(newPropertyObject);
       }
 
       Object.assign(this.dataModel[0].value, {[this.newPropertyName]: newProperty});
@@ -200,6 +207,9 @@ export default {
       this.newPropertyName = this.modelToImport;
       this.addNewProperty('model', this.models[this.modelToImport][0].id);
       this.modelToImport = null;
+    },
+    setFocus () {
+      this.$refs.newPropField.focus();
     },
     // saveNewProperty () {
     //   console.log(this.propertyValuesDialogData);
