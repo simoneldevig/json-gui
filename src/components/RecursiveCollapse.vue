@@ -22,11 +22,11 @@
               <el-input-number v-model="dataModel[0].timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
             </div>
             <div>
-              <AddProperty type="string" @addProperty="addNewProperty" />
-              <AddProperty type="number" @addProperty="addNewProperty" />
-              <AddProperty type="boolean" @addProperty="addNewProperty" />
-              <AddProperty type="object" @addProperty="addNewProperty" />
-              <AddProperty type="array" @addProperty="addNewProperty" />
+              <add-property type="string" @addProperty="addNewProperty" />
+              <add-property type="number" @addProperty="addNewProperty" />
+              <add-property type="boolean" @addProperty="addNewProperty" />
+              <add-property type="object" @addProperty="addNewProperty" />
+              <add-property type="array" @addProperty="addNewProperty" />
               <el-select v-if="isEndpoint && models" v-model="modelToImport" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
                 <el-option
                   v-for="(item, index) in Object.keys(models)"
@@ -53,7 +53,7 @@
 import string from '@/components/BaseStringInput';
 import boolean from '@/components/BaseBooleanInput';
 import model from '@/components/ReferencedModel';
-import AddProperty from '@/components/AddProperty';
+import addProperty from '@/components/AddProperty';
 import { renameObjectKey, generateGuid } from '@/utils';
 import { mapMutations } from 'vuex';
 
@@ -63,7 +63,7 @@ export default {
     string,
     model,
     boolean,
-    AddProperty
+    addProperty
   },
   props: {
     data: {
