@@ -13,7 +13,7 @@
             </div>
             <div v-if="isSubChild">
               <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
-              <!-- <el-button class="ml1" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" /> -->
+              <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
             </div>
           </div>
           <div class="flex justify-between items-center">
@@ -300,9 +300,10 @@ export default {
       this.setModel();
       // this.updateDataContentToDataModel(this.dataModel);
     },
-    deleteProperty (propertyName) {
-      delete this.dataModel[propertyName];
-      // this.updateDataContentToDataModel(this.dataModel);
+    deleteProp () {
+      this.$store.dispatch('deleteModelProperty', {
+        id: this.dataModel.id
+      });
     }
   }
 };
