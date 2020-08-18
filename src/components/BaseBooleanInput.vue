@@ -10,9 +10,9 @@
         <el-button class="ml1" type="danger" size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
-    <el-radio v-model="inputValue" :value="true" :label="true" class="mr1" size="small" border @change="parseToParent">true</el-radio>
-    <el-radio v-model="inputValue" :value="false" :label="false" class="mr1" size="small" border @change="parseToParent">false</el-radio>
-    <el-radio v-model="inputValue" :value="'random'" :label="'random'" class="mr1" size="small" border @change="parseToParent">random</el-radio>
+    <el-radio v-model="objectModel.value" :value="true" :label="true" class="mr1" size="small" border @change="updateModel">true</el-radio>
+    <el-radio v-model="objectModel.value" :value="false" :label="false" class="mr1" size="small" border @change="updateModel">false</el-radio>
+    <el-radio v-model="objectModel.value" :value="'random'" :label="'random'" class="mr1" size="small" border @change="updateModel">random</el-radio>
   </div>
 </template>
 
@@ -33,18 +33,21 @@ export default {
   },
   data () {
     return {
-      inputValue: '',
       newPropertyName: '',
       editPropertyName: false
     };
   },
   created () {
-    this.inputValue = this.model.value;
+    this.objectModel = this.model;
     this.newPropertyName = this.propertyName;
   },
   methods: {
-    parseToParent () {
-      this.$emit('value-changed', {propertyName: this.newPropertyName, oldPropertyName: this.propertyName, value: this.inputValue});
+    updateModel () {
+      this.$store.dispatch('updateModelProperty', {
+        propertyName: this.newPropertyName,
+        oldPropertyName: this.propertyName, 
+        value: this.objectModel
+      });
     },
     editPropName () {
       this.editPropertyName = true;

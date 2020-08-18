@@ -45,7 +45,6 @@ export default {
   },
   data () {
     return {
-      inputValue: '',
       objectModel: {},
       newPropertyName: '',
       editPropertyName: false,
