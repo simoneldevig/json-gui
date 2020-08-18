@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <div>
-        <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="deleteProp" />
+        <el-button class="property-action" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
   </div>

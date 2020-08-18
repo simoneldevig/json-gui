@@ -11,3 +11,11 @@
 .w-100 {
   width: 100%;
 }
+
+.property-action {
+  opacity: 0.4;
+
+  &:hover {
+    opacity: 1;
+  }
+}

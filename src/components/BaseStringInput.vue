@@ -6,8 +6,8 @@
         <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="updateModel" @blur="editPropertyName = false" />
       </div>
       <div>
-        <el-button class="ml1" type="warning" size="mini" icon="el-icon-edit" circle @click="editPropName" />
-        <el-button class="ml1" type="danger" size="mini" icon="el-icon-delete" circle @click="deleteProp" />
+        <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
+        <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
     <el-autocomplete

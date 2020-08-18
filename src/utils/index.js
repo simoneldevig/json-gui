@@ -10,8 +10,9 @@ const renameObjectKey = (oldObject, oldKey, newKey) => {
       acc[val] = oldObject[val];
     }
 
-    if (Array.isArray(oldObject[val])) {
+    if (Array.isArray(oldObject[val]) && oldObject[val][0].type !== 'array' ) {
       let clonedObject = Vue.prototype.$lodash.cloneDeep(acc[val][0].value);
+
       acc[val][0].value = renameObjectKey(clonedObject, oldKey, newKey);
     }
 
@@ -22,6 +23,10 @@ const renameObjectKey = (oldObject, oldKey, newKey) => {
 };
 
 const setObjectValue = (obj, newObj) => {
+  if (Array.isArray(newObj)) {
+    newObj = newObj[0];
+  }
+
   if (typeof obj === 'object') {
     for (const key in obj) {
       if (typeof obj[key] === "object") {
