@@ -31,7 +31,7 @@ export default {
 
   deleteModelProperty (context, props) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    clonedObject = deleteObject(clonedObject, props.obj);
+    clonedObject = deleteObject(clonedObject, props.id);
     context.commit('setCurrentModel', clonedObject);
   },
 

@@ -104,7 +104,7 @@ export default {
     },
     deleteProp () {
       this.$store.dispatch('deleteModelProperty', {
-        obj: this.objectModel
+        id: this.model.id
       });
     }
   }

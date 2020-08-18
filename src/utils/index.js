@@ -24,7 +24,7 @@ const renameObjectKey = (oldObject, oldKey, newKey) => {
 const setObjectValue = (obj, newObj) => {
   if (typeof obj === 'object') {
     for (const key in obj) {
-      if (typeof obj[key] == "object") {
+      if (typeof obj[key] === "object") {
         setObjectValue(obj[key], newObj);
       } else if (key === 'value' && obj.id === newObj.id) {
         obj[key] = newObj.value;
@@ -34,12 +34,14 @@ const setObjectValue = (obj, newObj) => {
   return obj;
 };
 
-const deleteObject = (obj, objToDelete) => {
+const deleteObject = (obj, idToDelete) => {
   if (typeof obj === 'object') {
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
-        if (typeof obj[key] == "object" && obj[key].id === objToDelete.id) {
+        if (typeof obj[key] === "object" && obj[key].id === idToDelete) {
           delete obj[key];
+        } else {
+          deleteObject(obj[key], idToDelete);
         }
       }
     }

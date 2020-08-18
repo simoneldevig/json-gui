@@ -23,17 +23,23 @@ export default {
   name: 'ReferencedModel',
   props: {
     model: {
+      default () {
+        return {};
+      },
       requirred: true,
       type: Object
     },
     propertyName: {
+      default: '',
       requirred: true,
       type: String
     }
   },
   methods: {
     deleteProp () {
-      this.$emit('delete-property', this.newPropertyName);
+      this.$store.dispatch('deleteModelProperty', {
+        id: this.model.id
+      });
     }
   }
 };

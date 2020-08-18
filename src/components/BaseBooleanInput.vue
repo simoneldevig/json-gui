@@ -53,7 +53,9 @@ export default {
       });
     },
     deleteProp () {
-      this.$emit('delete-property', this.newPropertyName);
+      this.$store.dispatch('deleteModelProperty', {
+        id: this.model.id
+      });
     }
   }
 };
