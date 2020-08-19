@@ -1,15 +1,23 @@
 {
-	"post": [
-		{
-			"type": "object",
-			"id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
-			"value": {
-				"id": {
-					"type": "boolean",
-					"value": "random",
-					"id": "b232e21a-4cd4-48ce-9753-c48fb94e74b8"
-				}
-			}
-		}
-	]
+  "terser": {
+    "timesToRepeat": 1
+  },
+  "post": [
+    {
+      "type": "object",
+      "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
+      "value": {
+        "id": {
+          "type": "boolean",
+          "value": "random",
+          "id": "b232e21a-4cd4-48ce-9753-c48fb94e74b8"
+        },
+        "egegegg": {
+          "type": "string",
+          "id": "d60109c5-bca4-4c7e-b4eb-5de01a4c1655",
+          "value": ""
+        }
+      }
+    }
+  ]
 }

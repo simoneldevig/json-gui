@@ -13,6 +13,14 @@
 }
 
 .property {
+  padding: 10px 15px 20px;
+  background: #f9f9f9;
+  border-radius: 5px;
+
+  &--no-background {
+    padding: 0;
+    background: none;
+  }
 
   &__actions {
     opacity: 0;

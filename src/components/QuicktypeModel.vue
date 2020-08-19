@@ -67,7 +67,7 @@ export default {
             delete obj[key];
           } else {
             if (obj[key].type === 'model') {
-              const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(this.models)[0].find(x => x.id === obj[key].value));
+              const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(this.models).find(x => Array.isArray(x)).find(x => x.id === obj[key].value));
               const remappedValues = this.cleanModel(referencedModel.value);
               delete obj[key];
               obj[key] = remappedValues;

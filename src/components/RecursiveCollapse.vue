@@ -2,7 +2,7 @@
   <div v-if="dataModel[0]">
     <el-card class="box-card mb2">
       <template slot="header">
-        <div class="property">
+        <div class="property property--no-background">
           <div class="flex justify-between items-center mb1 drag-handle">
             <div>
               <div v-if="isSubChild">
@@ -16,7 +16,7 @@
               <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
             </div>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex jitems-center" :class="isEndpoint ? 'justify-between' : 'justify-end'">
             <div v-if="isEndpoint"> 
               <span class="pr1"><small>Repeat</small></span>
               <el-input-number v-model="dataModel[0].timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
