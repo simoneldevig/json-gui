@@ -1,7 +1,7 @@
 @import "../node_modules/basscss/css/basscss-important.min.css";
 
 .bg-light-gray {
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .text-capitalize {
@@ -12,10 +12,24 @@
   width: 100%;
 }
 
-.property-action {
-  opacity: 0.4;
+.property {
+
+  &__actions {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
 
   &:hover {
-    opacity: 1;
+    .property__actions {
+      opacity: 1;
+    }
   }
+}
+
+.drag-handle {
+  cursor: move;
+}
+
+.el-autocomplete-suggestion {
+  position: absolute;
 }

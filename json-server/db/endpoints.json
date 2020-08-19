@@ -11,35 +11,40 @@
       "timesToRepeat": 100,
       "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
       "value": {
+        "text": {
+          "type": "string",
+          "value": "faker.lorem.sentence()",
+          "id": "b7aa912d-0bc7-4fa2-b1ad-2a86dab60488"
+        },
         "id": {
           "type": "number",
           "value": "faker.random.number()",
           "id": "360b953a-dda9-4a1e-9a57-3537d1f2b815"
-        },
-        "title": {
-          "type": "string",
-          "value": "faker.random.word()",
-          "id": "fc7ef177-ef18-442e-b01b-9d3fc81c3ff2"
         },
         "author": {
           "type": "string",
           "value": "faker.name.findName()",
           "id": "5273c7fa-8c8a-4b20-844f-22052c5ba036"
         },
+        "title": {
+          "type": "string",
+          "value": "faker.random.word()",
+          "id": "fc7ef177-ef18-442e-b01b-9d3fc81c3ff2"
+        },
         "publishDate": {
           "type": "string",
           "value": "faker.date.past()",
           "id": "52078018-112b-496f-a103-95e32eb82b07"
         },
-        "text": {
-          "type": "string",
-          "value": "faker.lorem.sentence()",
-          "id": "b7aa912d-0bc7-4fa2-b1ad-2a86dab60488"
-        },
         "isVisible": {
           "type": "boolean",
           "value": "random",
           "id": "b232e21a-4cd4-48ce-9753-c48fb94e74b8"
+        },
+        "post": {
+          "type": "model",
+          "id": "a77a48d2-cb50-47f8-b648-5b49126a5c62",
+          "value": "360b953a-dda9-4a1e-9a57-3537d1g2b815"
         },
         "relatedPosts": [
           {
@@ -81,20 +86,10 @@
                 "type": "string",
                 "value": "#",
                 "id": "70746fea-d5d8-47f8-9a7f-d4c832206f09"
-              },
-              "post": {
-                "type": "model",
-                "id": "bc56f8d3-88bd-438d-8a22-b2acaec7a230",
-                "value": "360b953a-dda9-4a1e-9a57-3537d1g2b815"
               }
             }
           }
-        ],
-        "post": {
-          "type": "model",
-          "id": "a77a48d2-cb50-47f8-b648-5b49126a5c62",
-          "value": "360b953a-dda9-4a1e-9a57-3537d1g2b815"
-        }
+        ]
       }
     }
   ]

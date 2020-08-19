@@ -1,6 +1,6 @@
 <template>
-  <div class="mb2">
-    <div class="mb1 flex justify-between items-center">
+  <div class="mb2 property">
+    <div class="mb1 flex justify-between items-center drag-handle">
       <div>
         <p class="mt0 mb1"><strong>{{ propertyName }}</strong></p>
         <router-link
@@ -11,8 +11,8 @@
           </el-button>
         </router-link>
       </div>
-      <div>
-        <el-button class="property-action" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
+      <div class="property__actions">
+        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
   </div>

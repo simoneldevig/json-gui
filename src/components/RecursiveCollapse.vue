@@ -2,8 +2,8 @@
   <div v-if="dataModel[0]">
     <el-card class="box-card mb2">
       <template slot="header">
-        <div>
-          <div class="flex justify-between items-center mb1">
+        <div class="property">
+          <div class="flex justify-between items-center mb1 drag-handle">
             <div>
               <div v-if="isSubChild">
                 <p v-show="!editPropertyName" class="mt0 mb0"><strong>{{ propertyName }}</strong></p>
@@ -11,9 +11,9 @@
               </div>
               <p v-else class="mt0 mb0"><strong>{{ id }}</strong></p>
             </div>
-            <div v-if="isSubChild">
-              <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
-              <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
+            <div v-if="isSubChild" class="property__actions">
+              <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
+              <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
             </div>
           </div>
           <div class="flex justify-between items-center">
@@ -39,12 +39,14 @@
           </div>
         </div>
       </template>
-      <div v-for="(property, propName) in dataModel[0].value" :key="propName">
-        <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
-        <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
-        <model v-if="property.type === 'model'" :model="property" :property-name="propName" />
-        <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
-      </div>
+      <draggable v-model="sortable" handle=".drag-handle" @start="drag=true" @end="drag=false">
+        <div v-for="(property, propName) in dataModel[0].value" :key="propName">
+          <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
+          <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
+          <model v-if="property.type === 'model'" :model="property" :property-name="propName" />
+          <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
+        </div>
+      </draggable>
     </el-card>
   </div>
 </template>
@@ -56,6 +58,8 @@ import model from '@/components/ReferencedModel';
 import addProperty from '@/components/AddProperty';
 import { renameObjectKey, generateGuid } from '@/utils';
 import { mapMutations } from 'vuex';
+import draggable from 'vuedraggable';
+
 
 export default {
   name: 'RecursiveCollapse',
@@ -63,7 +67,8 @@ export default {
     string,
     model,
     boolean,
-    addProperty
+    addProperty,
+    draggable
   },
   props: {
     data: {
@@ -113,6 +118,16 @@ export default {
     },
     models () {
       return this.$store.state.models;
+    },
+    sortable: {
+      get: function () {
+        // Convert value object to array for making it sortabel
+        return Object.entries(this.dataModel[0].value);
+      },
+      set: function (value) {
+        // Convert sorted valye array back to object
+        this.dataModel[0].value = Object.fromEntries(value);
+      }
     }
   },
   watch: {
@@ -125,6 +140,15 @@ export default {
     this.dataModel = this.data;
   },
   methods: {
+    convertArrayToObject (array) {
+      const initialValue = {};
+      return array.reduce((obj, item, index) => {
+        return {
+          ...obj,
+          [item[index]]: item,
+        };
+      }, initialValue);
+    },
     ...mapMutations([
       'setCurrentModel'
     ]),

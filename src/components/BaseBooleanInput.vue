@@ -1,13 +1,13 @@
 <template>
-  <div class="mb2">
-    <div class="mb1 flex justify-between items-center">
+  <div class="mb2 property">
+    <div class="mb1 flex justify-between items-center drag-handle">
       <div>
         <p v-show="!editPropertyName" class="mt0 mb0"><strong>{{ propertyName }}</strong></p>
         <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @blur="editPropertyName = false" />
       </div>
-      <div>
-        <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
-        <el-button class="ml1 property-action" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
+      <div class="property__actions">
+        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
+        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
       </div>
     </div>
     <el-radio v-model="objectModel.value" :value="true" :label="true" class="mr1" size="small" border @change="updateModel">true</el-radio>
