@@ -1,15 +1,7 @@
 <template>
   <div class="mb2 property">
-    <div class="mb1 flex justify-between items-center drag-handle">
-      <div>
-        <p v-show="!editPropertyName" class="mt0 mb0"><strong>{{ propertyName }}</strong></p>
-        <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @blur="editPropertyName = false" />
-      </div>
-      <div class="property__actions">
-        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
-        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
-      </div>
-    </div>
+    <PropertyEditor :propertyName="propertyName" :model="model" />
+
     <el-radio v-model="objectModel.value" :value="true" :label="true" class="mr1" size="small" border @change="updateModel">true</el-radio>
     <el-radio v-model="objectModel.value" :value="false" :label="false" class="mr1" size="small" border @change="updateModel">false</el-radio>
     <el-radio v-model="objectModel.value" :value="'random'" :label="'random'" class="mr1" size="small" border @change="updateModel">random</el-radio>
@@ -17,8 +9,13 @@
 </template>
 
 <script>
+import PropertyEditor from '@/components/PropertyEditor.vue';
+
 export default {
   name: 'BooleanInput',
+  components: {
+    PropertyEditor
+  },
   props: {
     model: {
       default: null,
@@ -33,18 +30,16 @@ export default {
   },
   data () {
     return {
-      newPropertyName: '',
       editPropertyName: false
     };
   },
   created () {
     this.objectModel = this.model;
-    this.newPropertyName = this.propertyName;
   },
   methods: {
     updateModel () {
       this.$store.dispatch('updateModelProperty', {
-        propertyName: this.newPropertyName,
+        propertyName: this.propertyName,
         oldPropertyName: this.propertyName, 
         value: this.objectModel
       });

@@ -1,15 +1,6 @@
 <template>
   <div class="mb2 property">
-    <div class="mb1 flex justify-between items-center drag-handle">
-      <div>
-        <p v-show="!editPropertyName" class="mt0 mb0"><strong>{{ propertyName }}</strong></p>
-        <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="updateModel" @blur="editPropertyName = false" />
-      </div>
-      <div class="property__actions">
-        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-edit" circle @click="editPropName" />
-        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
-      </div>
-    </div>
+    <PropertyEditor :propertyName="propertyName" :model="model" />
     <el-autocomplete
       ref="input"
       v-model="objectModel.value"
@@ -19,16 +10,21 @@
       :fetch-suggestions="querySearch"
       type="textarea"
       :autosize="{ minRows: 1}"
+      :popper-append-to-body="false"
       @blur="updateModel"
     />
   </div>
 </template>
 
 <script>
-const faker = require('faker');
+import faker from 'faker';
+import PropertyEditor from '@/components/PropertyEditor.vue';
 
 export default {
   name: 'BaseStringInput',
+  components: {
+    PropertyEditor
+  },
   props: {
     model: {
       default () {
@@ -46,14 +42,11 @@ export default {
   data () {
     return {
       objectModel: {},
-      newPropertyName: '',
-      editPropertyName: false,
       fakerList: []
     };
   },
   created () {
     this.objectModel = this.model;
-    this.newPropertyName = this.propertyName;
     this.generateFakerList();
   },
   methods: {
@@ -90,20 +83,9 @@ export default {
     },
     updateModel () {
       this.$store.dispatch('updateModelProperty', {
-        propertyName: this.newPropertyName,
+        propertyName: this.propertyName,
         oldPropertyName: this.propertyName, 
         value: this.objectModel
-      });
-    },
-    editPropName () {
-      this.editPropertyName = !this.editPropertyName;
-      this.$nextTick(() => {
-        this.$refs.propertyName.focus();
-      });
-    },
-    deleteProp () {
-      this.$store.dispatch('deleteModelProperty', {
-        id: this.model.id
       });
     }
   }

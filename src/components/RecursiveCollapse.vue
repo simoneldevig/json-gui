@@ -16,8 +16,8 @@
               <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
             </div>
           </div>
-          <div class="flex jitems-center" :class="isEndpoint ? 'justify-between' : 'justify-end'">
-            <div v-if="isEndpoint"> 
+          <div class="flex jitems-center" :class="isEndpoint && dataModel[0].type !== 'object' ? 'justify-between' : 'justify-end'">
+            <div v-if="isEndpoint && dataModel[0].type !== 'object'"> 
               <span class="pr1"><small>Repeat</small></span>
               <el-input-number v-model="dataModel[0].timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
             </div>
@@ -56,7 +56,7 @@ import string from '@/components/BaseStringInput';
 import boolean from '@/components/BaseBooleanInput';
 import model from '@/components/ReferencedModel';
 import addProperty from '@/components/AddProperty';
-import { renameObjectKey, generateGuid } from '@/utils';
+import { renameObjectKey, generateGuid, addToObject } from '@/utils';
 import { mapMutations } from 'vuex';
 import draggable from 'vuedraggable';
 
@@ -163,6 +163,7 @@ export default {
     },
     addNewProperty (type, value) {
       let newProperty;
+      let propertyName = value;
       if (type !== 'object' && type !== 'array') {
         newProperty = {};
         newProperty.type = type;
@@ -179,22 +180,24 @@ export default {
             newProperty.value = false;
             break;
           case 'model':
+            propertyName = this.modelToImport;
             newProperty.value = value;
             break;
         }
       } else {
+        // Handle objects and arrays
         newProperty = [];
-        let newPropertyObject = {};
+        let newPropertyObject = {
+          value: {}
+        };
         newPropertyObject.type = type;
         newPropertyObject.id = generateGuid();
-        newPropertyObject.value = {
-          timesToRepeat: 1
-        };
+        newPropertyObject.timesToRepeat = 1;
         newProperty.push(newPropertyObject);
       }
+
       const clonedObject = this.$lodash.cloneDeep(this.dataModel[0].value);
-      Object.assign(clonedObject, {[value]: newProperty});
-      this.dataModel[0].value = clonedObject;
+      this.dataModel[0].value = addToObject(clonedObject, propertyName, newProperty, 0);
     },
     importModel () {
       this.newPropertyName = this.modelToImport;

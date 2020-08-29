@@ -1,26 +1,25 @@
 <template>
   <div class="mb2 property">
-    <div class="mb1 flex justify-between items-center drag-handle">
-      <div>
-        <p class="mt0 mb1"><strong>{{ propertyName }}</strong></p>
-        <router-link
+    <PropertyEditor :propertyName="propertyName" :model="model" :hidePropertyEdit="true" />
+
+    <router-link
           :to="`/models/${propertyName}`"
         >
           <el-button class="py1">
             Open up model...
           </el-button>
         </router-link>
-      </div>
-      <div class="property__actions">
-        <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import PropertyEditor from '@/components/PropertyEditor.vue';
+
 export default {
   name: 'ReferencedModel',
+  components: {
+    PropertyEditor
+  },
   props: {
     model: {
       default () {
