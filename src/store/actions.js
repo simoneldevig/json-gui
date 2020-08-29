@@ -1,7 +1,7 @@
 import axios from 'axios';
 import router from '../router';
 import { renameObjectKey, setObjectValue, deleteObject } from '@/utils';
-import { generateFakerValues } from '@/utils/faker';
+import { generateFakerValues } from '@/services/faker';
 import Vue from 'vue';
 const serverPorts = require('../../portMapping');
 
