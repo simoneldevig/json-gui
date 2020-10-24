@@ -4,7 +4,12 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": [ "esnext", "esnext.asynciterable", "dom" ],
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "esnext",
+      "esnext.asynciterable",
+      "dom"
+    ],
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
@@ -12,10 +17,15 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [ "./*" ],
-      "@/*": [ "./*" ]
-    },
-    "types": [ "@types/node" ]
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
+    }
   },
-  "exclude": [ "node_modules" ]
+  "exclude": [
+    "node_modules"
+  ]
 }
