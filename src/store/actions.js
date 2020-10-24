@@ -83,23 +83,22 @@ export default {
   saveAndGenerate( context, props ) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep( context.state.currentModel );
     clonedObject = generateFakerValues( clonedObject, clonedObject.timesToRepeat );
-    console.log( clonedObject );
-    // axios( {
-    //   method: 'delete',
-    //   headers: {
-    //     'content-type': 'application/json; charset=utf-8'
-    //   },
-    //   url: 'http://localhost:8000/' + props.id
-    // } ).then( function () {
-    //   axios( {
-    //     method: 'post',
-    //     headers: {
-    //       'content-type': 'application/json; charset=utf-8'
-    //     },
-    //     url: 'http://localhost:8000/' + props.id,
-    //     data: clonedObject
-    //   } );
-    // } );
+    axios( {
+      method: 'delete',
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
+      url: 'http://localhost:8000/' + props.id
+    } ).then( function () {
+      axios( {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json; charset=utf-8'
+        },
+        url: 'http://localhost:8000/' + props.id,
+        data: clonedObject
+      } );
+    } );
   },
 
   updateEntry( context, props ) {
