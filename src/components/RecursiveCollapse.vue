@@ -1,5 +1,5 @@
 <template>
-  <div v-if="dataModel[0]">
+  <div v-if="dataModel">
     <el-card class="box-card mb2">
       <template slot="header">
         <div class="property property--no-background">
@@ -16,10 +16,10 @@
               <el-button class="ml1 property__actions--btn" type="primary" plain size="mini" icon="el-icon-delete" circle @click="deleteProp" />
             </div>
           </div>
-          <div class="flex jitems-center" :class="isEndpoint && dataModel[0].type !== 'object' ? 'justify-between' : 'justify-end'">
-            <div v-if="isEndpoint && dataModel[0].type !== 'object'"> 
+          <div class="flex jitems-center" :class="isEndpoint && dataModel.type !== 'object' ? 'justify-between' : 'justify-end'">
+            <div v-if="isEndpoint && dataModel.type !== 'object'"> 
               <span class="pr1"><small>Repeat</small></span>
-              <el-input-number v-model="dataModel[0].timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
+              <el-input-number v-model="dataModel.timesToRepeat" size="mini" controls-position="right" :min="1" @change="setModel" />
             </div>
             <div>
               <add-property type="string" @addProperty="addNewProperty" />
@@ -40,11 +40,11 @@
         </div>
       </template>
       <draggable v-model="sortable" handle=".drag-handle" @start="drag=true" @end="drag=false">
-        <div v-for="(property, propName) in dataModel[0].value" :key="propName">
+        <div v-for="(property, propName) in dataModel.value" :key="propName">
           <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
           <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
           <model v-if="property.type === 'model'" :model="property" :property-name="propName" />
-          <recursive-collapse v-if="Array.isArray(property) && property[0].type === 'object' || Array.isArray(property) && property[0].type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
+          <recursive-collapse v-if="property.type === 'object' || property.type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
         </div>
       </draggable>
     </el-card>
@@ -74,7 +74,7 @@ export default {
     data: {
       default: null,
       requirred: true,
-      type: [Array, Object]
+      type: [Object]
     },
     id: {
       default: null,
@@ -122,11 +122,11 @@ export default {
     sortable: {
       get: function () {
         // Convert value object to array for making it sortabel
-        return Object.entries(this.dataModel[0].value);
+        return this.dataModel.value ? Object.entries(this.dataModel.value) : [];
       },
       set: function (value) {
         // Convert sorted valye array back to object
-        this.dataModel[0].value = Object.fromEntries(value);
+        this.dataModel.value = Object.fromEntries(value);
       }
     }
   },
@@ -196,12 +196,12 @@ export default {
         newProperty.push(newPropertyObject);
       }
 
-      const clonedObject = this.$lodash.cloneDeep(this.dataModel[0].value);
-      this.dataModel[0].value = addToObject(clonedObject, propertyName, newProperty, 0);
+      const clonedObject = this.$lodash.cloneDeep(this.dataModel.value);
+      this.dataModel.value = addToObject(clonedObject, propertyName, newProperty, 0);
     },
     importModel () {
       this.newPropertyName = this.modelToImport;
-      this.addNewProperty('model', this.models[this.modelToImport][0].id);
+      this.addNewProperty('model', this.models[this.modelToImport].id);
       this.modelToImport = null;
     },
     // saveNewProperty () {

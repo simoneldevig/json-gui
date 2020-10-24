@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     currentModel () {
-      return this.$store.getters['getCurrentModel'][0] ? this.$store.getters['getCurrentModel'][0].value : {};
+      return this.$store.getters['getCurrentModel'] ? this.$store.getters['getCurrentModel'].value : {};
     },
     models () {
       return this.$store.state.models;
@@ -67,14 +67,14 @@ export default {
             delete obj[key];
           } else {
             if (obj[key].type === 'model') {
-              const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(this.models).find(x => Array.isArray(x)).find(x => x.id === obj[key].value));
+              const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(this.models).find(x => x.id === obj[key].value));
               const remappedValues = this.cleanModel(referencedModel.value);
               delete obj[key];
               obj[key] = remappedValues;
             }
             
-            if (Array.isArray(obj[key]) && obj[key][0].type === 'object' || Array.isArray(obj[key]) && obj[key][0].type === 'array') {
-              const remappedValues = this.cleanModel(obj[key][0].value);
+            if (obj[key].type === 'object' || obj[key].type === 'array') {
+              const remappedValues = this.cleanModel(obj[key].value);
               delete obj[key];
               obj[key] = remappedValues;
             }

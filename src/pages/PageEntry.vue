@@ -110,7 +110,7 @@ export default {
       }
     },
     saveAndGenerate () {
-      this.save();
+      // this.save();
       this.$store.dispatch('saveAndGenerate', {
         id: this.id,
       });

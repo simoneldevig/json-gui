@@ -1,103 +1,125 @@
 import axios from 'axios';
 import router from '../router';
-import { renameObjectKey, setObjectValue, deleteObject } from '@/utils';
-import { generateFakerValues } from '@/services/faker';
+import {
+  renameObjectKey,
+  setObjectValue,
+  deleteObject
+} from '@/utils';
+import {
+  generateFakerValues
+} from '@/services/faker';
 import Vue from 'vue';
-const serverPorts = require('../../portMapping');
+const serverPorts = require( '../../portMapping' );
 
 export default {
-  getModels (context) {
-    axios.get('http://localhost:8002/db')
-      .then(function (response) {
-        context.commit('setModels', response);
-      });
-  },
-  
-  getEndpoints (context) {
-    axios.get('http://localhost:8004/db')
-      .then(function (response) {
-        context.commit('setEndpoints', response);
-      });
+  getModels( context ) {
+    axios.get( 'http://localhost:8002/db' )
+      .then( function ( response ) {
+        context.commit( 'setModels', response );
+      } );
   },
 
-  updateModelProperty (context, props) {
-    let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    if (props.propertyName !== props.oldPropertyName) {
-      clonedObject[0].value = renameObjectKey(clonedObject[0].value, props.oldPropertyName, props.propertyName);
+  getEndpoints( context ) {
+    axios.get( 'http://localhost:8004/db' )
+      .then( function ( response ) {
+        context.commit( 'setEndpoints', response );
+      } );
+  },
+
+  updateModelProperty( context, props ) {
+    let clonedObject = Vue.prototype.$lodash.cloneDeep( context.state.currentModel );
+    if ( props.propertyName !== props.oldPropertyName ) {
+      clonedObject.value = renameObjectKey( clonedObject.value, props.oldPropertyName, props.propertyName );
     }
-    clonedObject = setObjectValue(clonedObject, props.value);
-    context.commit('setCurrentModel', clonedObject);
+    clonedObject = setObjectValue( clonedObject, props.value );
+    context.commit( 'setCurrentModel', clonedObject );
   },
 
-  deleteModelProperty (context, props) {
-    let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    clonedObject = deleteObject(clonedObject, props.id);
-    context.commit('setCurrentModel', clonedObject);
+  deleteModelProperty( context, props ) {
+    let clonedObject = Vue.prototype.$lodash.cloneDeep( context.state.currentModel );
+    clonedObject = deleteObject( clonedObject, props.id );
+    context.commit( 'setCurrentModel', clonedObject );
   },
 
-  createNewRoute (context, props) {
-    axios({
+  createNewRoute( context, props ) {
+    axios( {
       method: 'post',
-      headers: { 'content-type': 'application/json; charset=utf-8' },
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
       url: 'http://localhost:8002/' + props
-    }).then(function (response) {
-      context.dispatch('getModels').then(function () {
-        router.push({ path: props });
-      });
-    });
+    } ).then( function ( response ) {
+      context.dispatch( 'getModels' ).then( function () {
+        router.push( {
+          path: props
+        } );
+      } );
+    } );
   },
 
-  async saveData (context, props) {
-    const port = serverPorts[props.type];
+  async saveData( context, props ) {
+    const port = serverPorts[ props.type ];
 
-    await axios({
+    await axios( {
       method: 'delete',
-      headers: { 'content-type': 'application/json; charset=utf-8' },
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
       url: `http://localhost:${port}/${props.id}`
-    }).then(function () {
-      axios({
+    } ).then( function () {
+      axios( {
         method: 'post',
-        headers: { 'content-type': 'application/json; charset=utf-8' },
+        headers: {
+          'content-type': 'application/json; charset=utf-8'
+        },
         url: `http://localhost:${port}/${props.id}`,
         data: context.state.currentModel
-      }).then(function () {
-        context.dispatch('getModels');
-      });
-    });
+      } ).then( function () {
+        context.dispatch( 'getModels' );
+      } );
+    } );
   },
 
-  saveAndGenerate (context, props) {
-    let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    clonedObject = generateFakerValues(clonedObject, clonedObject[0].timesToRepeat);
-
-    axios({
-      method: 'delete',
-      headers: { 'content-type': 'application/json; charset=utf-8' },
-      url: 'http://localhost:8000/' + props.id
-    }).then(function () {
-      axios({
-        method: 'post',
-        headers: { 'content-type': 'application/json; charset=utf-8' },
-        url: 'http://localhost:8000/' + props.id,
-        data: clonedObject
-      });
-    });
+  saveAndGenerate( context, props ) {
+    let clonedObject = Vue.prototype.$lodash.cloneDeep( context.state.currentModel );
+    clonedObject = generateFakerValues( clonedObject, clonedObject.timesToRepeat );
+    console.log( clonedObject );
+    // axios( {
+    //   method: 'delete',
+    //   headers: {
+    //     'content-type': 'application/json; charset=utf-8'
+    //   },
+    //   url: 'http://localhost:8000/' + props.id
+    // } ).then( function () {
+    //   axios( {
+    //     method: 'post',
+    //     headers: {
+    //       'content-type': 'application/json; charset=utf-8'
+    //     },
+    //     url: 'http://localhost:8000/' + props.id,
+    //     data: clonedObject
+    //   } );
+    // } );
   },
 
-  updateEntry (context, props) {
-    axios({
+  updateEntry( context, props ) {
+    axios( {
       method: 'delete',
-      headers: { 'content-type': 'application/json; charset=utf-8' },
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
       url: 'http://localhost:3000/' + props.url
-    }).then(function (response) {
-      axios({
+    } ).then( function ( response ) {
+      axios( {
         method: 'push',
-        headers: { 'content-type': 'application/json; charset=utf-8' },
+        headers: {
+          'content-type': 'application/json; charset=utf-8'
+        },
         url: 'http://localhost:3000/api/' + props.url,
         data: props.payload
-      }).then(function (response) {
-        console.log(response);
-      });
-    });
+      } ).then( function ( response ) {
+        console.log( response );
+      } );
+    } );
   }
 };
