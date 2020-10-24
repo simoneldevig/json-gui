@@ -3,7 +3,7 @@ import router from '../router';
 import {
   renameObjectKey,
   setObjectValue,
-  deleteObject
+  deleteObject,
 } from '@/utils';
 import {
   generateFakerValues

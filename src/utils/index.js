@@ -87,5 +87,5 @@ export {
   setObjectValue,
   generateGuid,
   deleteObject,
-  addToObject
+  addToObject,
 };
