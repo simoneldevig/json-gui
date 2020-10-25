@@ -1,24 +1,21 @@
 <template>
   <div>
     <p><strong>Route name</strong></p>
-    <el-input placeholder="Insert your new route name" v-model="routeName" @input="parseToParent">
+    <el-input v-model="routeName" placeholder="Insert your new route name" @input="parseToParent">
       <template slot="prepend">/</template>
     </el-input>
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'CreateRouteModal',
-    data() {
-      return {
-        routeName: ''
-      };
-    },
-    methods: {
-      parseToParent () {
-        this.$emit('add-route', this.routeName);
-      }
-    }
-  }
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
+
+@Component({})
+export default class CreateRouteModal extends Vue {
+  private routeName = '';
+
+  parseToParent () {
+    this.$emit('add-route', this.routeName);
+  };
+};
 </script>

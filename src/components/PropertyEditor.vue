@@ -11,55 +11,42 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'PropertyEditor',
-  props: {
-    model: {
-      default () {
-        return {};
-      },
-      requirred: true,
-      type: Object
-    },
-    propertyName: {
-      default: '',
-      requirred: true,
-      type: String
-    },
-    hideEdit: {
-      default: false,
-      type: Boolean
-    }
-  },
-  data () {
-    return {
-      editPropertyName: false,
-      newPropertyName: ''
-    };
-  },
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { BaseDTO } from '@/types/';
+
+@Component({})
+export default class PropertyEditor extends Vue {
+  @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
+  @Prop({ type: String, required: true }) readonly propertyName!: string;
+  @Prop(Boolean) readonly hideEdit: boolean = false;
+
+  editPropertyName = false;
+  newPropertyName = '';
+
+  editPropName () {
+    this.editPropertyName = !this.editPropertyName;
+    this.$nextTick(() => {
+      (this.$refs.propertyName as HTMLElement).focus();
+    });
+  };
+
+  updateModel () {
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.newPropertyName,
+      oldPropertyName: this.propertyName,
+      value: this.model
+    });
+  };
+
+  deleteProp () {
+    this.$store.dispatch('deleteModelProperty', {
+      id: this.model.id
+    });
+  };
+
   created () {
     this.newPropertyName = this.propertyName;
-  },
-  methods: {
-    editPropName () {
-      this.editPropertyName = !this.editPropertyName;
-      this.$nextTick(() => {
-        this.$refs.propertyName.focus();
-      });
-    },
-    updateModel () {
-      this.$store.dispatch('updateModelProperty', {
-        propertyName: this.newPropertyName,
-        oldPropertyName: this.propertyName, 
-        value: this.model
-      });
-    },
-    deleteProp () {
-      this.$store.dispatch('deleteModelProperty', {
-        id: this.model.id
-      });
-    }
-  }
-};
+  };
+}
 </script>

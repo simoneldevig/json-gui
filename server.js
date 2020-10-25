@@ -1,37 +1,37 @@
 /**
  * json-server.index.js
  */
-const handler = require('serve-handler');
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
-const _ = require('lodash');
-const jsonServer = require('json-server');
+import handler from 'serve-handler';
+import { createServer } from 'http';
+import { resolve } from 'path';
+import { readdirSync } from 'fs';
+import { isEmpty } from 'lodash';
+import { create, router as _router, defaults, bodyParser } from 'json-server';
+import portMapping from './portMapping';
 const dbPath = './json-server/db/';
-const portMapping = require('./portMapping');
 
-let files = fs.readdirSync(path.resolve(__dirname, dbPath));
+const files = readdirSync(resolve(__dirname, dbPath));
 
 files.forEach((file) => {
   if (file.indexOf('.json') > -1) {
     const serverName = file.slice(0, file.indexOf('.json'));
-    const server = jsonServer.create();
-    const router = jsonServer.router(dbPath + file);
-    const middlewares = jsonServer.defaults();
+    const server = create();
+    const router = _router(dbPath + file);
+    const middlewares = defaults();
 
     server.use(middlewares);
 
-    server.use(jsonServer.bodyParser);
+    server.use(bodyParser);
 
     server.all('/:name', function (req, res, next) {
       const isPost = req.method === 'POST';
       const isPut = req.method === 'PUT';
       const isDelete = req.method === 'DELETE';
       const defaultObject = {
-        "timesToRepeat": 1
+        timesToRepeat: 1
       };
 
-      const body = !_.isEmpty(req.body) ? req.body : defaultObject;
+      const body = !isEmpty(req.body) ? req.body : defaultObject;
 
       if (isPost || isPut) {
         try {
@@ -47,8 +47,8 @@ files.forEach((file) => {
         }
       } else if (isDelete) {
         try {
-          let state = router.db.getState(); 
-          delete state[req.params.name]; 
+          const state = router.db.getState();
+          delete state[req.params.name];
           router.db.setState(state);
           router.db.write();
           res.sendStatus(204);
@@ -69,18 +69,18 @@ files.forEach((file) => {
   }
 });
 
-const serveOptions = { 
-  public: path.resolve(__dirname, './dist'),
+const serveOptions = {
+  public: resolve(__dirname, './dist'),
   renderSingle: true,
   rewrites: [
-    { "source": "/**", "destination": "/index.html" }
+    { source: '/**', destination: '/index.html' }
   ]
-}; 
+};
 
-const httpServer = http.createServer((request, response) => {
+const httpServer = createServer((request, response) => {
   return handler(request, response, serveOptions);
 });
 
-// httpServer.listen(8001, () => {
-//   console.log('Running at http://localhost:3000');
-// });
+httpServer.listen(8001, () => {
+  console.log('Running at http://localhost:8001');
+});

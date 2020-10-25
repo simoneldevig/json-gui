@@ -1,5 +1,5 @@
 export default {
-  getCurrentModel (state) {
+  getCurrentModel (state: any) {
     return state.currentModel;
-  },
+  }
 };

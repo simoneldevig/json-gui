@@ -1,6 +1,6 @@
 <template>
   <div class="mb2 property">
-    <PropertyEditor :propertyName="propertyName" :model="model" />
+    <PropertyEditor :property-name="propertyName" :model="model" />
     <el-autocomplete
       ref="input"
       v-model="objectModel.value"
@@ -16,78 +16,73 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
 import faker from 'faker';
 import PropertyEditor from '@/components/PropertyEditor.vue';
+import { BaseDTO } from '@/types';
 
-export default {
-  name: 'BaseStringInput',
+@Component({
   components: {
     PropertyEditor
-  },
-  props: {
-    model: {
-      default () {
-        return {};
-      },
-      requirred: true,
-      type: Object
-    },
-    propertyName: {
-      default: '',
-      requirred: true,
-      type: String
-    }
-  },
-  data () {
-    return {
-      objectModel: {},
-      fakerList: []
-    };
-  },
+  }
+})
+export default class BaseStringInput extends Vue {
+  @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
+  @Prop({ type: String, required: true }) readonly propertyName!: string;
+
+  objectModel: BaseDTO = new BaseDTO();
+  fakerList: {[key: string]: any} = [];
+
   created () {
     this.objectModel = this.model;
     this.generateFakerList();
-  },
-  methods: {
-    querySearch (queryString, cb) {
-      var fakerList = this.fakerList;
-      var results = queryString ? fakerList.filter(this.createFilter(queryString)) : fakerList;
-      // call callback function to return suggestions
-      cb(results);
-    },
-    createFilter (queryString) {
-      return (fakerMethod) => {
-        return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
-      };
-    },
-    generateFakerList () {
-      let modules = Object.keys(faker);
-      let _self = this;
-      modules = modules.sort();
-      modules.forEach(function (module) {
-        const ignore = ['locale', 'locales', 'localeFallback', 'definitions', 'fake'];
-        if (ignore.indexOf(module) !== -1) {
-          return;
-        }        
-        for (const method in faker[module]) {
-          if (typeof faker[module][method] === "function") {
-            let fakerMethod = {};
-            fakerMethod.value = 'faker.' + module + '.' + method + '()';
-            if (_self.fakerList.indexOf(fakerMethod) === -1) {
-              _self.fakerList.push(fakerMethod);
-            }
+  }
+
+  querySearch (queryString: string, cb: any) {
+    const fakerList = this.fakerList;
+    const results = queryString ? fakerList.filter(this.createFilter(queryString)) : fakerList;
+    // call callback function to return suggestions
+    cb(results);
+  };
+
+  createFilter (queryString: string) {
+    return (fakerMethod: any) => {
+      return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
+    };
+  };
+
+  generateFakerList () {
+    let modules = Object.keys(faker);
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const _self = this;
+    modules = modules.sort();
+    modules.forEach((module) => {
+      const ignore = ['locale', 'locales', 'localeFallback', 'definitions', 'fake'];
+      if (ignore.indexOf(module) !== -1) {
+        return;
+      }
+      for (const method in (faker as any)[module]) {
+        if (typeof (faker as any)[module][method] === 'function') {
+          const fakerMethod = {
+            value: ''
+          };
+          fakerMethod.value = 'faker.' + module + '.' + method + '()';
+          if (_self.fakerList.indexOf(fakerMethod) === -1) {
+            _self.fakerList.push(fakerMethod);
           }
         }
-      });
-    },
-    updateModel () {
-      this.$store.dispatch('updateModelProperty', {
-        propertyName: this.propertyName,
-        oldPropertyName: this.propertyName, 
-        value: this.objectModel
-      });
-    }
-  }
-};
+      }
+    });
+  };
+
+  updateModel () {
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  };
+}
 </script>

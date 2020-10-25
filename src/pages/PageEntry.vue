@@ -8,7 +8,7 @@
             <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
         </div>
-        <collapse v-if="currentModel" :id="id" :data="currentModel" :title="id" :index="0" :is-sub-child="false" @updateData="updateData" />
+        <collapse v-if="currentModel && id" :id="id" :data="currentModel" :title="id" :index="0" :is-sub-child="false" />
       </el-col>
 
       <el-col :span="8">
@@ -30,100 +30,82 @@
   </div>
 </template>
 
-<script>
-import collapse from '@/components/RecursiveCollapse';
-import quicktypeModel from '@/components/QuicktypeModel';
-import { mapMutations } from 'vuex';
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import collapse from '@/components/RecursiveCollapse.vue';
+import quicktypeModel from '@/components/QuicktypeModel.vue';
+import { BaseResponseDTO, BaseDTO } from '@/types';
 
-export default {
-  name: 'Entry',
+@Component({
   components: {
     collapse,
     quicktypeModel
-  },
-  props: {
-    type: {
-      requirred: true,
-      type: String,
-      default: null
-    },
-    id: {
-      requirred: true,
-      type: String,
-      default: null
-    }
-  },
-  data () {
-    return {
-      loading: false,
-      dataContent: null,
-      changesNotSaved: true
-    };
-  },
-  computed: {
-    entry () {
-      return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;
-    },
-    currentModel () {
-      return this.$store.getters['getCurrentModel'];
-    }
-  },
-  watch: {
-    entry () {
-      this.setModel();
-    }
-  },
-  methods: {
-    ...mapMutations([
-      'setCurrentModel'
-    ]),
-    setModel () {
-      this.setCurrentModel(this.entry);
-    },
-    updateData (data) {
-      this.dataContent = data;
-      this.changesNotSaved = true;
-    },
-    async save () {
-      this.loading = true;
-      try {
-        await this.$store.dispatch('saveData', {
-          type: this.type,
-          id: this.id
-        }).then(() => {
-          this.$notify({
-            title: 'Success',
-            message: 'Your model changes was saved!',
-            type: 'success'
-          });
-        });
-      } catch (ex) {
-        // eslint-disable-next-line no-console
-        console.error(ex);
-        this.$notify({
-          title: 'Warning',
-          message: 'An error happened. Please check the console$',
-          type: 'warning'
-        });
-      } finally {
-        this.loading = false;
-      }
-    },
-    saveAndGenerate () {
-      // this.save();
-      this.$store.dispatch('saveAndGenerate', {
-        id: this.id,
-      });
-      // var myjson = JSON.stringify(this.dataContent, null, 2);
-      // var x = window.open();
-      // x.document.open();
-      // x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
-      // x.document.close();
-      this.changesNotSaved = false;
-    },
-    
   }
-};
+})
+export default class Entry extends Vue {
+  @Prop({ type: String, required: true }) readonly type!: string;
+  @Prop({ type: String, required: true }) readonly id!: string;
+
+  private loading = false;
+  private dataContent!: BaseResponseDTO;
+  private changesNotSaved = true;
+
+  get entry (): BaseDTO {
+    return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;
+  }
+
+  get currentModel (): BaseDTO {
+    return this.$store.getters.getCurrentModel;
+  }
+
+  @Watch('entry')
+  onDataChange (): void {
+    this.setModel();
+  }
+
+  setModel () {
+    this.$store.dispatch('setModel', this.entry);
+  };
+
+  async save () {
+    this.loading = true;
+    try {
+      await this.$store.dispatch('saveData', {
+        type: this.type,
+        id: this.id
+      }).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: 'Your model changes was saved!',
+          type: 'success'
+        });
+      });
+    } catch (ex) {
+      // eslint-disable-next-line no-console
+      console.error(ex);
+      this.$notify({
+        title: 'Warning',
+        message: 'An error happened. Please check the console',
+        type: 'warning'
+      });
+    } finally {
+      this.loading = false;
+    }
+  };
+
+  saveAndGenerate () {
+    // this.save();
+    this.$store.dispatch('saveAndGenerate', {
+      id: this.id
+    });
+    // var myjson = JSON.stringify(this.dataContent, null, 2);
+    // var x = window.open();
+    // x.document.open();
+    // x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
+    // x.document.close();
+    this.changesNotSaved = false;
+  }
+}
 </script>
 
 <style lang="scss">

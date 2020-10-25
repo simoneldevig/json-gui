@@ -1,45 +1,33 @@
 <template>
   <div class="mb2 property">
-    <PropertyEditor :propertyName="propertyName" :model="model" :hidePropertyEdit="true" />
+    <PropertyEditor :property-name="propertyName" :model="model" :hide-property-edit="true" />
 
-    <router-link
-          :to="`/models/${propertyName}`"
-        >
-          <el-button class="py1">
-            Open up model...
-          </el-button>
-        </router-link>
+    <router-link :to="`/models/${propertyName}`">
+      <el-button class="py1">
+        Open up model...
+      </el-button>
+    </router-link>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import PropertyEditor from '@/components/PropertyEditor.vue';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { BaseDTO } from '@/types';
 
-export default {
-  name: 'ReferencedModel',
+@Component({
   components: {
     PropertyEditor
-  },
-  props: {
-    model: {
-      default () {
-        return {};
-      },
-      requirred: true,
-      type: Object
-    },
-    propertyName: {
-      default: '',
-      requirred: true,
-      type: String
-    }
-  },
-  methods: {
-    deleteProp () {
-      this.$store.dispatch('deleteModelProperty', {
-        id: this.model.id
-      });
-    }
   }
-};
+})
+export default class ReferencedModel extends Vue {
+  @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
+  @Prop({ type: String, required: true }) readonly propertyName!: string;
+
+  deleteProp () {
+    this.$store.dispatch('deleteModelProperty', {
+      id: this.model.id
+    });
+  }
+}
 </script>

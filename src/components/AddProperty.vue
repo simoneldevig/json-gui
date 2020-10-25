@@ -10,39 +10,27 @@
     <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">{{ typeDisplayName }}</el-button>
   </el-popover>
 </template>
-    
-<script>
-export default {
-  name: 'AddProperty',	
-  props: {
-    type: {
-      default: '',
-      requirred: true,
-      type: String
-    }
-  },
-  data () {
-    return {
-      propertyName: '',
-      isVisible: false
-    };
-  },
-  computed: {
-    typeDisplayName () {
-      return this.type.toLowerCase().charAt(0).toUpperCase() + this.type.toLowerCase().slice(1);
-    }
-  },
-  created () {
-    
-  },
-  methods: {
-    addProperty () {
-      this.$emit('addProperty', this.type, this.propertyName);
-      this.propertyName = '';
-    },
-    setFocus () {
-      this.$refs.newPropField.focus();
-    }
+
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
+@Component({})
+export default class AddProperty extends Vue {
+  @Prop({ type: String, required: true }) readonly type!: string;
+  propertyName = '';
+  isVisible = false;
+
+  get typeDisplayName (): string {
+    return this.type.toLowerCase().charAt(0).toUpperCase() + this.type.toLowerCase().slice(1);
   }
-}
+
+  addProperty () {
+    this.$emit('addProperty', this.type, this.propertyName);
+    this.propertyName = '';
+  };
+
+  setFocus () {
+    (this.$refs.newPropField as HTMLElement).focus();
+  };
+};
 </script>

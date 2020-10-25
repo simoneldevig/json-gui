@@ -1,6 +1,6 @@
 <template>
   <div class="mb2 property">
-    <PropertyEditor :propertyName="propertyName" :model="model" />
+    <PropertyEditor :property-name="propertyName" :model="model" />
 
     <el-radio v-model="objectModel.value" :value="true" :label="true" class="mr1" size="small" border @change="updateModel">true</el-radio>
     <el-radio v-model="objectModel.value" :value="false" :label="false" class="mr1" size="small" border @change="updateModel">false</el-radio>
@@ -8,53 +8,47 @@
   </div>
 </template>
 
-<script>
-import PropertyEditor from '@/components/PropertyEditor.vue';
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-export default {
-  name: 'BooleanInput',
+import PropertyEditor from '@/components/PropertyEditor.vue';
+import { BaseDTO } from '@/types';
+
+@Component({
   components: {
     PropertyEditor
-  },
-  props: {
-    model: {
-      default: null,
-      requirred: true,
-      type: Object
-    },
-    propertyName: {
-      default: null,
-      requirred: true,
-      type: String
-    }
-  },
-  data () {
-    return {
-      editPropertyName: false
-    };
-  },
+  }
+})
+export default class BooleanInput extends Vue {
+  @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
+  @Prop({ type: String, required: true }) readonly propertyName!: string;
+
+  objectModel: BaseDTO = new BaseDTO();
+  editPropertyName = false;
+
   created () {
     this.objectModel = this.model;
-  },
-  methods: {
-    updateModel () {
-      this.$store.dispatch('updateModelProperty', {
-        propertyName: this.propertyName,
-        oldPropertyName: this.propertyName, 
-        value: this.objectModel
-      });
-    },
-    editPropName () {
-      this.editPropertyName = true;
-      this.$nextTick(() => {
-        this.$refs.propertyName.focus();
-      });
-    },
-    deleteProp () {
-      this.$store.dispatch('deleteModelProperty', {
-        id: this.model.id
-      });
-    }
   }
-};
+
+  updateModel () {
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  };
+
+  editPropName () {
+    this.editPropertyName = true;
+    this.$nextTick(() => {
+      (this.$refs.propertyName as HTMLElement).focus();
+    });
+  };
+
+  deleteProp () {
+    this.$store.dispatch('deleteModelProperty', {
+      id: this.model.id
+    });
+  };
+}
 </script>
