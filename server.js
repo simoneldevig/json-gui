@@ -1,86 +1,75 @@
-/**
- * json-server.index.js
- */
-import handler from 'serve-handler';
-import { createServer } from 'http';
-import { resolve } from 'path';
-import { readdirSync } from 'fs';
-import { isEmpty } from 'lodash';
-import { create, router as _router, defaults, bodyParser } from 'json-server';
-import portMapping from './portMapping';
-const dbPath = './json-server/db/';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { join } = require('path');
+const { writeFile } = require('fs');
+const { isEmpty } = require('lodash');
+const { create, router: _router, defaults, rewriter, bodyParser } = require('json-server');
 
-const files = readdirSync(resolve(__dirname, dbPath));
+const filePaths = {
+  endpoints: './json-server/db/endpoints.json',
+  models: './json-server/db/models.json',
+  db: './json-server/db/db.json'
+};
+const server = create();
+const router = _router(
+  {
+    endpoints: require(filePaths.endpoints),
+    models: require(filePaths.models),
+    db: require(filePaths.db)
+  }
+);
+const middlewares = defaults(
+  {
+    static: join(__dirname, './dist')
+  }
+);
 
-files.forEach((file) => {
-  if (file.indexOf('.json') > -1) {
-    const serverName = file.slice(0, file.indexOf('.json'));
-    const server = create();
-    const router = _router(dbPath + file);
-    const middlewares = defaults();
+server.use(rewriter({
+  '/api/*': '/$1'
+}));
+server.use(middlewares);
+server.use(bodyParser);
+server.all('/:type/:name', function (req, res) {
+  const isPost = req.method === 'POST';
+  const defaultObject = {
+    timesToRepeat: 1
+  };
 
-    server.use(middlewares);
+  const body = !isEmpty(req.body) ? req.body : defaultObject;
 
-    server.use(bodyParser);
+  if (isPost) {
+    try {
+      const state = router.db.getState();
+      const fileName = req.params.type;
 
-    server.all('/:name', function (req, res, next) {
-      const isPost = req.method === 'POST';
-      const isPut = req.method === 'PUT';
-      const isDelete = req.method === 'DELETE';
-      const defaultObject = {
-        timesToRepeat: 1
-      };
+      // Remove old obj and replace with new
+      delete state[req.params.type][req.params.name];
+      state[req.params.type][req.params.name] = body;
 
-      const body = !isEmpty(req.body) ? req.body : defaultObject;
+      // Set the lowdb context to new data
+      router.db.setState(state);
 
-      if (isPost || isPut) {
-        try {
-          router.db.set(req.params.name, body).value();
-          router.db.write();
-          if (isPost) {
-            res.sendStatus(201);
-          } else if (isPut) {
-            res.sendStatus(204);
-          }
-        } catch (error) {
-          res.sendStatus(400);
+      // Persists the changes
+      writeFile(filePaths[fileName], JSON.stringify(state[req.params.type], null, 2), (error) => {
+        if (error) {
+          throw new Error(error);
+        } else {
+          res.sendStatus(201);
         }
-      } else if (isDelete) {
-        try {
-          const state = router.db.getState();
-          delete state[req.params.name];
-          router.db.setState(state);
-          router.db.write();
-          res.sendStatus(204);
-        } catch (error) {
-          res.sendStatus(400);
-        }
-      } else {
-        next();
-      }
-    });
-
-    server.use(router);
-
-    server.listen(portMapping[serverName], () => {
-      console.log('\n⛴    ' + file + ' server is running');
-    });
-
+      });
+    } catch (error) {
+      res.sendStatus(400);
+    }
+  } else {
+    const returnedObj = router.db.get(req.params.type)
+      .get(req.params.name)
+      .value();
+    res.status(200).jsonp(
+      returnedObj
+    );
   }
 });
 
-const serveOptions = {
-  public: resolve(__dirname, './dist'),
-  renderSingle: true,
-  rewrites: [
-    { source: '/**', destination: '/index.html' }
-  ]
-};
-
-const httpServer = createServer((request, response) => {
-  return handler(request, response, serveOptions);
-});
-
-httpServer.listen(8001, () => {
-  console.log('Running at http://localhost:8001');
+server.use(router);
+server.listen(5000, function () {
+  console.log('JSON Server is running');
 });

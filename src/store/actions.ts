@@ -13,14 +13,14 @@ import serverPorts from '../../portMapping';
 
 export default {
   getModels (context: any) {
-    axios.get('http://localhost:8002/db')
+    axios.get('http://localhost:5000/api/models')
       .then(function (response) {
         context.commit('setModels', response);
       });
   },
 
   getEndpoints (context: any) {
-    axios.get('http://localhost:8004/db')
+    axios.get('http://localhost:5000/api/endpoints')
       .then(function (response) {
         context.commit('setEndpoints', response);
       });
@@ -51,7 +51,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: 'http://localhost:8002/' + props
+      url: 'http://localhost:http://localhost:5000/api/' + props
     }).then(function () {
       context.dispatch('getModels').then(function () {
         router.push({
@@ -62,25 +62,16 @@ export default {
   },
 
   async saveData (context: any, props: any) {
-    const port = (serverPorts as any)[props.type];
-
+    console.log(props);
     await axios({
-      method: 'delete',
+      method: 'post',
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:${port}/${props.id}`
+      url: `http://localhost:5000/api/${props.type}/${props.id}`,
+      data: context.state.currentModel
     }).then(function () {
-      axios({
-        method: 'post',
-        headers: {
-          'content-type': 'application/json; charset=utf-8'
-        },
-        url: `http://localhost:${port}/${props.id}`,
-        data: context.state.currentModel
-      }).then(function () {
-        context.dispatch('getModels');
-      });
+      // context.dispatch(`get${props.type}`);
     });
   },
 
@@ -92,30 +83,30 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: 'http://localhost:8000/' + props.id
+      url: 'http://localhost:5000/api/' + props.id
     }).then(function () {
       axios({
         method: 'post',
         headers: {
           'content-type': 'application/json; charset=utf-8'
         },
-        url: 'http://localhost:8000/' + props.id,
+        url: 'http://localhost:5000/api/' + props.id,
         data: clonedObject
       });
     });
-  },
-
-  updateEntry (context: any, props: any) {
-    axios({
-      method: 'delete',
-      headers: {
-        'content-type': 'application/json; charset=utf-8'
-      },
-      url: 'http://localhost:3000/' + props.url
-    }).then(function () {
-      (axios as any)({ method: 'push', headers: { 'content-type': 'application/json; charset=utf-8' }, url: 'http://localhost:3000/api/' + props.url, data: props.payload }).then(function (response: any) {
-        console.log(response);
-      });
-    });
   }
+
+  // updateEntry (context: any, props: any) {
+  //   axios({
+  //     method: 'delete',
+  //     headers: {
+  //       'content-type': 'application/json; charset=utf-8'
+  //     },
+  //     url: 'http://localhost:3000/' + props.url
+  //   }).then(function () {
+  //     (axios as any)({ method: 'push', headers: { 'content-type': 'application/json; charset=utf-8' }, url: 'http://localhost:3000/api/' + props.url, data: props.payload }).then(function (response: any) {
+  //       console.log(response);
+  //     });
+  //   });
+  // }
 };

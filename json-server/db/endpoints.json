@@ -7,7 +7,7 @@
   },
   "getPosts": {
     "type": "array",
-    "timesToRepeat": 2,
+    "timesToRepeat": 3,
     "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
     "value": {
       "text": {

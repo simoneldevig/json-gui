@@ -5,7 +5,7 @@
   "main": "./server.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dev": "npm run serve && node server.js",
+    "dev": "npm run serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "postinstall": "node ./postinstall.js",
