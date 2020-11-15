@@ -2,8 +2,10 @@
 const { join } = require('path');
 const { writeFile } = require('fs');
 const { isEmpty } = require('lodash');
+const chalk = require('chalk');
+const boxen = require('boxen');
 const { create, router: _router, defaults, rewriter, bodyParser } = require('json-server');
-
+const port = process.env.PORT || 5000;
 const filePaths = {
   endpoints: './json-server/db/endpoints.json',
   models: './json-server/db/models.json',
@@ -75,6 +77,15 @@ server.all('/:type/:name', function (req, res) {
 });
 
 server.use(router);
-server.listen(5000, function () {
-  console.log('JSON Server is running');
+server.listen(port, function () {
+  const greeting = chalk.white(chalk.red.bold('Firing up JSON GUI 🔥🔥') + '\n\nRunning at: ' + chalk.blue.underline(`http://localhost:${port}/`));
+
+  const boxenOptions = {
+    borderColor: 'red',
+    padding: 1,
+    margin: 1
+  };
+  const msgBox = boxen(greeting, boxenOptions);
+
+  console.log(msgBox);
 });
