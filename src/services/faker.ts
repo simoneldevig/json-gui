@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import store from '../store';
 import { BaseDTO } from '@/types';
-import faker from 'faker';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const faker = require('faker');
 
 const setFakerValues = (obj: BaseDTO) => {
   if (typeof obj === 'object') {

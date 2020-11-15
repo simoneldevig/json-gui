@@ -42,8 +42,13 @@ server.all('/:type/:name', function (req, res) {
       const fileName = req.params.type;
 
       // Remove old obj and replace with new
-      delete state[req.params.type][req.params.name];
-      state[req.params.type][req.params.name] = body;
+      if (req.params.name) {
+        delete state[req.params.type][req.params.name];
+        state[req.params.type][req.params.name] = body;
+      } else {
+        delete state[req.params.type];
+        state[req.params.type] = body;
+      }
 
       // Set the lowdb context to new data
       router.db.setState(state);

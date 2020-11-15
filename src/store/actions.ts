@@ -9,7 +9,6 @@ import {
   generateFakerValues
 } from '@/services/faker';
 import Vue from 'vue';
-import serverPorts from '../../portMapping';
 
 export default {
   getModels (context: any) {
@@ -71,28 +70,25 @@ export default {
       url: `http://localhost:5000/api/${props.type}/${props.id}`,
       data: context.state.currentModel
     }).then(function () {
-      // context.dispatch(`get${props.type}`);
+      if (props.type === 'endpoints') {
+        context.dispatch('getEndpoints');
+      } else if (props.type === 'models') {
+        context.dispatch('getModels');
+      }
     });
   },
 
   saveAndGenerate (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
     clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+    console.log(clonedObject);
     axios({
-      method: 'delete',
+      method: 'post',
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: 'http://localhost:5000/api/' + props.id
-    }).then(function () {
-      axios({
-        method: 'post',
-        headers: {
-          'content-type': 'application/json; charset=utf-8'
-        },
-        url: 'http://localhost:5000/api/' + props.id,
-        data: clonedObject
-      });
+      url: `http://localhost:5000/api/${props.type}/${props.id}`,
+      data: clonedObject
     });
   }
 

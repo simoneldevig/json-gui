@@ -16,10 +16,9 @@
       </el-col>
     </el-row>
 
-    <el-row class="fixed bottom-0 left-0 z2 entry__save py1" :class="{'is-active' : changesNotSaved}">
+    <el-row class="fixed bottom-0 left-0 z2 entry__save py1">
       <el-col :offset="4" :span="14">
-        <div class="flex items-center justify-between">
-          <p class="mr3 ml1">You have unsaved changes on this entry. <strong>Rememember to save!</strong></p>
+        <div class="flex items-center justify-end">
           <div class="mr2">
             <el-button class="mr1" :loading="loading" type="default" @click="save">Save</el-button>
             <el-button class="mr3" :loading="loading" type="success" @click="saveAndGenerate">Save and generate</el-button>
@@ -48,7 +47,6 @@ export default class Entry extends Vue {
 
   private loading = false;
   private dataContent!: BaseResponseDTO;
-  private changesNotSaved = true;
 
   get entry (): BaseDTO {
     return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;
@@ -96,6 +94,7 @@ export default class Entry extends Vue {
   saveAndGenerate () {
     // this.save();
     this.$store.dispatch('saveAndGenerate', {
+      type: 'db',
       id: this.id
     });
     // var myjson = JSON.stringify(this.dataContent, null, 2);
@@ -103,7 +102,6 @@ export default class Entry extends Vue {
     // x.document.open();
     // x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
     // x.document.close();
-    this.changesNotSaved = false;
   }
 }
 </script>
@@ -113,10 +111,6 @@ export default class Entry extends Vue {
     width: 100%;
     background: #fff;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    transform: translateY(80px);
-    transition: transform 0.3s;
-
-    &.is-active { transform: translateY(0); }
   }
 
   .hljs {

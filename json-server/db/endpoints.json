@@ -12,7 +12,7 @@
     "value": {
       "text": {
         "type": "string",
-        "value": "faker.lorem.sentence()",
+        "value": "faker.lorem.word()",
         "id": "b7aa912d-0bc7-4fa2-b1ad-2a86dab60488"
       },
       "idd": {
