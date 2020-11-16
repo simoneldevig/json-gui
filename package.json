@@ -1,5 +1,5 @@
 {
-  "name": "json-server-gui",
+  "name": "json-gui",
   "version": "0.1.0",
   "private": true,
   "main": "./server.js",
@@ -10,10 +10,10 @@
     "test:unit": "vue-cli-service test:unit",
     "postinstall": "node ./postinstall.js",
     "lint": "vue-cli-service lint --fix",
-    "json-gui": "PORT=6000 node ."
+    "json-gui": "node ."
   },
   "bin": {
-    "json-server-gui": "./cli.js"
+    "json-gui": "./cli.js"
   },
   "dependencies": {
     "@types/lodash.clonedeep": "^4.5.6",
@@ -82,12 +82,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simoneldevig/json-server-gui.git"
+    "url": "git+https://github.com/simoneldevig/json-gui.git"
   },
   "author": "Simon Eldevig",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/simoneldevig/json-server-gui/issues"
+    "url": "https://github.com/simoneldevig/json-gui/issues"
   },
-  "homepage": "https://github.com/simoneldevig/json-server-gui#readme"
+  "homepage": "https://github.com/simoneldevig/json-gui#readme"
 }

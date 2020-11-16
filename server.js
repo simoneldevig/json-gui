@@ -78,7 +78,7 @@ server.all('/:type/:name', function (req, res) {
 
 server.use(router);
 server.listen(port, function () {
-  const greeting = chalk.white(chalk.red.bold('Firing up JSON GUI 🔥🔥') + '\n\nRunning at: ' + chalk.blue.underline(`http://localhost:${port}/`));
+  const greeting = chalk.white(chalk.red.bold('Fired up JSON GUI 🔥🔥') + '\n\nRunning at: ' + chalk.blue.underline(`http://localhost:${port}/`));
 
   const boxenOptions = {
     borderColor: 'red',

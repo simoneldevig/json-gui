@@ -1,4 +1,4 @@
-# json-server-gui
+# json-gui
 
 ## Project setup
 ```
