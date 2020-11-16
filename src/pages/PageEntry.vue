@@ -20,12 +20,14 @@
       <el-col :offset="4" :span="14">
         <div class="flex items-center justify-end">
           <div class="mr2">
-            <el-button class="mr1" :loading="loading" type="default" @click="save">Save</el-button>
+            <el-button class="mr1" :loading="loading" type="default" @click="preview">Preview</el-button>
+            <el-button class="mr1" :loading="loading" type="primary" @click="save">Save</el-button>
             <el-button class="mr3" :loading="loading" type="success" @click="saveAndGenerate">Save and generate</el-button>
           </div>
         </div>
       </el-col>
     </el-row>
+    <previewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
   </div>
 </template>
 
@@ -33,12 +35,15 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import collapse from '@/components/RecursiveCollapse.vue';
 import quicktypeModel from '@/components/QuicktypeModel.vue';
+import previewModal from '@/components/PreviewModal.vue';
 import { BaseResponseDTO, BaseDTO } from '@/types';
+import { generateFakerValues } from '@/services/faker';
 
 @Component({
   components: {
     collapse,
-    quicktypeModel
+    quicktypeModel,
+    previewModal
   }
 })
 export default class Entry extends Vue {
@@ -47,6 +52,9 @@ export default class Entry extends Vue {
 
   private loading = false;
   private dataContent!: BaseResponseDTO;
+  private previewData: any = null;
+  private showPreviewDialog = false;
+  $lodash: any;
 
   get entry (): BaseDTO {
     return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;
@@ -97,11 +105,17 @@ export default class Entry extends Vue {
       type: 'db',
       id: this.id
     });
-    // var myjson = JSON.stringify(this.dataContent, null, 2);
-    // var x = window.open();
-    // x.document.open();
-    // x.document.write('<html><body><pre>' + myjson + '</pre></body></html>');
-    // x.document.close();
+  };
+
+  preview () {
+    let clonedObject = this.$lodash.cloneDeep(this.currentModel);
+    clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+    this.previewData = JSON.stringify(clonedObject, null, 2);
+    this.showPreviewDialog = true;
+  }
+
+  closePreview () {
+    this.showPreviewDialog = false;
   }
 }
 </script>
