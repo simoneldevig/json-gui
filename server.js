@@ -9,14 +9,16 @@ const port = process.env.PORT || 5000;
 const filePaths = {
   endpoints: './json-server/db/endpoints.json',
   models: './json-server/db/models.json',
-  db: './json-server/db/db.json'
+  db: './json-server/db/db.json',
+  settings: './json-server/db/settings.json'
 };
 const server = create();
 const router = _router(
   {
     endpoints: require(filePaths.endpoints),
     models: require(filePaths.models),
-    db: require(filePaths.db)
+    db: require(filePaths.db),
+    settings: require(filePaths.settings)
   }
 );
 const middlewares = defaults(

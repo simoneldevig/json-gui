@@ -45,6 +45,10 @@ export default class QuickType extends Vue {
     return this.$store.state.models;
   };
 
+  get settings (): any {
+    return this.$store.state.settings;
+  }
+
   @Watch('currentModel', { deep: true, immediate: true })
   modelChanged (): void {
     this.generateQuicktypeModel();
@@ -101,6 +105,7 @@ export default class QuickType extends Vue {
       const jsonString = JSON.stringify(this.cleanedModel);
       const modelSettings: { [key: string]: any } = {
         csharp: {
+          namespace: this.settings.quicktypeNameSpace,
           features: 'attributes-only',
           'no-combine-classes': 'true'
         },

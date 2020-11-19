@@ -12,7 +12,8 @@ export default new Vuex.Store({
     endpoints: {},
     cleanModels: {},
     currentModel: {},
-    models: {}
+    models: {},
+    settings: {}
   },
 
   getters,

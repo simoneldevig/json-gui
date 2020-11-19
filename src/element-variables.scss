@@ -8,5 +8,6 @@ For example, to overwrite the theme color:
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 $--color-primary: #003366;
+$--color-success: #3CB371;
 
 @import "~element-ui/packages/theme-chalk/src/index";

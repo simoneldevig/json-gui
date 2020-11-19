@@ -5,6 +5,9 @@ export default {
   setModels (state: { models: any }, response: { data: any }) {
     state.models = response.data;
   },
+  setSettings (state: { settings: any }, response: { data: any }) {
+    state.settings = response.data;
+  },
   setCurrentModel (state: { currentModel: any }, data: any) {
     state.currentModel = data;
   }

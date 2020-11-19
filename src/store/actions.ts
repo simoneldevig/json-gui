@@ -25,6 +25,13 @@ export default {
       });
   },
 
+  getSettings (context: any) {
+    axios.get('http://localhost:5000/api/settings')
+      .then(function (response) {
+        context.commit('setSettings', response);
+      });
+  },
+
   updateModelProperty (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
     if (props.propertyName !== props.oldPropertyName) {
@@ -81,7 +88,6 @@ export default {
   saveAndGenerate (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
     clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
-    console.log(clonedObject);
     axios({
       method: 'post',
       headers: {
@@ -90,19 +96,18 @@ export default {
       url: `http://localhost:5000/api/${props.type}/${props.id}`,
       data: clonedObject
     });
-  }
+  },
 
-  // updateEntry (context: any, props: any) {
-  //   axios({
-  //     method: 'delete',
-  //     headers: {
-  //       'content-type': 'application/json; charset=utf-8'
-  //     },
-  //     url: 'http://localhost:3000/' + props.url
-  //   }).then(function () {
-  //     (axios as any)({ method: 'push', headers: { 'content-type': 'application/json; charset=utf-8' }, url: 'http://localhost:3000/api/' + props.url, data: props.payload }).then(function (response: any) {
-  //       console.log(response);
-  //     });
-  //   });
-  // }
+  async saveSettings (context: any, props: any) {
+    await axios({
+      method: 'post',
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
+      url: 'http://localhost:5000/api/settings',
+      data: props
+    }).then(function () {
+      context.dispatch('getSettings');
+    });
+  }
 };

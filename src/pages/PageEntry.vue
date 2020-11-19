@@ -20,9 +20,9 @@
       <el-col :offset="4" :span="14">
         <div class="flex items-center justify-end">
           <div class="mr2">
-            <el-button class="mr1" :loading="loading" type="default" @click="preview">Preview</el-button>
-            <el-button class="mr1" :loading="loading" type="primary" @click="save">Save</el-button>
-            <el-button class="mr3" :loading="loading" type="success" @click="saveAndGenerate">Save and generate</el-button>
+            <el-button class="mr1" :loading="loading" type="default" round @click="preview">Preview</el-button>
+            <el-button class="mr1" :loading="loading" type="primary" round @click="save">Save</el-button>
+            <el-button class="mr3" :loading="loading" type="success" round @click="saveAndGenerate">Save and generate</el-button>
           </div>
         </div>
       </el-col>
@@ -64,7 +64,7 @@ export default class Entry extends Vue {
     return this.$store.getters.getCurrentModel;
   }
 
-  @Watch('entry')
+  @Watch('entry', { deep: true, immediate: true })
   onDataChange (): void {
     this.setModel();
   }
