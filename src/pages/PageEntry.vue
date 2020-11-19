@@ -17,8 +17,13 @@
     </el-row>
 
     <el-row class="fixed bottom-0 left-0 z2 entry__save py1">
-      <el-col :offset="4" :span="14">
-        <div class="flex items-center justify-end">
+      <el-col :offset="4" :span="20">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="entry__breadcrumb">{{ $route.params.type }}</span>
+            <span class="entry__breadcrumb">/</span>
+            <span class="entry__breadcrumb">{{ $route.params.id }}</span>
+          </div>
           <div class="mr2">
             <el-button class="mr1" :loading="loading" type="default" round @click="preview">Preview</el-button>
             <el-button class="mr1" :loading="loading" type="primary" round @click="save">Save</el-button>
@@ -125,6 +130,17 @@ export default class Entry extends Vue {
     width: 100%;
     background: #fff;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .entry__breadcrumb {
+    font-size: 14px;
+    color: #808080;
+    padding: 0 3px;
+
+    &:first-child {
+      padding-left: 10px;
+      text-transform: capitalize;
+    }
   }
 
   .hljs {
