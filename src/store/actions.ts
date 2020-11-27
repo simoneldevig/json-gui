@@ -3,12 +3,14 @@ import router from '../router';
 import {
   renameObjectKey,
   setObjectValue,
-  deleteObject
+  deleteObject,
+  generateGuid
 } from '@/utils';
 import {
   generateFakerValues
 } from '@/services/faker';
 import Vue from 'vue';
+import { BaseDTO } from '@/types/index';
 
 export default {
   getModels (context: any) {
@@ -51,19 +53,33 @@ export default {
     context.commit('setCurrentModel', clonedObject);
   },
 
-  createNewRoute (context: any, props: any) {
+  createNewItem (context: any, props: any) {
+    const newItem = new BaseDTO({
+      type: props.type,
+      id: generateGuid(),
+      timesToRepeat: props.type === 'endpoint' ? 1 : undefined
+    });
     axios({
       method: 'post',
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: 'http://localhost:http://localhost:5000/api/' + props
+      data: newItem,
+      url: `http://localhost:5000/api/${props.type}s/${props.name}`
     }).then(function () {
-      context.dispatch('getModels').then(function () {
-        router.push({
-          path: props
+      if (props.type === 'endpoint') {
+        context.dispatch('getEndpoints').then(function () {
+          router.push({
+            path: props.name
+          });
         });
-      });
+      } else if (props.type === 'model') {
+        context.dispatch('getModels').then(function () {
+          router.push({
+            path: props.name
+          });
+        });
+      }
     });
   },
 

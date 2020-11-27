@@ -9,7 +9,7 @@ export class BaseDTO {
     this.type = type ?? '';
     this.timesToRepeat = timesToRepeat ?? undefined;
     this.id = id ?? '';
-    this.value = value ?? '';
+    this.value = value ?? {};
   }
 }
 

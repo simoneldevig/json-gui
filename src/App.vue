@@ -12,7 +12,7 @@
                 <i class="el-icon-guide" />
                 <span>{{ '/' + propertyName }}</span>
               </el-menu-item>
-              <el-menu-item class="primary" @click="dialogVisible=true">
+              <el-menu-item class="primary" @click="openNewItemDialog('endpoint')">
                 <i class="el-icon-plus" />
                 <span>Add new endpoint</span>
               </el-menu-item>
@@ -22,7 +22,7 @@
                 <i class="el-icon-setting" />
                 <span>{{ '/' + propertyName }}</span>
               </el-menu-item>
-              <el-menu-item class="primary" @click="dialogVisible=true">
+              <el-menu-item class="primary" @click="openNewItemDialog('model')">
                 <i class="el-icon-plus" />
                 <span>Add new model</span>
               </el-menu-item>
@@ -38,10 +38,10 @@
       title="Create new entry"
       :visible.sync="dialogVisible"
     >
-      <create-route-content @add-route="setNewRouteName" />
+      <create-item-modal @add-item="setnewItemName" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible=false">Cancel</el-button>
-        <el-button type="primary" @click="createRoute">Create</el-button>
+        <el-button type="primary" @click="createNewItem">Create</el-button>
       </span>
     </el-dialog>
   </div>
@@ -49,17 +49,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import createRouteContent from '@/components/CreateRouteContent.vue';
+import CreateItemModal from '@/components/CreateItemModal.vue';
 import { BaseResponseDTO } from '@/types';
 
 @Component({
   components: {
-    createRouteContent
+    CreateItemModal
   }
 })
 export default class App extends Vue {
   private dialogVisible = false;
-  private newRouteName = '';
+  private newItemName = '';
+  private newItemType = '';
   private activeCollapse: string[] = ['endpoints'];
 
   created () {
@@ -78,13 +79,22 @@ export default class App extends Vue {
     return this.$store.state.models;
   }
 
-  setNewRouteName (newRouteName: string) {
-    this.newRouteName = newRouteName;
+  setnewItemName (newItemName: string) {
+    this.newItemName = newItemName;
   };
 
-  createRoute () {
+  openNewItemDialog (type: string) {
+    this.dialogVisible = true;
+    this.newItemType = type;
+  }
+
+  createNewItem () {
     this.dialogVisible = false;
-    this.$store.dispatch('createNewRoute', this.newRouteName);
+    this.$store.dispatch('createNewItem', {
+      type: this.newItemType,
+      name: this.newItemName
+    });
+    this.newItemType = '';
   };
 };
 </script>
@@ -100,9 +110,12 @@ export default class App extends Vue {
     position: fixed;
     height: 100%;
     padding-left: 0 !important;
+    padding-bottom: 80px;
 
     &__menu {
       height: 100%;
+      overflow: auto;
+      padding-bottom: 60px;
     }
 
     &__logo {
