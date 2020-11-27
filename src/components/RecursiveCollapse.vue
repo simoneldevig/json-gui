@@ -159,7 +159,7 @@ export default class RecursiveCollapse extends Vue {
             value: false
           });
           break;
-        case 'model':
+        case 'modelRef':
           propertyName = this.modelToImport;
           newProperty = new BaseDTO({
             type: type,
@@ -170,15 +170,7 @@ export default class RecursiveCollapse extends Vue {
       }
     } else {
       // Handle objects and arrays
-      newProperty =
-        type === 'array'
-          ? new BaseDTO({
-            type: type,
-            timesToRepeat: 1,
-            id: generateGuid(),
-            value: ''
-          })
-          : new BaseDTO({ type: type, id: generateGuid(), value: '' });
+      newProperty = type === 'array' ? new BaseDTO({ type: type, timesToRepeat: 1, id: generateGuid() }) : new BaseDTO({ type: type, id: generateGuid() });
     }
 
     const clonedObject = this.$lodash.cloneDeep(this.dataModel.value);
@@ -192,66 +184,10 @@ export default class RecursiveCollapse extends Vue {
 
   importModel (): void {
     this.newPropertyName = this.modelToImport;
-    this.addNewProperty('model', this.models[this.modelToImport].id);
+    this.addNewProperty('modelRef', this.models[this.modelToImport].id);
     this.modelToImport = '';
   }
-  // saveNewProperty () {
-  //   console.log(this.propertyValuesDialogData);
-  //   this.propertyValuesDialogVisible = false;
-  // },
-  // duplicate (entry) {
-  //   console.log(entry);
-  //   let duplicateEntry = {};
-  //   duplicateEntry = entry;
-  //   duplicateEntry.guid = this.generateGuid();
-  //   this.dataModel.push(entry);
-  //   console.log(this.dataModel);
-  // },
-  // generateFakerValues (obj) {
-  //   if (typeof obj === 'object') {
-  //     for (const key in obj) {
-  //       if (typeof (obj[key]) !== 'object') {
-  //         delete obj[key];
-  //       }
-  //       else if (typeof (obj[key]) === 'object') {
-  //         if (obj[key].type === 'object' || obj[key].type === 'array') {
-  //           const generatedData = this.generateFakerValues(obj[key].value);
-  //           delete obj[key];
-  //           obj[key] = generatedData;
-  //         }
 
-  //         if (obj[key].type === 'string' && obj[key].value.toString().startsWith('faker') || obj[key].type === 'number' && obj[key].value.toString().startsWith('faker')) {
-  //           try {
-  //             const fakerValue = eval(obj[key].value);
-  //             delete obj[key];
-  //             obj[key] = fakerValue;
-  //           } catch (err) {
-  //             // eslint-disable-next-line no-console
-  //             console.error('Invalid faker function');
-  //           }
-  //         }
-  //         else if (obj[key].type === 'string') {
-  //           const value = obj[key].value;
-  //           delete obj[key];
-  //           obj[key] = value;
-  //         }
-
-  //         else if (obj[key].type === 'number') {
-  //           const value = obj[key].value;
-  //           delete obj[key];
-  //           obj[key] = parseInt(value);
-  //         }
-
-  //         else if (obj[key].type === 'boolean') {
-  //           const value = obj[key].value === 'random' ? faker.random.boolean() : obj[key].value;
-  //           delete obj[key];
-  //           obj[key] = value;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return obj;
-  // },
   updateModel (): void {
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.newPropertyName,
@@ -274,7 +210,6 @@ export default class RecursiveCollapse extends Vue {
     this.dataModel[(changedValueObject.propertyName as string)].value =
       changedValueObject.value;
     this.setModel();
-    // this.updateDataContentToDataModel(this.dataModel);
   }
 
   deleteProp (): void {
