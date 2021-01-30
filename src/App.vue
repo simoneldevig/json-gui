@@ -170,8 +170,6 @@ export default class App extends Vue {
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden;
     background-color: var(--maz-bg-color-light);
-
-    --maz-primary:  #ffd700;
   }
 
   .maz-dialog__header {

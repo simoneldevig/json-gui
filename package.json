@@ -10,7 +10,8 @@
     "test:unit": "vue-cli-service test:unit",
     "postinstall": "node ./postinstall.js",
     "lint": "vue-cli-service lint --fix",
-    "json-gui": "node ."
+    "json-gui": "node .",
+    "generate-maz-theme": "maz get-theme"
   },
   "bin": {
     "json-gui": "./cli.js"
