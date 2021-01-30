@@ -6,3 +6,4 @@ declare module '*.vue' {
 declare module 'element-ui/lib/locale/lang/da'
 declare module 'vue-highlight-component'
 declare module 'maz-ui'
+declare module 'vue-resizable'
