@@ -1,17 +1,24 @@
 <template>
   <div>
     <el-row>
-      <h1>Dashboard</h1>
+      <h1 class="mb-4">Dashboard</h1>
       <el-row class="mb3" :gutter="30">
         <el-col :span="12">
-          <el-card>
-            <template slot="header"><strong>Settings</strong></template>
-            <span class="mb1 block"><strong>Quicktype namespace</strong></span>
-            <el-input v-model="settings.quicktypeNameSpace" placeholder="Enter the namespace to use for generated models with Quicktype" />
+          <MazCard class="w-100" max-width="none">
+            <h4 class="mb-3">Settings</h4>
+            <MazInput
+              v-model="settings.quicktypeNameSpace"
+              placeholder="Quicktype namespace"
+              autocomplete="Enter the namespace to use for generated models with Quicktype"
+              class="mb-3"
+              clearable
+            />
             <div class="flex justify-end mt3">
-              <el-button type="primary" round @click="save">Save</el-button>
+              <MazBtn rounded size="sm" class="text-black" @click="save">
+                Save
+              </MazBtn>
             </div>
-          </el-card>
+          </MazCard>
         </el-col>
       </el-row>
     </el-row>

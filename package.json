@@ -16,6 +16,7 @@
     "json-gui": "./cli.js"
   },
   "dependencies": {
+    "@novicell/css-utils": "^1.1.0",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/vuedraggable": "^2.23.2",
     "axios": "^0.19.0",
@@ -30,6 +31,8 @@
     "http": "0.0.1-security",
     "json-server": "^0.16.2",
     "lodash.clonedeep": "^4.5.0",
+    "maz-ui": "^2.3.5",
+    "minireset.css": "0.0.7",
     "quicktype-core": "^6.0.52",
     "serve-handler": "^6.1.2",
     "vue": "^2.6.11",
@@ -56,6 +59,7 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
+    "babel-plugin-component": "^1.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
