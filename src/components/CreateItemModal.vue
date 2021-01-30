@@ -1,9 +1,12 @@
 <template>
   <div>
-    <p><strong>Item name</strong></p>
-    <el-input v-model="itemName" placeholder="Insert your new item name" @input="parseToParent">
-      <template slot="prepend">/</template>
-    </el-input>
+    <MazInput
+      v-model="itemName"
+      placeholder="Insert your new item name"
+      class="mb-3"
+      clearable
+      @input="parseToParent"
+    />
   </div>
 </template>
 

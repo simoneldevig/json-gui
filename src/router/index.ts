@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import PageHome from '@/pages/PageHome.vue';
+import PageSettings from '@/pages/PageSettings.vue';
 import PageEntry from '@/pages/PageEntry.vue';
 
 Vue.use(VueRouter);
@@ -8,8 +8,8 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    name: 'Home',
-    component: PageHome
+    name: 'Settings',
+    component: PageSettings
   },
   {
     path: '/:type/:id',

@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-row>
-      <h1 class="mb-4">Dashboard</h1>
       <el-row class="mb3" :gutter="30">
         <el-col :span="12">
           <MazCard class="w-100" max-width="none">
@@ -13,6 +12,10 @@
               class="mb-3"
               clearable
             />
+            <div class="d-flex align-items-center">
+              <span class="mr-3">Dark mode</span>
+              <MazSwitch v-if="settings.darkMode" v-model="settings.darkMode" />
+            </div>
             <div class="flex justify-end mt3">
               <MazBtn rounded size="sm" class="text-black" @click="save">
                 Save
@@ -31,7 +34,8 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 @Component({})
 export default class Home extends Vue {
   private settings = {
-    quicktypenamespace: ''
+    quicktypenamespace: '',
+    darkMode: true
   };
 
   @Watch('computedSettings', { deep: true, immediate: true })
