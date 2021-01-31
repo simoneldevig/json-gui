@@ -109,7 +109,7 @@
     >
       <MazInput
         ref="editInput"
-        v-model="editItemName"
+        v-model="newItemName"
         placeholder="Edit your item name"
         class="mb-3"
         clearable
@@ -125,7 +125,7 @@
           <MazBtn rounded size="sm" color="grey" class="mr-2" @click="editDialogVisible=false">
             Cancel
           </MazBtn>
-          <MazBtn rounded size="sm" color="success" @click="saveItem">
+          <MazBtn rounded size="sm" color="success" @click="editItem">
             Save
           </MazBtn>
         </div>
@@ -188,10 +188,23 @@ export default class App extends Vue {
   openEditItemDialog (itemName: string) {
     this.editDialogVisible = true;
     this.editItemName = itemName;
+    this.newItemName = itemName;
     this.$nextTick(() => {
       (this.$refs.editInput as any).$el.children[0].focus();
     });
   }
+
+  editItem () {
+    this.editDialogVisible = false;
+    this.$store.dispatch('editItem', {
+      type: this.newItemType,
+      name: this.newItemName,
+      oldName: this.editItemName
+    });
+    this.newItemType = '';
+    this.newItemName = '';
+    this.editItemName = '';
+  };
 
   createNewItem () {
     this.createDialogVisible = false;
@@ -200,6 +213,7 @@ export default class App extends Vue {
       name: this.newItemName
     });
     this.newItemType = '';
+    this.newItemName = '';
   };
 
   setCollapseItem (item: string): void {
@@ -286,26 +300,5 @@ export default class App extends Vue {
       }
     }
 
-  }
-
-  .el-collapse {
-    border: none !important;
-  }
-
-  .el-collapse-item__wrap {
-    border: none !important;
-  }
-
-  .el-collapse-item__header {
-    background: none !important;
-    border: none !important;
-    padding-left: 10px;
-    font-size: 16px !important;
-  }
-
-  .el-collapse-item__content {
-    background: none !important;
-    padding: 0 !important;
-    border: none !important;
   }
 </style>

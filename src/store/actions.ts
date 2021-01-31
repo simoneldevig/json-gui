@@ -53,6 +53,10 @@ export default {
     context.commit('setCurrentModel', clonedObject);
   },
 
+  editItem (context: any, props: any) {
+    console.log(props);
+  },
+
   createNewItem (context: any, props: any) {
     const newItem = new BaseDTO({
       type: props.type,
