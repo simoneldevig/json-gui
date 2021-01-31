@@ -25,7 +25,7 @@ module.exports = {
       'base-line-height': '1.5'
     },
     border: {
-      'border-width': '2px',
+      'border-width': '1px',
       'border-radius': '6px'
     },
     light: {
