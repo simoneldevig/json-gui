@@ -1,12 +1,12 @@
 module.exports = {
-  output: './src/assets/_maz-variables.scss',
+  output: './src/assets/maz-ui/_maz-variables.scss',
   theme: {
     main: {
       primary: '#ffd700',
       secondary: '#1CD1A1',
       third: '#C41AF9',
-      danger: 'orangered',
-      success: 'yellowgreen',
+      danger: '#ED4F32',
+      success: '#3CB371',
       info: '#17A2B8',
       warning: '#FFA300',
       light: '#EEEEEE',
@@ -56,9 +56,9 @@ module.exports = {
         'icon-color': '#65678F'
       },
       layout: {
-        'bg-color': '#21222E',
-        'bg-color-light': '#303144',
-        'overlay-color': 'rgba(86, 87, 117, .7)'
+        'bg-color': '#222831',
+        'bg-color-light': '#393e46',
+        'overlay-color': 'rgba(57, 62, 70, .7)'
       },
       borderColor: {
         'border-color': '#3B3C53'

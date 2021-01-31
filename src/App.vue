@@ -32,7 +32,7 @@
                   </span>
                   {{ propertyName }}
                 </span>
-                <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings">
+                <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName)">
                   more_horiz
                 </span>
               </router-link>
@@ -62,7 +62,7 @@
                   </span>
                   {{ propertyName }}
                 </span>
-                <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings">
+                <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName)">
                   more_horiz
                 </span>
               </router-link>
@@ -82,18 +82,56 @@
       <router-view />
     </div>
     <MazDialog
-      v-model="dialogVisible"
+      v-model="createDialogVisible"
       :width="600"
-      title="Create new entry"
+      :title="`Create new ${newItemType}`"
     >
-      <create-item-modal @add-item="setnewItemName" />
+      <MazInput
+        ref="createInput"
+        v-model="newItemName"
+        placeholder="Insert your new item name"
+        class="mb-3"
+        clearable
+        @input="setnewItemName"
+        @keyup.enter="setnewItemName"
+      />
       <span slot="footer" class="dialog-footer">
-        <MazBtn rounded size="sm" color="grey" class="text-black mr-2" @click="dialogVisible=false">
+        <MazBtn rounded size="sm" color="grey" class="mr-2" @click="createDialogVisible=false">
           Cancel
         </MazBtn>
-        <MazBtn rounded size="sm" class="text-black" @click="createNewItem">
+        <MazBtn rounded size="sm" @click="createNewItem">
           Create
         </MazBtn>
+      </span>
+    </MazDialog>
+
+    <MazDialog
+      v-model="editDialogVisible"
+      :width="600"
+      :title="`Edit ${editItemName}`"
+    >
+      <MazInput
+        ref="editInput"
+        v-model="editItemName"
+        placeholder="Edit your item name"
+        class="mb-3"
+        clearable
+        @input="setnewItemName"
+        @keyup.enter="setnewItemName"
+      />
+
+      <span slot="footer" class="d-flex justify-content-between w-100">
+        <MazBtn rounded size="sm" color="danger" @click="deleteItem">
+          Delete item
+        </MazBtn>
+        <div>
+          <MazBtn rounded size="sm" color="grey" class="mr-2" @click="editDialogVisible=false">
+            Cancel
+          </MazBtn>
+          <MazBtn rounded size="sm" color="success" @click="saveItem">
+            Save
+          </MazBtn>
+        </div>
       </span>
     </MazDialog>
   </div>
@@ -101,7 +139,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import CreateItemModal from '@/components/CreateItemModal.vue';
+import EditItemModal from '@/components/EditItemModal.vue';
 import VueResizable from 'vue-resizable';
 
 import { BaseResponseDTO } from '@/types';
@@ -109,14 +147,16 @@ import 'maz-ui/lib/css/base.css';
 
 @Component({
   components: {
-    CreateItemModal,
+    EditItemModal,
     VueResizable
   }
 })
 export default class App extends Vue {
-  private dialogVisible = false;
+  private createDialogVisible = false;
+  private editDialogVisible = false;
   private newItemName = '';
   private newItemType = '';
+  private editItemName = '';
   private activeCollapse: string[] = [];
   private hasLeftSidebarOpen = true;
 
@@ -125,7 +165,7 @@ export default class App extends Vue {
     this.$store.dispatch('getModels');
     this.$store.dispatch('getEndpoints');
 
-    if (this.$route.params.length) {
+    if (Object.keys(this.$route.params).length) {
       this.activeCollapse.push(this.$route.params.type);
     }
   }
@@ -143,12 +183,23 @@ export default class App extends Vue {
   };
 
   openNewItemDialog (type: string) {
-    this.dialogVisible = true;
+    this.createDialogVisible = true;
     this.newItemType = type;
+    this.$nextTick(() => {
+      (this.$refs.createInput as any).$el.children[0].focus();
+    });
+  }
+
+  openEditItemDialog (itemName: string) {
+    this.editDialogVisible = true;
+    this.editItemName = itemName;
+    this.$nextTick(() => {
+      (this.$refs.editInput as any).$el.children[0].focus();
+    });
   }
 
   createNewItem () {
-    this.dialogVisible = false;
+    this.createDialogVisible = false;
     this.$store.dispatch('createNewItem', {
       type: this.newItemType,
       name: this.newItemName
@@ -175,15 +226,6 @@ export default class App extends Vue {
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     overflow-x: hidden;
     background-color: var(--maz-bg-color-light);
-  }
-
-  .maz-dialog__header {
-    background-color: transparent !important;
-  }
-
-  .maz-sidebar__wrapper__content {
-    overflow: auto !important;
-    padding-bottom: 60px;
   }
 
   .content {

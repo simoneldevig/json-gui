@@ -17,7 +17,7 @@
               <MazSwitch v-if="settings.darkMode" v-model="settings.darkMode" />
             </div>
             <div class="flex justify-end mt3">
-              <MazBtn rounded size="sm" class="text-black" @click="save">
+              <MazBtn rounded size="sm" @click="save">
                 Save
               </MazBtn>
             </div>
