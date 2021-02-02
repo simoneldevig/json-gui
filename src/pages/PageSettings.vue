@@ -1,30 +1,26 @@
 <template>
-  <div>
-    <el-row>
-      <el-row class="mb3" :gutter="30">
-        <el-col :span="12">
-          <MazCard class="w-100" max-width="none">
-            <h4 class="mb-3">Settings</h4>
-            <MazInput
-              v-model="settings.quicktypeNameSpace"
-              placeholder="Quicktype namespace"
-              autocomplete="Enter the namespace to use for generated models with Quicktype"
-              class="mb-3"
-              clearable
-            />
-            <div class="d-flex align-items-center">
-              <span class="mr-3">Dark mode</span>
-              <MazSwitch v-model="settings.darkMode" />
-            </div>
-            <div class="flex justify-end mt3">
-              <MazBtn rounded size="sm" :loading="isSaving" @click="save">
-                {{ buttonText }}
-              </MazBtn>
-            </div>
-          </MazCard>
-        </el-col>
-      </el-row>
-    </el-row>
+  <div class="row mb3">
+    <div class="col-xs-12">
+      <MazCard class="w-100" max-width="none">
+        <h4 class="mb-3">Settings</h4>
+        <MazInput
+          v-model="settings.quicktypeNameSpace"
+          placeholder="Quicktype namespace"
+          autocomplete="Enter the namespace to use for generated models with Quicktype"
+          class="mb-3"
+          clearable
+        />
+        <div class="d-flex align-items-center">
+          <span class="mr-3">Dark mode</span>
+          <MazSwitch v-model="settings.darkMode" />
+        </div>
+        <div class="flex justify-end mt3">
+          <MazBtn rounded size="sm" :loading="isSaving" @click="save">
+            {{ buttonText }}
+          </MazBtn>
+        </div>
+      </MazCard>
+    </div>
   </div>
 </template>
 
@@ -59,7 +55,7 @@ export default class Home extends Vue {
 
       setTimeout(() => {
         this.buttonText = 'Save';
-      }, 1500);
+      }, 2000);
     });
   }
 }

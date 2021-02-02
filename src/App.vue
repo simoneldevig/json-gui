@@ -75,7 +75,7 @@
       </div>
     </MazSidebar>
 
-    <div class="content p-7">
+    <div class="container-fluid content p-7">
       <router-view />
     </div>
     <MazDialog

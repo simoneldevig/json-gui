@@ -1,27 +1,25 @@
 <template>
-  <div class="pb4">
-    <el-row class="tac" :gutter="20">
-      <el-col :span="16">
-        <MazCard class="w-100" max-width="none">
-          <div class="flex items-center justify-between">
-            <div>
-              <h1 class="mb0"><span>{{ id }}</span></h1>
-              <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
-            </div>
+  <div class="row pb-4">
+    <div class="col-xs-8">
+      <MazCard class="w-100" max-width="none">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="mb0"><span>{{ id }}</span></h1>
+            <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
           </div>
-          <collapse v-if="currentModel && id" :id="id" :data="currentModel" :title="id" :index="0" :is-sub-child="false" />
-        </MazCard>
-      </el-col>
+        </div>
+        <collapse v-if="currentModel && id" :id="id" :data="currentModel" :title="id" :index="0" :is-sub-child="false" />
+      </MazCard>
+    </div>
 
-      <el-col :span="8">
-        <MazCard class="w-100" max-width="none">
-          <quicktype-model :id="id" />
-        </MazCard>
-      </el-col>
-    </el-row>
+    <div class="col-xs-4">
+      <MazCard class="w-100" max-width="none">
+        <quicktype-model :id="id" />
+      </MazCard>
+    </div>
 
-    <el-row class="fixed bottom-0 left-0 z2 entry__save py1">
-      <el-col :offset="4" :span="20">
+    <div class="row fixed bottom-0 left-0 z2 entry__save py1">
+      <div class="col-12">
         <div class="flex items-center justify-between">
           <div>
             <span class="entry__breadcrumb">{{ $route.params.type }}</span>
@@ -34,8 +32,8 @@
             <el-button class="mr3" :loading="loading" type="success" round @click="saveAndGenerate">Save and generate</el-button>
           </div>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
     <previewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
   </div>
 </template>
