@@ -88,7 +88,6 @@ export default {
   },
 
   async saveData (context: any, props: any) {
-    console.log(props);
     await axios({
       method: 'post',
       headers: {
@@ -128,6 +127,22 @@ export default {
       data: props
     }).then(function () {
       context.dispatch('getSettings');
+    });
+  },
+
+  async deleteItem (context: any, props: any) {
+    await axios({
+      method: 'delete',
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
+      url: `http://localhost:5000/api/${props.type}/${props.name}`
+    }).then(function () {
+      if (props.type === 'endpoints') {
+        context.dispatch('getEndpoints');
+      } else if (props.type === 'models') {
+        context.dispatch('getModels');
+      }
     });
   }
 };

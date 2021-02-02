@@ -34,24 +34,34 @@ server.use(middlewares);
 server.use(bodyParser);
 server.all('/:type/:name', function (req, res) {
   const isPost = req.method === 'POST';
+  const isDelete = req.method === 'DELETE';
   const defaultObject = {
     timesToRepeat: 1
   };
 
   const body = !isEmpty(req.body) ? req.body : defaultObject;
 
-  if (isPost) {
+  if (isPost || isDelete) {
     try {
       const state = router.db.getState();
       const fileName = req.params.type;
 
-      // Remove old obj and replace with new
-      if (req.params.name) {
-        delete state[req.params.type][req.params.name];
-        state[req.params.type][req.params.name] = body;
-      } else {
-        delete state[req.params.type];
-        state[req.params.type] = body;
+      if (isPost) {
+        // Remove old obj and replace with new
+        if (req.params.name) {
+          delete state[req.params.type][req.params.name];
+          state[req.params.type][req.params.name] = body;
+        } else {
+          delete state[req.params.type];
+          state[req.params.type] = body;
+        }
+      } else if (isDelete) {
+        // Remove obj
+        if (req.params.name) {
+          delete state[req.params.type][req.params.name];
+        } else {
+          delete state[req.params.type];
+        }
       }
 
       // Set the lowdb context to new data

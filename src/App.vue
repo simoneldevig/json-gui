@@ -30,7 +30,7 @@
                 </span>
                 {{ propertyName }}
               </span>
-              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName)">
+              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'endpoints')">
                 more_horiz
               </span>
             </router-link>
@@ -60,7 +60,7 @@
                 </span>
                 {{ propertyName }}
               </span>
-              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName)">
+              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'models')">
                 more_horiz
               </span>
             </router-link>
@@ -96,7 +96,7 @@
         <MazBtn rounded size="sm" color="grey" class="mr-2" @click="createDialogVisible=false">
           Cancel
         </MazBtn>
-        <MazBtn rounded size="sm" @click="createNewItem">
+        <MazBtn rounded size="sm" :loading="isLoading" @click="createNewItem">
           Create
         </MazBtn>
       </span>
@@ -118,14 +118,14 @@
       />
 
       <span slot="footer" class="d-flex justify-content-between w-100">
-        <MazBtn rounded size="sm" color="danger" @click="deleteItem">
+        <MazBtn rounded size="sm" :loading="isLoading" color="danger" @click="deleteItem">
           Delete item
         </MazBtn>
         <div>
           <MazBtn rounded size="sm" color="grey" class="mr-2" @click="editDialogVisible=false">
             Cancel
           </MazBtn>
-          <MazBtn rounded size="sm" color="success" @click="editItem">
+          <MazBtn rounded size="sm" :loading="isLoading" color="success" @click="editItem">
             Save
           </MazBtn>
         </div>
@@ -152,6 +152,8 @@ export default class App extends Vue {
   private newItemName = '';
   private newItemType = '';
   private editItemName = '';
+  private editType = '';
+  private isLoading = false;
   private activeCollapse: string[] = [];
   private hasLeftSidebarOpen = true;
 
@@ -189,10 +191,11 @@ export default class App extends Vue {
     });
   }
 
-  openEditItemDialog (itemName: string) {
+  openEditItemDialog (itemName: string, itemType: string) {
     this.editDialogVisible = true;
     this.editItemName = itemName;
     this.newItemName = itemName;
+    this.editType = itemType;
     this.$nextTick(() => {
       (this.$refs.editInput as any).$el.children[0].focus();
     });
@@ -208,6 +211,7 @@ export default class App extends Vue {
     this.newItemType = '';
     this.newItemName = '';
     this.editItemName = '';
+    this.editType = '';
   };
 
   createNewItem () {
@@ -219,6 +223,27 @@ export default class App extends Vue {
     this.newItemType = '';
     this.newItemName = '';
   };
+
+  async deleteItem () {
+    this.isLoading = true;
+    await this.$store.dispatch('deleteItem', {
+      type: this.editType,
+      name: this.editItemName
+    }).then(() => {
+      this.$notify({
+        title: `${this.editItemName} had been deleted`,
+        message: '',
+        type: 'success'
+      });
+      if (this.$route.params.id === this.editItemName) {
+        this.$router.push('/');
+      }
+      this.isLoading = false;
+      this.editDialogVisible = false;
+      this.editType = '';
+      this.editItemName = '';
+    });
+  }
 
   setCollapseItem (item: string): void {
     const itemIndex = this.activeCollapse.indexOf(item);
