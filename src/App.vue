@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="d-flex">
+  <div id="app" class="app d-flex" :class="{'maz-is-dark': typeof settings !== 'undefined' && settings.darkMode}">
     <MazSidebar
       v-model="hasLeftSidebarOpen"
       class="navigation"
@@ -24,9 +24,9 @@
         <MazTransitionExpand>
           <div v-show="activeCollapse.includes('endpoints')">
             <router-link v-for="(value, propertyName) in endpoints" :key="propertyName" :to="'/endpoints/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
-              <span>
+              <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
-                  api
+                  cloud_queue
                 </span>
                 {{ propertyName }}
               </span>
@@ -54,9 +54,9 @@
         <MazTransitionExpand>
           <div v-show="activeCollapse.includes('models')">
             <router-link v-for="(value, propertyName) in endpoints" :key="propertyName" :to="'/models/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
-              <span>
+              <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
-                  model_training
+                  folder_open
                 </span>
                 {{ propertyName }}
               </span>
@@ -171,6 +171,10 @@ export default class App extends Vue {
 
   get models (): BaseResponseDTO {
     return this.$store.state.models;
+  }
+
+  get settings (): any {
+    return this.$store.state.settings;
   }
 
   setnewItemName (newItemName: string) {

@@ -14,3 +14,9 @@
 .maz-sidebar__wrapper__close-btn button {
   background-color: var(--maz-bg-color);
 }
+
+.maz-switch--primary .maz-switch__input:focus+.maz-switch__toggle span {
+  background-color: var(--maz-primary); 
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+}

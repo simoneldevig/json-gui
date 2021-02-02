@@ -14,11 +14,11 @@
             />
             <div class="d-flex align-items-center">
               <span class="mr-3">Dark mode</span>
-              <MazSwitch v-if="settings.darkMode" v-model="settings.darkMode" />
+              <MazSwitch v-model="settings.darkMode" />
             </div>
             <div class="flex justify-end mt3">
-              <MazBtn rounded size="sm" @click="save">
-                Save
+              <MazBtn rounded size="sm" :loading="isSaving" @click="save">
+                {{ buttonText }}
               </MazBtn>
             </div>
           </MazCard>
@@ -38,6 +38,9 @@ export default class Home extends Vue {
     darkMode: true
   };
 
+  private isSaving = false;
+  private buttonText = 'Save';
+
   @Watch('computedSettings', { deep: true, immediate: true })
   onSettingsChange (): void {
     this.settings = this.computedSettings;
@@ -47,8 +50,17 @@ export default class Home extends Vue {
     return this.$store.state.settings;
   }
 
-  save () {
-    this.$store.dispatch('saveSettings', this.settings);
+  async save () {
+    this.isSaving = true;
+
+    await this.$store.dispatch('saveSettings', this.settings).then(() => {
+      this.isSaving = false;
+      this.buttonText = 'Saved!';
+
+      setTimeout(() => {
+        this.buttonText = 'Save';
+      }, 1500);
+    });
   }
 }
 </script>

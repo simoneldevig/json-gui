@@ -10,8 +10,7 @@
     "lint": "vue-cli-service lint --fix",
     "dev": "npm run serve",
     "generate-maz-theme": "maz get-theme",
-    "json-gui": "node .",
-    "postinstall": "node ./postinstall.js"
+    "json-gui": "node ."
   },
   "main": "./server.js",
   "files": [
