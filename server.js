@@ -35,13 +35,14 @@ server.use(bodyParser);
 server.all('/:type/:name', function (req, res) {
   const isPost = req.method === 'POST';
   const isDelete = req.method === 'DELETE';
+  const isPut = req.method === 'PUT';
   const defaultObject = {
     timesToRepeat: 1
   };
 
   const body = !isEmpty(req.body) ? req.body : defaultObject;
 
-  if (isPost || isDelete) {
+  if (isPost || isDelete || isPut) {
     try {
       const state = router.db.getState();
       const fileName = req.params.type;
@@ -55,12 +56,17 @@ server.all('/:type/:name', function (req, res) {
           delete state[req.params.type];
           state[req.params.type] = body;
         }
-      } else if (isDelete) {
+      } else if (isPut && req.params.name) {
+        if (req.params.name) {
+          const tempBody = state[req.params.type][req.params.name];
+          const newName = body.newName;
+          delete state[req.params.type][req.params.name];
+          state[req.params.type][newName] = tempBody;
+        }
+      } else if (isDelete && req.params.name) {
         // Remove obj
         if (req.params.name) {
           delete state[req.params.type][req.params.name];
-        } else {
-          delete state[req.params.type];
         }
       }
 

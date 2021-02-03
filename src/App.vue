@@ -118,14 +118,14 @@
       />
 
       <span slot="footer" class="d-flex justify-content-between w-100">
-        <MazBtn rounded size="sm" :loading="isLoading" color="danger" @click="deleteItem">
+        <MazBtn rounded size="sm" :loading="isLoading" color="danger" @click="deleteEntry">
           Delete item
         </MazBtn>
         <div>
           <MazBtn rounded size="sm" color="grey" class="mr-2" @click="editDialogVisible=false">
             Cancel
           </MazBtn>
-          <MazBtn rounded size="sm" :loading="isLoading" color="success" @click="editItem">
+          <MazBtn rounded size="sm" :loading="isLoading" color="success" @click="editEntry">
             Save
           </MazBtn>
         </div>
@@ -201,17 +201,27 @@ export default class App extends Vue {
     });
   }
 
-  editItem () {
+  async editEntry () {
     this.editDialogVisible = false;
-    this.$store.dispatch('editItem', {
-      type: this.newItemType,
-      name: this.newItemName,
-      oldName: this.editItemName
+    await this.$store.dispatch('editEntry', {
+      type: this.editType,
+      name: this.editItemName,
+      newName: this.newItemName
+    }).then(() => {
+      this.$notify({
+        title: `${this.editItemName} has been renamed`,
+        message: '',
+        type: 'success'
+      });
+      if (this.$route.params.id === this.editItemName) {
+        this.$router.push(`/${this.editType}/${this.newItemName}`);
+      }
+
+      this.newItemType = '';
+      this.newItemName = '';
+      this.editItemName = '';
+      this.editType = '';
     });
-    this.newItemType = '';
-    this.newItemName = '';
-    this.editItemName = '';
-    this.editType = '';
   };
 
   createNewItem () {
@@ -224,14 +234,14 @@ export default class App extends Vue {
     this.newItemName = '';
   };
 
-  async deleteItem () {
+  async deleteEntry () {
     this.isLoading = true;
-    await this.$store.dispatch('deleteItem', {
+    await this.$store.dispatch('deleteEntry', {
       type: this.editType,
       name: this.editItemName
     }).then(() => {
       this.$notify({
-        title: `${this.editItemName} had been deleted`,
+        title: `${this.editItemName} has been deleted`,
         message: '',
         type: 'success'
       });

@@ -1,10 +1,4 @@
 {
-  "getTest": {
-    "timesToRepeat": 1
-  },
-  "getPostst": {
-    "timesToRepeat": 1
-  },
   "getPosts": {
     "type": "array",
     "timesToRepeat": 3,
@@ -88,5 +82,11 @@
         }
       }
     }
+  },
+  "getPost": {
+    "timesToRepeat": 1
+  },
+  "getTests": {
+    "timesToRepeat": 1
   }
 }

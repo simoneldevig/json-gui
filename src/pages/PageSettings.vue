@@ -1,6 +1,6 @@
 <template>
   <div class="row mb3">
-    <div class="col-xs-12">
+    <div class="col-xs-6">
       <MazCard class="w-100" max-width="none">
         <h4 class="mb-3">Settings</h4>
         <MazInput

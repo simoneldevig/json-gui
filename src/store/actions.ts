@@ -130,13 +130,30 @@ export default {
     });
   },
 
-  async deleteItem (context: any, props: any) {
+  async deleteEntry (context: any, props: any) {
     await axios({
       method: 'delete',
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
       url: `http://localhost:5000/api/${props.type}/${props.name}`
+    }).then(function () {
+      if (props.type === 'endpoints') {
+        context.dispatch('getEndpoints');
+      } else if (props.type === 'models') {
+        context.dispatch('getModels');
+      }
+    });
+  },
+
+  async editEntry (context: any, props: any) {
+    await axios({
+      method: 'put',
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
+      url: `http://localhost:5000/api/${props.type}/${props.name}`,
+      data: props
     }).then(function () {
       if (props.type === 'endpoints') {
         context.dispatch('getEndpoints');
