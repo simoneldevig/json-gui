@@ -14,27 +14,6 @@
   width: 100%;
 }
 
-.property {
-  padding: 10px 15px 20px;
-  background: #f9f9f9;
-  border-radius: 5px;
-
-  &--no-background {
-    padding: 0;
-    background: none;
-  }
-
-  &__actions {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  &:hover {
-    .property__actions {
-      opacity: 1;
-    }
-  }
-}
 
 .drag-handle {
   cursor: move;

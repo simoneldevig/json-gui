@@ -1,5 +1,5 @@
 <template>
-  <div class="row mb3">
+  <div class="mb-3 py-7 px-4 d-flex">
     <div class="col-xs-6">
       <MazCard class="w-100" max-width="none">
         <h4 class="mb-3">Settings</h4>
@@ -14,7 +14,7 @@
           <span class="mr-3">Dark mode</span>
           <MazSwitch v-model="settings.darkMode" />
         </div>
-        <div class="flex justify-end mt3">
+        <div class="flex justify-end mt-3">
           <MazBtn rounded size="sm" :loading="isSaving" @click="save">
             {{ buttonText }}
           </MazBtn>

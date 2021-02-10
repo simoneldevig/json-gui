@@ -1,0 +1,22 @@
+.property {
+  border-radius: 5px;
+
+  &__header {
+    padding: 15px;
+  }
+
+  &__content {
+    padding: 15px;
+  }
+
+  &__actions {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &:hover {
+    .property__actions {
+      opacity: 1;
+    }
+  }
+}

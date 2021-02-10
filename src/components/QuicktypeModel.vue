@@ -1,6 +1,5 @@
 <template>
   <div v-if="quicktypeModel">
-    <h1 class="mt2">Model</h1>
     <el-button-group class="my1">
       <el-button :type="selectedModelType === 'csharp' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
       <el-button :type="selectedModelType === 'typescript' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'typescript'">TypeScript</el-button>

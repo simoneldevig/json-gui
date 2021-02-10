@@ -1,40 +1,30 @@
 <template>
-  <div class="row pb-4">
-    <div class="col-xs-8">
-      <MazCard class="w-100" max-width="none">
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="mb0"><span>{{ id }}</span></h1>
-            <small class="block mb3">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
-          </div>
-        </div>
-        <collapse v-if="currentModel && id" :id="id" :data="currentModel" :title="id" :index="0" :is-sub-child="false" />
-      </MazCard>
+  <div>
+    <div class="d-flex w-100">
+      <div class="py-7 px-4 d-flex flex-grow-1">
+        <collapse v-if="currentModel && id" :id="id" class="w-100" :data="currentModel" :depth="1" :title="id" :index="0" :is-sub-child="false" />
+      </div>
+      <previewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
+      <MazSidebar right width="500" class="entry__model">
+        <quicktype-model :id="id" class="py-4 px-3" />
+      </MazSidebar>
     </div>
-
-    <div class="col-xs-4">
-      <MazCard class="w-100" max-width="none">
-        <quicktype-model :id="id" />
-      </MazCard>
-    </div>
-
-    <div class="row fixed bottom-0 left-0 z2 entry__save py1">
-      <div class="col-12">
+    <div class="p-sticky entry__save py-2">
+      <div class="w-100">
         <div class="flex items-center justify-between">
           <div>
             <span class="entry__breadcrumb">{{ $route.params.type }}</span>
             <span class="entry__breadcrumb">/</span>
             <span class="entry__breadcrumb">{{ $route.params.id }}</span>
           </div>
-          <div class="mr2">
-            <el-button class="mr1" :loading="loading" type="default" round @click="preview">Preview</el-button>
-            <el-button class="mr1" :loading="loading" type="primary" round @click="save">Save</el-button>
-            <el-button class="mr3" :loading="loading" type="success" round @click="saveAndGenerate">Save and generate</el-button>
+          <div class="pr-7">
+            <MazBtn class="mr-2" rounded size="sm" color="light" :loading="loading" @click="preview">Preview</MazBtn>
+            <MazBtn class="mr-2" rounded size="sm" color="success" :loading="loading" @click="Save">Save</MazBtn>
+            <MazBtn rounded size="sm" color="primary" :loading="loading" @click="saveAndGenerate">Save and generate</MazBtn>
           </div>
         </div>
       </div>
     </div>
-    <previewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
   </div>
 </template>
 
@@ -54,106 +44,112 @@ import { generateFakerValues } from '@/services/faker';
   }
 })
 export default class Entry extends Vue {
-  @Prop({ type: String, required: true }) readonly type!: string;
-  @Prop({ type: String, required: true }) readonly id!: string;
+    @Prop({ type: String, required: true }) readonly type!: string;
+    @Prop({ type: String, required: true }) readonly id!: string;
 
-  private loading = false;
-  private dataContent!: BaseResponseDTO;
-  private previewData: any = null;
-  private showPreviewDialog = false;
-  $lodash: any;
+    private loading = false;
+    private dataContent!: BaseResponseDTO;
+    private previewData: any = null;
+    private showPreviewDialog = false;
+    $lodash: any;
 
-  get entry (): BaseDTO {
-    return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;
-  }
-
-  get currentModel (): BaseDTO {
-    return this.$store.getters.getCurrentModel;
-  }
-
-  @Watch('entry', { deep: true, immediate: true })
-  onDataChange (): void {
-    this.setModel();
-  }
-
-  setModel () {
-    this.$store.dispatch('setModel', this.entry);
-  };
-
-  async save () {
-    this.loading = true;
-    try {
-      await this.$store.dispatch('saveData', {
-        type: this.type,
-        id: this.id
-      }).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: 'Your model changes was saved!',
-          type: 'success'
-        });
-      });
-    } catch (ex) {
-      // eslint-disable-next-line no-console
-      console.error(ex);
-      this.$notify({
-        title: 'Warning',
-        message: 'An error happened. Please check the console',
-        type: 'warning'
-      });
-    } finally {
-      this.loading = false;
+    get entry (): BaseDTO {
+      return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;
     }
-  };
 
-  saveAndGenerate () {
-    // this.save();
-    this.$store.dispatch('saveAndGenerate', {
-      type: 'db',
-      id: this.id
-    });
-  };
+    get currentModel (): BaseDTO {
+      return this.$store.getters.getCurrentModel;
+    }
 
-  preview () {
-    let clonedObject = this.$lodash.cloneDeep(this.currentModel);
-    clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
-    this.previewData = JSON.stringify(clonedObject, null, 2);
-    this.showPreviewDialog = true;
-  }
+    @Watch('entry', { deep: true, immediate: true })
+    onDataChange (): void {
+      this.setModel();
+    }
 
-  closePreview () {
-    this.showPreviewDialog = false;
-  }
+    setModel () {
+      this.$store.dispatch('setModel', this.entry);
+    };
+
+    async save () {
+      this.loading = true;
+      try {
+        await this.$store.dispatch('saveData', {
+          type: this.type,
+          id: this.id
+        }).then(() => {
+          this.$notify({
+            title: 'Success',
+            message: 'Your model changes was saved!',
+            type: 'success'
+          });
+        });
+      } catch (ex) {
+        // eslint-disable-next-line no-console
+        console.error(ex);
+        this.$notify({
+          title: 'Warning',
+          message: 'An error happened. Please check the console',
+          type: 'warning'
+        });
+      } finally {
+        this.loading = false;
+      }
+    };
+
+    saveAndGenerate () {
+      // this.save();
+      this.$store.dispatch('saveAndGenerate', {
+        type: 'db',
+        id: this.id
+      });
+    };
+
+    preview () {
+      let clonedObject = this.$lodash.cloneDeep(this.currentModel);
+      clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+      this.previewData = JSON.stringify(clonedObject, null, 2);
+      this.showPreviewDialog = true;
+    }
+
+    closePreview () {
+      this.showPreviewDialog = false;
+    }
 }
 </script>
 
 <style lang="scss">
-  .entry__save {
+.entry__model {
+    z-index: 0;
+}
+.entry__save {
     width: 100%;
-    background: #fff;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  }
+    background: var(--maz-bg-color);
+    bottom: 0;
+    color: var(--maz-placeholder-color);
+}
 
-  .entry__breadcrumb {
+.entry__breadcrumb {
     font-size: 14px;
-    color: #808080;
+    color: var(--maz-muted-color);
     padding: 0 3px;
-
     &:first-child {
-      padding-left: 10px;
-      text-transform: capitalize;
+        padding-left: 10px;
+        text-transform: capitalize;
     }
-  }
+}
 
-  .hljs {
+.hljs {
     padding: 20px !important;
     font-size: 14px;
-  }
+}
 
-  .model__copy {
+.model__copy {
     position: absolute;
     right: 5px;
     top: 5px;
-  }
+}
 </style>
-<style src="highlight.js/styles/monokai-sublime.css"></style>
+
+<style src="highlight.js/styles/monokai-sublime.css">
+
+</style>
