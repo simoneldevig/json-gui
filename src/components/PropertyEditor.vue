@@ -1,7 +1,7 @@
 <template>
   <div class="mb1 flex justify-between items-center drag-handle">
     <div>
-      <p v-show="!editPropertyName" class="mt0 mb0"><strong>{{ propertyName }}</strong></p>
+      <p v-show="!editPropertyName" class="mt0 mb0">{{ propertyName }}</p>
       <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="updateModel" @blur="editPropertyName = false" />
     </div>
     <div class="property__actions">

@@ -1,16 +1,16 @@
 <template>
   <div class="mb2 property">
     <PropertyEditor :property-name="propertyName" :model="model" />
-    <el-autocomplete
-      ref="input"
+    <MazSearch
       v-model="objectModel.value"
-      class="w-100"
-      placeholder="Please Input"
-      :trigger-on-focus="true"
-      :fetch-suggestions="querySearch"
-      type="textarea"
-      :autosize="{ minRows: 1}"
-      :popper-append-to-body="false"
+      :replace-on-select="true"
+      :initial-query="objectModel.value"
+      :items="results"
+      item-text="value"
+      :loading="loading"
+      :no-label="true"
+      clearable
+      @request="querySearch"
       @blur="updateModel"
     />
   </div>
@@ -34,17 +34,21 @@ export default class BaseStringInput extends Vue {
 
   objectModel: BaseDTO = new BaseDTO();
   fakerList: {[key: string]: any} = [];
+  results: {[key: string]: any} = [];
+  loading = false;
 
   created () {
     this.objectModel = this.model;
     this.generateFakerList();
   }
 
-  querySearch (queryString: string, cb: any) {
+  querySearch (queryString: string) {
+    this.loading = true;
     const fakerList = this.fakerList;
     const results = queryString ? fakerList.filter(this.createFilter(queryString)) : fakerList;
     // call callback function to return suggestions
-    cb(results);
+    this.results = results;
+    this.loading = false;
   };
 
   createFilter (queryString: string) {
