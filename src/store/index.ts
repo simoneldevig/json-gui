@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import actions from './actions';
 import mutations from './mutations';
 import getters from './getters';
+import { generateFakerList } from '@/services/faker';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
     cleanModels: {},
     currentModel: {},
     models: {},
-    settings: {}
+    settings: {},
+    fakerList: []
   },
 
   getters,

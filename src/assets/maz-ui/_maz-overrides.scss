@@ -24,3 +24,15 @@
 .maz-card__content__wrapper {
   padding: 0;
 }
+
+.maz-btn--fab {
+  width: 30px;
+  height: 30px;
+  
+  &.maz-btn--primary.maz-btn--outline:hover:not(:disabled),
+  &.maz-btn--primary.maz-btn--outline:focus:not(:disabled),
+  &.maz-btn--primary.maz-btn--outline.maz-active:not(:disabled) {
+    color: var(--maz-black);
+    outline: none;
+  }
+}

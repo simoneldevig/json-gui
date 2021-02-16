@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3 py-7 px-4 d-flex">
     <div class="col-xs-6">
-      <MazCard class="w-100" max-width="none">
+      <MazCard class="w-100 p-3" max-width="none">
         <h4 class="mb-3">Settings</h4>
         <MazInput
           v-model="settings.quicktypeNameSpace"

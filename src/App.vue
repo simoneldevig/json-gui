@@ -137,11 +137,17 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import EditItemModal from '@/components/EditItemModal.vue';
+import { mapMutations } from 'vuex';
 
 import { BaseResponseDTO } from '@/types';
 import 'maz-ui/lib/css/base.css';
 
 @Component({
+  methods: {
+    ...mapMutations([
+      'setFakerList'
+    ])
+  },
   components: {
     EditItemModal
   }
@@ -156,11 +162,14 @@ export default class App extends Vue {
   private isLoading = false;
   private activeCollapse: string[] = [];
   private hasLeftSidebarOpen = true;
+  setFakerList!: () => any;
 
   created () {
     this.$store.dispatch('getSettings');
     this.$store.dispatch('getModels');
     this.$store.dispatch('getEndpoints');
+    this.$store.dispatch('getEndpoints');
+    this.setFakerList();
 
     if (Object.keys(this.$route.params).length) {
       this.activeCollapse.push(this.$route.params.type);

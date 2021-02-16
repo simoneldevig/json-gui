@@ -1,5 +1,5 @@
 <template>
-  <div class="mb2 property">
+  <div class="property mb-3">
     <PropertyEditor :property-name="propertyName" :model="model" />
     <MazSearch
       v-model="objectModel.value"
@@ -22,6 +22,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import faker from 'faker';
 import PropertyEditor from '@/components/PropertyEditor.vue';
 import { BaseDTO } from '@/types';
+import { FakerList } from '@/types/faker';
 
 @Component({
   components: {
@@ -33,13 +34,15 @@ export default class BaseStringInput extends Vue {
   @Prop({ type: String, required: true }) readonly propertyName!: string;
 
   objectModel: BaseDTO = new BaseDTO();
-  fakerList: {[key: string]: any} = [];
   results: {[key: string]: any} = [];
   loading = false;
 
   created () {
     this.objectModel = this.model;
-    this.generateFakerList();
+  }
+
+  get fakerList (): FakerList {
+    return this.$store.getters.getFakerList;
   }
 
   querySearch (queryString: string) {
@@ -55,30 +58,6 @@ export default class BaseStringInput extends Vue {
     return (fakerMethod: any) => {
       return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
     };
-  };
-
-  generateFakerList () {
-    let modules = Object.keys(faker);
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const _self = this;
-    modules = modules.sort();
-    modules.forEach((module) => {
-      const ignore = ['locale', 'locales', 'localeFallback', 'definitions', 'fake'];
-      if (ignore.indexOf(module) !== -1) {
-        return;
-      }
-      for (const method in (faker as any)[module]) {
-        if (typeof (faker as any)[module][method] === 'function') {
-          const fakerMethod = {
-            value: ''
-          };
-          fakerMethod.value = 'faker.' + module + '.' + method + '()';
-          if (_self.fakerList.indexOf(fakerMethod) === -1) {
-            _self.fakerList.push(fakerMethod);
-          }
-        }
-      }
-    });
   };
 
   updateModel () {

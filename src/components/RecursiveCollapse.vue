@@ -1,6 +1,6 @@
 <template>
   <div v-if="dataModel">
-    <MazCard max-width="none" class="box-card mb2 w-100">
+    <MazCard max-width="none" class="collapse mb-2 w-100">
       <div class="property">
         <div class="property__header d-flex justify-content-between align-items-center drag-handle" @click="setCollapseState">
           <div class="d-flex flex-column w-100">
@@ -9,14 +9,14 @@
               <h1 v-else class="h3">{{ id }}</h1>
               <div class="d-flex align-items-center">
                 <div v-if="isSubChild" class="property__actions">
-                  <MazBtn fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click="editPropName">
+                  <MazBtn title="Rename" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click="editPropName">
                     <span class="material-icons">edit</span>
                   </MazBtn>
-                  <MazBtn fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click="deleteProp">
+                  <MazBtn title="Delete" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click="deleteProp">
                     <span class="material-icons">delete</span>
                   </MazBtn>
                 </div>
-                <MazInput v-if="isEndpoint && dataModel.type !== 'object'" v-model="dataModel.timesToRepeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="setModel" />
+                <MazInput v-if="isEndpoint && dataModel.type !== 'object'" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="setModel" />
               </div>
             </div>
             <small v-if="!isSubChild" class="d-block">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
@@ -43,7 +43,7 @@
       </div>
       <MazTransitionExpand>
         <div v-show="isOpen || !isSubChild">
-          <draggable v-model="sortable" class="property__content" :style="{ backgroundColor: backgroundColor }" handle=".drag-handle" @start="drag=true" @end="drag=false">
+          <draggable v-model="sortable" class="property__content" handle=".drag-handle" @start="drag=true" @end="drag=false">
             <div v-for="(property, propName) in dataModel.value" :key="propName">
               <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
               <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
@@ -250,6 +250,10 @@ export default class RecursiveCollapse extends Vue {
 </script>
 
 <style lang="scss">
+.collapse {
+  border: 1px solid var(--maz-bg-color-light);
+}
+
 .property {
     &__add-container {
         background: rgba(255, 255, 255, 0.2);

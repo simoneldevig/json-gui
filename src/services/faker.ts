@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import store from '../store';
 import { BaseDTO } from '@/types';
+import { FakerItem, FakerList } from '@/types/faker';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const faker = require('faker');
 
@@ -79,7 +80,34 @@ const generateFakerValues = (obj: BaseDTO, timesToRepeat: number) => {
   return obj;
 };
 
+const generateFakerList = (): FakerList => {
+  let modules = Object.keys(faker);
+  const fakerList: FakerList = [];
+
+  modules = modules.sort();
+  modules.forEach((module) => {
+    const ignore = ['locale', 'locales', 'localeFallback', 'definitions', 'fake'];
+    if (ignore.indexOf(module) !== -1) {
+      return;
+    }
+    for (const method in (faker as any)[module]) {
+      if (typeof (faker as any)[module][method] === 'function') {
+        const fakerMethod: FakerItem = {
+          value: ''
+        };
+        fakerMethod.value = 'faker.' + module + '.' + method + '()';
+        if (fakerList.indexOf(fakerMethod) === -1) {
+          fakerList.push(fakerMethod);
+        }
+      }
+    }
+  });
+
+  return fakerList;
+};
+
 export {
   generateFakerValues,
-  setFakerValues
+  setFakerValues,
+  generateFakerList
 };
