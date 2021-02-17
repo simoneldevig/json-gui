@@ -1,5 +1,5 @@
 <template>
-  <div class="boolean mb2 property">
+  <div class="boolean mb-3 property">
     <PropertyEditor :property-name="propertyName" :model="model" />
 
     <div class="boolean__inputs d-flex">

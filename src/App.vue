@@ -53,7 +53,7 @@
         </div>
         <MazTransitionExpand>
           <div v-show="activeCollapse.includes('models')">
-            <router-link v-for="(value, propertyName) in endpoints" :key="propertyName" :to="'/models/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
+            <router-link v-for="(value, propertyName) in models" :key="propertyName" :to="'/models/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
               <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
                   folder_open

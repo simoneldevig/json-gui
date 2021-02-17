@@ -1,12 +1,14 @@
 <template>
-  <div class="mb2 property">
+  <div class="referenced-model mb-3 property">
     <PropertyEditor :property-name="propertyName" :model="model" :hide-property-edit="true" />
 
-    <router-link :to="`/models/${propertyName}`">
-      <el-button class="py1">
-        Open up model...
-      </el-button>
-    </router-link>
+    <div class="referenced-model__editor d-flex align-items-center">
+      <router-link :to="`/models/${propertyName}`" class="text-decoration-none">
+        <MazBtn size="mini" color="grey" rounded>
+          Go to model...
+        </MazBtn>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -31,3 +33,14 @@ export default class ReferencedModel extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.referenced-model {
+  &__editor {
+    height: 46px;
+    background: var(--maz-bg-color-light);
+    border-radius: var(--maz-border-radius);
+    padding: 0 .8571rem;
+  }
+}
+</style>
