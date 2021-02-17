@@ -1,5 +1,5 @@
 <template>
-  <div class="property-editor mb-2 d-flex justify-content-between align-items-center drag-handle">
+  <div class="property-editor mb-1 d-flex justify-content-between align-items-center drag-handle">
     <div>
       <span v-show="!editPropertyName" class="property-editor__name">{{ propertyName }}</span>
       <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />

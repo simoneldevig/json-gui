@@ -18,8 +18,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-
-import faker from 'faker';
 import PropertyEditor from '@/components/PropertyEditor.vue';
 import { BaseDTO } from '@/types';
 import { FakerList } from '@/types/faker';
