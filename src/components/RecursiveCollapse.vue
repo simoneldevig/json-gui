@@ -23,23 +23,6 @@
             <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="updateModel" @blur="editPropertyName = false" />
           </div>
         </div>
-        <!-- <div class="property__content d-flex justify-items-center" :class="isEndpoint && dataModel.type !== 'object' ? 'justify-between' : 'justify-end'">
-          <div>
-                  <add-property type="string" @addProperty="addNewProperty" />
-                  <add-property type="number" @addProperty="addNewProperty" />
-                  <add-property type="boolean" @addProperty="addNewProperty" />
-                  <add-property type="object" @addProperty="addNewProperty" />
-                  <add-property type="array" @addProperty="addNewProperty" />
-                  <el-select v-if="isEndpoint && models" v-model="modelToImport" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
-                    <el-option
-                      v-for="(item, index) in Object.keys(models)"
-                      :key="index"
-                      :label="item"
-                      :value="item"
-                    />
-                  </el-select>
-                </div>
-        </div> -->
       </div>
       <MazTransitionExpand>
         <div v-show="isOpen || !isSubChild">
@@ -51,15 +34,20 @@
               <recursive-collapse v-if="property.type === 'object' || property.type === 'array'" :depth="depth + 1" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
             </div>
           </draggable>
-          <div class="property__add-container rounded py-5 d-flex align-items-center justify-content-center">
-            <add-property type="string" @addProperty="addNewProperty" />
-            <add-property type="number" @addProperty="addNewProperty" />
-            <add-property type="boolean" @addProperty="addNewProperty" />
-            <add-property type="object" @addProperty="addNewProperty" />
-            <add-property type="array" @addProperty="addNewProperty" />
-            <el-select v-if="isEndpoint && models" v-model="modelToImport" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
+
+          <div class="property__add-container rounded py-5 d-flex flex-column align-items-center">
+            <p class="mb-3 text-gray">Add new property</p>
+            <div class="d-flex justify-content-center">
+              <add-property type="string" @addProperty="addNewProperty" />
+              <add-property type="number" @addProperty="addNewProperty" />
+              <add-property type="boolean" @addProperty="addNewProperty" />
+              <add-property type="object" @addProperty="addNewProperty" />
+              <add-property type="array" @addProperty="addNewProperty" />
+              <add-property type="model" @addProperty="addNewProperty" />
+            </div>
+            <!-- <el-select v-if="isEndpoint && models" v-model="modelToImport" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
               <el-option v-for="(item, index) in Object.keys(models)" :key="index" :label="item" :value="item" />
-            </el-select>
+            </el-select> -->
           </div>
         </div>
       </MazTransitionExpand>
@@ -255,16 +243,25 @@ export default class RecursiveCollapse extends Vue {
 }
 
 .property {
-    &__add-container {
-        background: rgba(255, 255, 255, 0.2);
-        border: 3px dotted var(--maz-muted-color);
+  &__add-container {
+    margin: 15px;
+    opacity: 0.5;
+    background: var(--maz-background-color);
+    border: 2px dotted var(--maz-muted-color);
+    transition: opacity 0.3s ease-in-out;
+
+    &:hover {
+      opacity: 1;
     }
-    &__repeat {
-        max-width: 70px;
-        .maz-input__input {
-            text-align: center;
-        }
+  }
+
+  &__repeat {
+    max-width: 70px;
+
+    .maz-input__input {
+      text-align: center;
     }
+  }
 }
 
 .el-collapse-item {

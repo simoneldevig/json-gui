@@ -1,5 +1,8 @@
 <template>
-  <el-popover v-model="isVisible" placement="bottom" width="400" @after-enter="setFocus">
+  <div>
+    <MazBtn :title="`Add new ${type}`" rounded class="ml-2" size="mini" outline>+ {{ typeDisplayName }}</MazBtn>
+  </div>
+  <!-- <el-popover v-model="isVisible" placement="bottom" width="400" @after-enter="setFocus">
     <p class="mt0 mb1"><strong>Property name?</strong></p>
     <el-input v-if="isVisible" ref="newPropField" v-model="propertyName" class="mb2" size="small" @keyup.enter.native="isVisible = false, addProperty(type)" />
 
@@ -8,7 +11,7 @@
       <el-button type="primary" size="mini" @click="isVisible = false, addProperty(type)">Add</el-button>
     </div>
     <el-button slot="reference" icon="el-icon-document-add" class="ml1" size="small" type="default">{{ typeDisplayName }}</el-button>
-  </el-popover>
+  </el-popover> -->
 </template>
 
 <script lang="ts">
