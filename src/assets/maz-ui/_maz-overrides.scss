@@ -36,3 +36,7 @@
     outline: none;
   }
 }
+
+.maz-radio [type='radio']:not(:checked)+label::before {
+  border-color: var(--maz-text-color);
+}

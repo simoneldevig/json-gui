@@ -1,10 +1,12 @@
 <template>
-  <div class="mb2 property">
+  <div class="boolean mb2 property">
     <PropertyEditor :property-name="propertyName" :model="model" />
 
-    <el-radio v-model="objectModel.value" :value="true" :label="true" class="mr1" size="small" border @change="updateModel">true</el-radio>
-    <el-radio v-model="objectModel.value" :value="false" :label="false" class="mr1" size="small" border @change="updateModel">false</el-radio>
-    <el-radio v-model="objectModel.value" :value="'random'" :label="'random'" class="mr1" size="small" border @change="updateModel">random</el-radio>
+    <div class="boolean__inputs d-flex">
+      <MazRadio v-model="objectModel.value" radio-value="true" name="true" class="mr-3" @change="updateModel">true</MazRadio>
+      <MazRadio v-model="objectModel.value" radio-value="false" name="false" class="mr-3" @change="updateModel">false</MazRadio>
+      <MazRadio v-model="objectModel.value" radio-value="random" name="random" @change="updateModel">random</MazRadio>
+    </div>
   </div>
 </template>
 
@@ -52,3 +54,15 @@ export default class BooleanInput extends Vue {
   };
 }
 </script>
+
+<style lang="scss" scoped>
+.boolean {
+  &__inputs {
+    height: 46px;
+    background: var(--maz-bg-color-light);
+    border-radius: var(--maz-border-radius);
+    padding: 0 .8571rem;
+  }
+}
+
+</style>
