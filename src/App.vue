@@ -196,7 +196,7 @@ export default class App extends Vue {
     this.createDialogVisible = true;
     this.newItemType = type;
     this.$nextTick(() => {
-      (this.$refs.createInput as any).$el.children[0].focus();
+      (this.$refs.createInput as any).focusInput();
     });
   }
 
@@ -206,7 +206,7 @@ export default class App extends Vue {
     this.newItemName = itemName;
     this.editType = itemType;
     this.$nextTick(() => {
-      (this.$refs.editInput as any).$el.children[0].focus();
+      (this.$refs.editInput as any).focusInput();
     });
   }
 

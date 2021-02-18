@@ -1,7 +1,7 @@
 <template>
   <div class="property-editor mb-1 d-flex justify-content-between align-items-center drag-handle">
     <div>
-      <span v-show="!editPropertyName" class="property-editor__name">{{ propertyName }}</span>
+      <span v-show="!editPropertyName" class="property-editor__name d-flex align-items-center">{{ propertyName }}<span class="property-editor__type" :class="`property-editor__type--${model.type}`">{{ model.type }}</span></span>
       <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />
     </div>
     <div :class="{'property__actions': !editPropertyName}">
@@ -27,11 +27,14 @@ export default class PropertyEditor extends Vue {
 
   editPropertyName = false;
   newPropertyName = '';
+  $eventBus: any;
 
   editPropName () {
     this.editPropertyName = !this.editPropertyName;
     this.$nextTick(() => {
-      (this.$refs.propertyName as any).$el.children[0].focus();
+      const propertyInput = this.$refs.propertyName as any;
+      propertyInput.focusInput();
+      propertyInput.$el.getElementsByTagName('input')[0].select();
     });
   };
 
@@ -52,6 +55,14 @@ export default class PropertyEditor extends Vue {
   created () {
     this.newPropertyName = this.propertyName;
   };
+
+  mounted () {
+    this.$eventBus.$on('TRIGGER_PROPERTY_EDIT', (id: string) => {
+      if (id === this.model.id) {
+        this.editPropName();
+      }
+    });
+  }
 }
 </script>
 
@@ -61,6 +72,16 @@ export default class PropertyEditor extends Vue {
 
   &__name {
     font-size: 15px;
+  }
+
+  &__type {
+    margin-left: 7px;
+    padding: 0px 3px 1px;
+    font-size: 12px;
+    border-radius: 4px;
+    line-height: inherit;
+    color: black;
+    background: var(--maz-primary);
   }
 }
 </style>

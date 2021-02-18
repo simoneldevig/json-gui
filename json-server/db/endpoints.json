@@ -71,7 +71,7 @@
           },
           "isVisible": {
             "type": "boolean",
-            "value": true,
+            "value": "true",
             "id": "3e156d6c-4829-4e23-9e1a-fce5bbf327e8"
           },
           "url": {

@@ -5,14 +5,17 @@
         <div class="property__header d-flex justify-content-between align-items-center drag-handle" @click="setCollapseState">
           <div class="d-flex flex-column w-100">
             <div class="d-flex align-items-center justify-content-between" :class="{'mb-3' : !isSubChild}">
-              <h1 v-if="isSubChild" class="h3">{{ propertyName }}</h1>
+              <div v-if="isSubChild">
+                <h1 v-show="!editPropertyName" class="h3">{{ propertyName }}</h1>
+                <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />
+              </div>
               <h1 v-else class="h3">{{ id }}</h1>
               <div class="d-flex align-items-center">
                 <div v-if="isSubChild" class="property__actions">
-                  <MazBtn title="Rename" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click="editPropName">
+                  <MazBtn title="Rename" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click.stop="editPropName">
                     <span class="material-icons">edit</span>
                   </MazBtn>
-                  <MazBtn title="Delete" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click="deleteProp">
+                  <MazBtn title="Delete" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click.stop="deleteProp">
                     <span class="material-icons">delete</span>
                   </MazBtn>
                 </div>
@@ -20,7 +23,6 @@
               </div>
             </div>
             <small v-if="!isSubChild" class="d-block">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
-            <el-input v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" size="medium" @change="updateModel" @blur="editPropertyName = false" />
           </div>
         </div>
       </div>
@@ -62,7 +64,7 @@ import string from '@/components/BaseStringInput.vue';
 import boolean from '@/components/BaseBooleanInput.vue';
 import model from '@/components/ReferencedModel.vue';
 import addProperty from '@/components/AddProperty.vue';
-import { renameObjectKey, generateGuid, addToObject } from '../utils';
+import { renameObjectKey, generateGuid } from '../utils';
 import draggable from 'vuedraggable';
 import { BaseDTO } from '@/types/';
 
@@ -95,6 +97,7 @@ export default class RecursiveCollapse extends Vue {
     editPropertyName = false;
     $lodash: any;
     isOpen = false;
+    $eventBus: any;
 
     get isEndpoint (): boolean {
       return this.$route.params.type === 'endpoints';
@@ -134,6 +137,15 @@ export default class RecursiveCollapse extends Vue {
       this.isOpen = localStorage.getItem(this.data.id) === 'true';
     }
 
+    mounted () {
+      this.$eventBus.$on('TRIGGER_PROPERTY_EDIT', (id: string) => {
+        if (id === this.dataModel.id) {
+          this.editPropName();
+          this.isOpen = true;
+        }
+      });
+    }
+
     setModel (): void {
       this.$store.dispatch('setModel', this.dataModel);
     }
@@ -146,11 +158,13 @@ export default class RecursiveCollapse extends Vue {
     editPropName (): void {
       this.editPropertyName = !this.editPropertyName;
       this.$nextTick(() => {
-        (this.$refs.propertyName as HTMLElement).focus();
+        (this.$refs.propertyName as any).focusInput();
+        (this.$refs.propertyName as any).$el.getElementsByTagName('input')[0].select();
       });
     }
 
     addNewProperty (type: string, value: string): void {
+      console.log(type, value);
       let newProperty: BaseDTO = new BaseDTO();
       let propertyName: string = value;
       if (type !== 'object' && type !== 'array') {
@@ -173,7 +187,7 @@ export default class RecursiveCollapse extends Vue {
             newProperty = new BaseDTO({
               type: type,
               id: generateGuid(),
-              value: false
+              value: 'false'
             });
             break;
           case 'modelRef':
@@ -191,12 +205,12 @@ export default class RecursiveCollapse extends Vue {
       }
 
       const clonedObject = this.$lodash.cloneDeep(this.dataModel.value);
-      this.dataModel.value = addToObject(
-        clonedObject,
-        propertyName,
-        newProperty,
-        0
-      );
+      clonedObject[propertyName] = newProperty;
+      this.dataModel.value = clonedObject;
+
+      this.$nextTick(() => {
+        this.$eventBus.$emit('TRIGGER_PROPERTY_EDIT', newProperty.id);
+      });
     }
 
     importModel (): void {

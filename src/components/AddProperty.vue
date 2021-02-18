@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MazBtn :title="`Add new ${type}`" rounded class="ml-2" size="mini" outline>+ {{ typeDisplayName }}</MazBtn>
+    <MazBtn :title="`Add new ${type}`" rounded class="ml-2" size="mini" outline @click="addProperty(type)">+ {{ typeDisplayName }}</MazBtn>
   </div>
   <!-- <el-popover v-model="isVisible" placement="bottom" width="400" @after-enter="setFocus">
     <p class="mt0 mb1"><strong>Property name?</strong></p>
@@ -16,11 +16,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import faker from 'faker';
 
 @Component({})
 export default class AddProperty extends Vue {
   @Prop({ type: String, required: true }) readonly type!: string;
-  propertyName = '';
   isVisible = false;
 
   get typeDisplayName (): string {
@@ -28,8 +28,7 @@ export default class AddProperty extends Vue {
   }
 
   addProperty () {
-    this.$emit('addProperty', this.type, this.propertyName);
-    this.propertyName = '';
+    this.$emit('addProperty', this.type, faker.commerce.product().toLowerCase());
   };
 
   setFocus () {

@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import '@/plugins/maz-ui.ts';
 import '@/plugins/element.ts';
+import '@/plugins/event-bus.ts';
 import './basscss.scss';
 import './assets/main.scss';
 

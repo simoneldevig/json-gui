@@ -41,7 +41,7 @@ const setFakerValues = (obj: BaseDTO) => {
           delete obj[key];
           obj[key] = parseInt(value);
         } else if (obj[key].type === 'boolean') {
-          const value = obj[key].value === 'random' ? faker.random.boolean() : obj[key].value;
+          const value = obj[key].value === 'random' ? faker.random.boolean() : obj[key].value === 'true';
           delete obj[key];
           obj[key] = value;
         }
