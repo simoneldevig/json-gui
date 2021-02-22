@@ -5,7 +5,7 @@
         <collapse v-if="currentModel && id" :id="id" class="w-100" :data="currentModel" :depth="1" :title="id" :index="0" :is-sub-child="false" />
       </div>
       <previewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
-      <MazSidebar right width="500" class="entry__model">
+      <MazSidebar right :width="500" class="entry__model">
         <quicktype-model :id="id" class="py-4 px-3" />
       </MazSidebar>
     </div>

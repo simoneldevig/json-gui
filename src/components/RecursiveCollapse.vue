@@ -86,7 +86,6 @@ export default class RecursiveCollapse extends Vue {
     @Prop(Number) readonly depth!: number;
 
     dataModel: BaseDTO = new BaseDTO();
-    modelToImport = '';
     stringDialogVisible = false;
     numberDialogVisible = false;
     booleanDialogVisible = false;
@@ -98,6 +97,7 @@ export default class RecursiveCollapse extends Vue {
     $lodash: any;
     isOpen = false;
     $eventBus: any;
+    modelToImport = '';
 
     get isEndpoint (): boolean {
       return this.$route.params.type === 'endpoints';
@@ -190,12 +190,12 @@ export default class RecursiveCollapse extends Vue {
               value: 'false'
             });
             break;
-          case 'modelRef':
-            propertyName = this.modelToImport;
+          case 'model':
+            propertyName = '';
             newProperty = new BaseDTO({
               type: type,
               id: generateGuid(),
-              value: value
+              value: ''
             });
             break;
         }
@@ -213,11 +213,12 @@ export default class RecursiveCollapse extends Vue {
       });
     }
 
-    importModel (): void {
-      this.newPropertyName = this.modelToImport;
-      this.addNewProperty('modelRef', this.models[this.modelToImport].id);
-      this.modelToImport = '';
-    }
+    // importModel (modelToImport: string): void {
+    //   this.modelToImport = modelToImport;
+    //   this.newPropertyName = this.modelToImport;
+    //   this.addNewProperty('modelRef', this.models[this.modelToImport].id);
+    //   this.modelToImport = '';
+    // }
 
     updateModel (): void {
       this.$store.dispatch('updateModelProperty', {

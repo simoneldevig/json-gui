@@ -1,7 +1,9 @@
 <template>
   <div class="property-editor mb-1 d-flex justify-content-between align-items-center drag-handle">
     <div>
-      <span v-show="!editPropertyName" class="property-editor__name d-flex align-items-center">{{ propertyName }}<span class="property-editor__type" :class="`property-editor__type--${model.type}`">{{ model.type }}</span></span>
+      <span v-show="!editPropertyName" class="property-editor__name d-flex align-items-center">{{ propertyName }}
+        <span class="property-editor__type" :class="`property-editor__type--${model.type}`">{{ model.type }}</span>
+      </span>
       <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />
     </div>
     <div :class="{'property__actions': !editPropertyName}">
@@ -76,12 +78,15 @@ export default class PropertyEditor extends Vue {
 
   &__type {
     margin-left: 7px;
-    padding: 0px 3px 1px;
-    font-size: 12px;
+    padding: 0px 5px;
     border-radius: 4px;
     line-height: inherit;
-    color: black;
-    background: var(--maz-primary);
+    background: var(--maz-secondary);
+    color: var(--maz-black);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
   }
 }
 </style>

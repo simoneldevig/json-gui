@@ -59,7 +59,7 @@ export default class BooleanInput extends Vue {
 .boolean {
   &__inputs {
     height: 46px;
-    background: var(--maz-bg-color-light);
+    background-color: var(--maz-bg-color-light);
     border-radius: var(--maz-border-radius);
     padding: 0 .8571rem;
   }

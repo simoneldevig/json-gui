@@ -13,7 +13,7 @@
         :no-label="true"
         clearable
         @request="querySearch"
-        @input="selectModel"
+        @input="updateModel"
       />
       <router-link :to="`/models/${propertyName}`" class="referenced-model__btn text-decoration-none">
         <MazBtn size="mini" color="grey" rounded>
@@ -68,6 +68,14 @@ export default class ReferencedModel extends Vue {
   deleteProp () {
     this.$store.dispatch('deleteModelProperty', {
       id: this.model.id
+    });
+  }
+
+  updateModel () {
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
     });
   }
 }
