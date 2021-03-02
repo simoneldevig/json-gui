@@ -1,17 +1,18 @@
 <template>
-  <el-dialog
+  <MazDialog
+    v-model="dialogVisible"
     width="70%"
     title="Preview"
-    :visible="dialogVisible"
+    class="preview-modal"
     @close="$emit('close')"
   >
-    <highlight class="m0" :code="json" language="json" />
+    <highlight class="m-0 preview-modal__content" :code="json" language="json" />
 
     <span slot="footer">
-      <el-button @click="$emit('close')">Close</el-button>
-      <el-button type="primary" @click.prevent="copy">Copy</el-button>
+      <MazBtn rounded size="sm" color="grey" class="mr-2" @click="$emit('close')">Close</MazBtn>
+      <MazBtn rounded size="sm" @click.prevent="copy">Copy</MazBtn>
     </span>
-  </el-dialog>
+  </MazDialog>
 </template>
 
 <script lang="ts">
@@ -46,9 +47,10 @@ export default class PreviewModal extends Vue {
 </script>
 
 <style lang="scss">
-.el-dialog__body {
-  padding: 0 20px!important;
-  max-height: 60vh;
-  overflow: auto;
+.preview-modal {
+  &__content {
+    max-height: 60vh;
+    overflow: auto;
+  }
 }
 </style>
