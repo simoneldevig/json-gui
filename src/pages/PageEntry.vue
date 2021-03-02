@@ -18,9 +18,9 @@
             <span class="entry__breadcrumb">{{ $route.params.id }}</span>
           </div>
           <div class="pr-7">
-            <MazBtn class="mr-2" rounded size="sm" color="light" :loading="loading" @click="preview">Preview</MazBtn>
-            <MazBtn class="mr-2" rounded size="sm" color="success" :loading="loading" @click="save">Save</MazBtn>
-            <MazBtn rounded size="sm" color="primary" :loading="loading" @click="saveAndGenerate">Save and generate</MazBtn>
+            <MazBtn class="mr-2" rounded size="sm" color="light" :loading="loading === 'preview'" @click="preview">Preview</MazBtn>
+            <MazBtn class="mr-2" rounded size="sm" color="success" :loading="loading === 'save'" @click="save">Save</MazBtn>
+            <MazBtn rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate">Save and generate</MazBtn>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default class Entry extends Vue {
     @Prop({ type: String, required: true }) readonly type!: string;
     @Prop({ type: String, required: true }) readonly id!: string;
 
-    private loading = false;
+    private loading = '';
     private dataContent!: BaseResponseDTO;
     private previewData: any = null;
     private showPreviewDialog = false;
@@ -71,7 +71,7 @@ export default class Entry extends Vue {
     };
 
     async save () {
-      this.loading = true;
+      this.loading = 'save';
       try {
         await this.$store.dispatch('saveData', {
           type: this.type,
@@ -92,23 +92,30 @@ export default class Entry extends Vue {
           type: 'warning'
         });
       } finally {
-        this.loading = false;
+        this.loading = '';
       }
     };
 
     saveAndGenerate () {
       // this.save();
+      this.loading = 'savegen';
+
       this.$store.dispatch('saveAndGenerate', {
         type: 'db',
         id: this.id
       });
+      this.loading = '';
     };
 
     preview () {
+      this.loading = 'preview';
       let clonedObject = this.$lodash.cloneDeep(this.currentModel);
       clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
       this.previewData = JSON.stringify(clonedObject, null, 2);
-      this.showPreviewDialog = true;
+      this.$nextTick(() => {
+        this.loading = '';
+        this.showPreviewDialog = true;
+      });
     }
 
     closePreview () {
