@@ -6,7 +6,7 @@
       <MazSearch
         v-model="internalPropertyName"
         :replace-on-select="true"
-        :initial-query="propertyName"
+        :initial-query="initialQuery"
         :items="results"
         item-text="value"
         :loading="loading"
@@ -43,13 +43,15 @@ export default class ReferencedModel extends Vue {
   results: {[key: string]: any} = [];
   loading = false;
   internalPropertyName = '';
+  initialQuery = '';
 
   get models (): any {
     return this.$store.state.models;
   }
 
   created () {
-    this.internalPropertyName = this.propertyName;
+    this.internalPropertyName = this.model.value ? this.propertyName : '';
+    this.initialQuery = this.model.value ? this.propertyName : '';
     this.objectModel = this.model;
   }
 
@@ -71,7 +73,8 @@ export default class ReferencedModel extends Vue {
     });
   }
 
-  updateModel () {
+  updateModel (referencedModel: {value: string}) {
+    this.objectModel.value = this.models[referencedModel.value].id;
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.propertyName,
       oldPropertyName: this.propertyName,

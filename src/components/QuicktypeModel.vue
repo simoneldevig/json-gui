@@ -64,7 +64,7 @@ export default class QuickType extends Vue {
         if (typeof (obj[key]) !== 'object') {
           delete obj[key];
         } else {
-          if (obj[key].type === 'model') {
+          if (obj[key].type === 'model' && obj[key].value) {
             const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(this.models).find(x => x.id === obj[key].value));
             const remappedValues = this.cleanModel(referencedModel.value);
             delete obj[key];

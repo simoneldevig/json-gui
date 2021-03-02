@@ -166,7 +166,7 @@ export default class RecursiveCollapse extends Vue {
     addNewProperty (type: string, value: string): void {
       console.log(type, value);
       let newProperty: BaseDTO = new BaseDTO();
-      let propertyName: string = value;
+      const propertyName: string = value;
       if (type !== 'object' && type !== 'array') {
         switch (type) {
           case 'string':
@@ -191,7 +191,6 @@ export default class RecursiveCollapse extends Vue {
             });
             break;
           case 'model':
-            propertyName = '';
             newProperty = new BaseDTO({
               type: type,
               id: generateGuid(),
