@@ -19,7 +19,7 @@
           </div>
           <div class="pr-7">
             <MazBtn class="mr-2" rounded size="sm" color="light" :loading="loading" @click="preview">Preview</MazBtn>
-            <MazBtn class="mr-2" rounded size="sm" color="success" :loading="loading" @click="Save">Save</MazBtn>
+            <MazBtn class="mr-2" rounded size="sm" color="success" :loading="loading" @click="save">Save</MazBtn>
             <MazBtn rounded size="sm" color="primary" :loading="loading" @click="saveAndGenerate">Save and generate</MazBtn>
           </div>
         </div>
