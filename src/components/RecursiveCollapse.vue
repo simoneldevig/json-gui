@@ -47,9 +47,6 @@
               <add-property type="array" @addProperty="addNewProperty" />
               <add-property type="model" @addProperty="addNewProperty" />
             </div>
-            <!-- <el-select v-if="isEndpoint && models" v-model="modelToImport" filterable class="ml1" size="small" placeholder="Import model" @change="importModel">
-              <el-option v-for="(item, index) in Object.keys(models)" :key="index" :label="item" :value="item" />
-            </el-select> -->
           </div>
         </div>
       </MazTransitionExpand>
@@ -276,36 +273,5 @@ export default class RecursiveCollapse extends Vue {
       text-align: center;
     }
   }
-}
-
-.el-collapse-item {
-    margin-bottom: 10px;
-}
-
-.el-collapse-item__header {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.el-collapse-item__arrow {
-    position: absolute;
-    right: 0;
-    margin: 0 8px 0 0;
-}
-
-.el-collapse-item__wrap {
-    background: transparent;
-}
-
-.el-collapse-item__content {
-    background: rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    padding: 0 15px 25px 15px;
-}
-
-.el-card__header {
-    padding: 10px 20px;
 }
 </style>

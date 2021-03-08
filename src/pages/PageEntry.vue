@@ -144,17 +144,6 @@ export default class Entry extends Vue {
         text-transform: capitalize;
     }
 }
-
-.hljs {
-    padding: 20px !important;
-    font-size: 14px;
-}
-
-.model__copy {
-    position: absolute;
-    right: 5px;
-    top: 5px;
-}
 </style>
 
 <style src="highlight.js/styles/monokai-sublime.css">

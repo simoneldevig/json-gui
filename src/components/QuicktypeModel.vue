@@ -1,17 +1,19 @@
 <template>
-  <div v-if="quicktypeModel">
-    <el-button-group class="my1">
-      <el-button :type="selectedModelType === 'csharp' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'csharp'">C#</el-button>
-      <el-button :type="selectedModelType === 'typescript' ? 'primary' : 'default'" size="small" @click="selectedModelType = 'typescript'">TypeScript</el-button>
-    </el-button-group>
+  <div v-if="quicktypeModel" class="model">
+    <MazBtnGroup
+      v-model="selectedModelType"
+      :items="items"
+      outline
+      size="mini"
+      color="secondary"
+      class="mb-3"
+    />
 
-    <el-card class="p0 relative" :body-style="{ padding: '0' }">
-      <el-tooltip v-model="showCopyTooltip" class="item" :manual="true" effect="dark" content="Copied!" placement="top-start">
-        <el-button class="model__copy" icon="el-icon-document-copy" circle @click.prevent="copyModel" />
-      </el-tooltip>
+    <div class="p-relative">
+      <MazBtn class="model__copy" size="mini" color="light" fab icon-name="content_copy" @click.prevent="copyModel" />
 
-      <highlight class="m0" :code="quicktypeModel" :language="selectedModelType" />
-    </el-card>
+      <highlight class="m-0" :code="quicktypeModel" :language="selectedModelType" />
+    </div>
   </div>
 </template>
 
@@ -34,6 +36,7 @@ export default class QuickType extends Vue {
   private quicktypeModel: any = null;
   private selectedModelType = 'csharp';
   private showCopyTooltip = false;
+  private items: any = [{ label: 'C#', value: 'csharp' }, { label: 'TypeScript', value: 'typescript' }];
   $lodash: any;
 
   get currentModel (): BaseDTO {
@@ -147,14 +150,30 @@ export default class QuickType extends Vue {
     navigator.permissions.query({ name: 'clipboard-write' as PermissionName }).then(result => {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(newClip).then(() => {
-          this.showCopyTooltip = true;
-
-          setTimeout(() => {
-            this.showCopyTooltip = false;
-          }, 1000);
+          this.$notify({
+            title: 'Copied!',
+            message: '',
+            type: 'success'
+          });
         });
       }
     });
   };
 }
 </script>
+
+<style lang="scss" scoped>
+.model {
+  .model__copy {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+}
+
+.hljs {
+    padding: 20px !important;
+    font-size: 14px;
+}
+
+</style>
