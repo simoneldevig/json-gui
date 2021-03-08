@@ -1,5 +1,6 @@
-#[W.I.P]
-![Logo]('public/logo.png?raw=true')
+# [W.I.P]
+
+<img src="/public/logo.png" alt="Logo" />
 
 JSON GUI is a GUI mainly built for [json-server](https://github.com/typicode/json-server) but can be used as a JSON generator as well.
 
