@@ -1,3 +1,4 @@
+@import "../../node_modules/minireset.css/minireset.css";
 @import url('https://fonts.googleapis.com/css?family=Material+Icons');
 @import "../../node_modules/@novicell/flexbox-grid/dist/grid.css";
 @import "../../node_modules/@novicell/css-utils/dist/all.css";
@@ -9,5 +10,6 @@
 
 @import "./partials/property";
 @import "./partials/vue-sortable";
+@import "./partials/vue-notification";
 
 

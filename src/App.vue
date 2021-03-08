@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="app d-flex" :class="{'maz-is-dark': typeof settings !== 'undefined' && settings.darkMode}">
+    <notifications />
     <MazSidebar
       v-model="hasLeftSidebarOpen"
       class="navigation"
@@ -219,7 +220,7 @@ export default class App extends Vue {
     }).then(() => {
       this.$notify({
         title: `${this.editItemName} has been renamed`,
-        message: '',
+        text: '',
         type: 'success'
       });
       if (this.$route.params.id === this.editItemName) {
@@ -251,7 +252,7 @@ export default class App extends Vue {
     }).then(() => {
       this.$notify({
         title: `${this.editItemName} has been deleted`,
-        message: '',
+        text: '',
         type: 'success'
       });
       if (this.$route.params.id === this.editItemName) {

@@ -35,7 +35,7 @@ export default class PreviewModal extends Vue {
         navigator.clipboard.writeText(newClip).then(() => {
           this.$notify({
             title: 'Copied to clipboard ✌️',
-            message: '',
+            text: '',
             type: 'success'
           });
           this.$emit('close');

@@ -10,7 +10,9 @@
     />
 
     <div class="p-relative">
-      <MazBtn class="model__copy" size="mini" color="light" fab icon-name="content_copy" @click.prevent="copyModel" />
+      <MazBtn class="model__copy" size="mini" color="light" fab @click.prevent="copyModel">
+        <span class="model__copy-icon material-icons">content_copy</span>
+      </MazBtn>
 
       <highlight class="m-0" :code="quicktypeModel" :language="selectedModelType" />
     </div>
@@ -152,7 +154,7 @@ export default class QuickType extends Vue {
         navigator.clipboard.writeText(newClip).then(() => {
           this.$notify({
             title: 'Copied!',
-            message: '',
+            text: '',
             type: 'success'
           });
         });
@@ -162,7 +164,7 @@ export default class QuickType extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .model {
   .model__copy {
     position: absolute;

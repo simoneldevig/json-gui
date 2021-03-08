@@ -11,7 +11,7 @@
     </div>
     <div class="p-sticky entry__save py-2">
       <div class="w-100">
-        <div class="flex items-center justify-between">
+        <div class="d-flex align-items-center justify-content-between">
           <div>
             <span class="entry__breadcrumb">{{ $route.params.type }}</span>
             <span class="entry__breadcrumb">/</span>
@@ -79,7 +79,7 @@ export default class Entry extends Vue {
         }).then(() => {
           this.$notify({
             title: 'Success',
-            message: 'Your model changes was saved!',
+            text: 'Your model changes was saved!',
             type: 'success'
           });
         });
@@ -88,7 +88,7 @@ export default class Entry extends Vue {
         console.error(ex);
         this.$notify({
           title: 'Warning',
-          message: 'An error happened. Please check the console',
+          text: 'An error happened. Please check the console',
           type: 'warning'
         });
       } finally {

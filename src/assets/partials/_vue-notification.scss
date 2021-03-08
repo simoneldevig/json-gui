@@ -1,0 +1,22 @@
+.vue-notification {
+  margin: 15px 30px;
+  border-radius: var(--maz-border-radius);
+  box-shadow: 0 8px 16px rgba(0,0,0,.15);
+  font-weight: normal;
+  letter-spacing: 0.5px;
+
+  &.warn {
+    border-left-color: var(--maz-danger);
+    background: var(--maz-bg-color-light);
+  }
+ 
+  &.error {
+    border-left-color: var(--maz-error);
+    background: var(--maz-bg-color-light);
+  }
+ 
+  &.success {
+    border-left-color: var(--maz-success);
+    background: var(--maz-bg-color-light);
+  }
+}
