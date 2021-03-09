@@ -37,12 +37,10 @@ const setObjectValue = (obj: BaseDTO, newObj: BaseDTO) => {
 const deleteObject = (obj: BaseDTO, idToDelete: string) => {
   if (typeof obj === 'object') {
     for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, 'key')) {
-        if (typeof obj[key] === 'object' && obj[key].id === idToDelete) {
-          delete obj[key];
-        } else {
-          deleteObject(obj[key], idToDelete);
-        }
+      if (typeof obj[key] === 'object' && obj[key].id === idToDelete) {
+        delete obj[key];
+      } else {
+        deleteObject(obj[key], idToDelete);
       }
     }
   }
