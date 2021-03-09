@@ -14,21 +14,21 @@ import { BaseDTO } from '@/types/index';
 
 export default {
   getModels (context: any) {
-    axios.get('http://localhost:5000/api/models')
+    axios.get('http://localhost:5000/json-gui/models')
       .then(function (response) {
         context.commit('setModels', response);
       });
   },
 
   getEndpoints (context: any) {
-    axios.get('http://localhost:5000/api/endpoints')
+    axios.get('http://localhost:5000/json-gui/endpoints')
       .then(function (response) {
         context.commit('setEndpoints', response);
       });
   },
 
   getSettings (context: any) {
-    axios.get('http://localhost:5000/api/settings')
+    axios.get('http://localhost:5000/json-gui/settings')
       .then(function (response) {
         context.commit('setSettings', response);
       });
@@ -67,7 +67,7 @@ export default {
         'content-type': 'application/json; charset=utf-8'
       },
       data: newItem,
-      url: `http://localhost:5000/api/${props.type}s/${props.name}`
+      url: `http://localhost:5000/json-gui/${props.type}s/${props.name}`
     }).then(function () {
       if (props.type === 'endpoint') {
         context.dispatch('getEndpoints').then(function () {
@@ -91,7 +91,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/api/${props.type}/${props.id}`,
+      url: `http://localhost:5000/json-gui/${props.type}/${props.id}`,
       data: context.state.currentModel
     }).then(function () {
       if (props.type === 'endpoints') {
@@ -110,7 +110,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/api/${props.type}/${props.id}`,
+      url: `http://localhost:5000/json-gui/${props.type}/${props.id}`,
       data: clonedObject
     });
   },
@@ -121,7 +121,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: 'http://localhost:5000/api/settings',
+      url: 'http://localhost:5000/json-gui/settings',
       data: props
     }).then(function () {
       context.dispatch('getSettings');
@@ -134,7 +134,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/api/${props.type}/${props.name}`
+      url: `http://localhost:5000/json-gui/${props.type}/${props.name}`
     }).then(function () {
       if (props.type === 'endpoints') {
         context.dispatch('getEndpoints');
@@ -150,7 +150,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/api/${props.type}/${props.name}`,
+      url: `http://localhost:5000/json-gui/${props.type}/${props.name}`,
       data: props
     }).then(function () {
       if (props.type === 'endpoints') {

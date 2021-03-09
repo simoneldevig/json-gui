@@ -28,7 +28,8 @@ const middlewares = defaults(
 );
 
 server.use(rewriter({
-  '/api/*': '/$1'
+  '/json-gui/*': '/$1',
+  '/api/*': '/db/$1'
 }));
 server.use(middlewares);
 server.use(bodyParser);
@@ -88,9 +89,13 @@ server.all('/:type/:name', function (req, res) {
     const returnedObj = router.db.get(req.params.type)
       .get(req.params.name)
       .value();
-    res.status(200).jsonp(
-      returnedObj
-    );
+    if (returnedObj) {
+      res.status(200).jsonp(
+        returnedObj
+      );
+    } else {
+      res.status(404).jsonp();
+    }
   }
 });
 
