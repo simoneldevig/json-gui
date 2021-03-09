@@ -61,7 +61,7 @@ export default class ReferencedModel extends Vue {
       arr.push({ value: modelName });
       return arr;
     }, []);
-    const results = queryString ? modelList.filter((x: any) => x.value.includes(queryString)) : this.models;
+    const results = queryString ? modelList.filter((x: any) => x.value.includes(queryString)) : modelList;
     // call callback function to return suggestions
     this.results = results;
     this.loading = false;
