@@ -123,5 +123,130 @@
         "egegegg": ""
       }
     }
+  ],
+  "getPostss": [
+    {
+      "relatedPosts": [
+        {
+          "id": 50821,
+          "headlines": "Joe Goldenberg",
+          "author": "Nella Kiehn",
+          "publishDate": "2020-08-04T11:52:12.600Z",
+          "content": "dolores repellendus quo",
+          "isVisible": false,
+          "url": "#"
+        },
+        {
+          "id": 23445,
+          "headlines": "Jane Doe",
+          "author": "Mathew Koch II",
+          "publishDate": "2021-01-16T16:21:10.344Z",
+          "content": "vitae reiciendis id",
+          "isVisible": true,
+          "url": "#"
+        },
+        {
+          "id": 6729,
+          "headlines": "John Doe",
+          "author": "Buster Johnston IV",
+          "publishDate": "2020-05-07T00:11:25.868Z",
+          "content": "omnis aut eaque",
+          "isVisible": true,
+          "url": "#"
+        }
+      ],
+      "text": "sequi",
+      "idd": 85132,
+      "author": "Rita Tromp I",
+      "title": "Branding",
+      "publishDate": "2020-05-28T14:18:13.348Z",
+      "isVisible": true,
+      "post": {
+        "id": true,
+        "egegegg": ""
+      }
+    },
+    {
+      "relatedPosts": [
+        {
+          "id": 50821,
+          "headlines": "Joe Goldenberg",
+          "author": "Nella Kiehn",
+          "publishDate": "2020-08-04T11:52:12.600Z",
+          "content": "dolores repellendus quo",
+          "isVisible": false,
+          "url": "#"
+        },
+        {
+          "id": 23445,
+          "headlines": "Jane Doe",
+          "author": "Mathew Koch II",
+          "publishDate": "2021-01-16T16:21:10.344Z",
+          "content": "vitae reiciendis id",
+          "isVisible": true,
+          "url": "#"
+        },
+        {
+          "id": 6729,
+          "headlines": "John Doe",
+          "author": "Buster Johnston IV",
+          "publishDate": "2020-05-07T00:11:25.868Z",
+          "content": "omnis aut eaque",
+          "isVisible": true,
+          "url": "#"
+        }
+      ],
+      "text": "rerum",
+      "idd": 70772,
+      "author": "Odie O'Connell DVM",
+      "title": "indigo",
+      "publishDate": "2021-02-12T01:46:25.882Z",
+      "isVisible": false,
+      "post": {
+        "id": true,
+        "egegegg": ""
+      }
+    },
+    {
+      "relatedPosts": [
+        {
+          "id": 50821,
+          "headlines": "Joe Goldenberg",
+          "author": "Nella Kiehn",
+          "publishDate": "2020-08-04T11:52:12.600Z",
+          "content": "dolores repellendus quo",
+          "isVisible": false,
+          "url": "#"
+        },
+        {
+          "id": 23445,
+          "headlines": "Jane Doe",
+          "author": "Mathew Koch II",
+          "publishDate": "2021-01-16T16:21:10.344Z",
+          "content": "vitae reiciendis id",
+          "isVisible": true,
+          "url": "#"
+        },
+        {
+          "id": 6729,
+          "headlines": "John Doe",
+          "author": "Buster Johnston IV",
+          "publishDate": "2020-05-07T00:11:25.868Z",
+          "content": "omnis aut eaque",
+          "isVisible": true,
+          "url": "#"
+        }
+      ],
+      "text": "recusandae",
+      "idd": 14836,
+      "author": "Kelton Bergstrom",
+      "title": "IB",
+      "publishDate": "2021-01-17T01:38:15.992Z",
+      "isVisible": false,
+      "post": {
+        "id": true,
+        "egegegg": ""
+      }
+    }
   ]
 }

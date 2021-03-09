@@ -11,7 +11,7 @@
 
       <div>
         <router-link to="/" class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2">
-          Settings
+          Home
         </router-link>
       </div>
 
