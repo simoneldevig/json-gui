@@ -2,8 +2,7 @@ import Vue from 'vue';
 import { BaseDTO } from '@/types';
 
 const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string): BaseDTO => {
-  const keys = Object.keys(oldObject);
-  const newObject = keys.reduce((acc: { [key: string]: BaseDTO }, val) => {
+  const newObject = Object.keys(oldObject).reduce((acc: { [key: string]: BaseDTO }, val) => {
     if (val === oldKey) {
       acc[newKey] = oldObject[oldKey];
     } else {
@@ -23,26 +22,26 @@ const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string): Ba
 
 const setObjectValue = (obj: BaseDTO, newObj: BaseDTO) => {
   if (typeof obj === 'object') {
-    for (const key in obj) {
+    Object.keys(obj).forEach(key => {
       if (typeof obj[key] === 'object') {
         setObjectValue(obj[key], newObj);
       } else if (key === 'value' && obj.id === newObj.id) {
         obj[key] = newObj.value;
       }
-    }
+    });
   }
   return obj;
 };
 
 const deleteObject = (obj: BaseDTO, idToDelete: string) => {
   if (typeof obj === 'object') {
-    for (const key in obj) {
+    Object.keys(obj).forEach(key => {
       if (typeof obj[key] === 'object' && obj[key].id === idToDelete) {
         delete obj[key];
       } else {
         deleteObject(obj[key], idToDelete);
       }
-    }
+    });
   }
   return obj;
 };
@@ -61,7 +60,7 @@ const addToObject = (obj: any, key: any, value: any, index: any) => {
   let i = 0;
 
   // Loop through the original object
-  for (const prop in obj) {
+  Object.keys(obj).forEach(prop => {
     // If the indexes match, add the new item
     if (i === index && key && value) {
       temp[key] = value;
@@ -70,7 +69,7 @@ const addToObject = (obj: any, key: any, value: any, index: any) => {
     temp[prop] = obj[prop];
     // Increase the count
     i++;
-  }
+  });
 
   // If no index, add to the end
   if (!index && key && value) {

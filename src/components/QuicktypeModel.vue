@@ -65,7 +65,7 @@ export default class QuicktypeModel extends Vue {
 
   cleanModel (obj: BaseDTO) {
     if (typeof obj === 'object') {
-      for (const key in obj) {
+      Object.keys(obj).forEach(key => {
         if (typeof (obj[key]) !== 'object') {
           delete obj[key];
         } else {
@@ -97,7 +97,7 @@ export default class QuicktypeModel extends Vue {
             obj[key] = 0;
           }
         }
-      }
+      });
     }
     return obj;
   };

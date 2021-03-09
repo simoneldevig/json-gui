@@ -7,7 +7,7 @@ const faker = require('faker');
 
 const setFakerValues = (obj: BaseDTO) => {
   if (typeof obj === 'object') {
-    for (const key in obj) {
+    Object.keys(obj).forEach(key => {
       if (typeof (obj[key]) === 'object') {
         if (obj[key].type === 'model') {
           const referencedModel = Object.values(store.state.models).find(x => (x as BaseDTO).id === obj[key].value);
@@ -46,7 +46,7 @@ const setFakerValues = (obj: BaseDTO) => {
           obj[key] = value;
         }
       }
-    }
+    });
   }
   return obj;
 };
@@ -57,8 +57,8 @@ const generateFakerValues = (obj: BaseDTO, timesToRepeat: number) => {
   }
   const originalObj = obj[0];
 
-  for (let i = 0; i < timesToRepeat; i++) {
-    for (const key in originalObj.value) {
+  [...Array(timesToRepeat)].forEach(() => {
+    Object.keys(originalObj.value).forEach(key => {
       if (originalObj.value[key].type === 'array') {
         originalObj.value[key] = new Array(originalObj.value[key]);
         const originalChildObj = originalObj.value[key][0];
@@ -67,7 +67,7 @@ const generateFakerValues = (obj: BaseDTO, timesToRepeat: number) => {
           generateFakerValues(originalObj.value[key], originalChildObj.timesToRepeat);
         }
       }
-    }
+    });
     const clonedObject = Vue.prototype.$lodash.cloneDeep(originalObj.value);
     const mutatedObj = setFakerValues(clonedObject);
     obj.push(mutatedObj);
@@ -76,7 +76,7 @@ const generateFakerValues = (obj: BaseDTO, timesToRepeat: number) => {
     if (obj.length === timesToRepeat + 1) {
       obj.shift();
     }
-  }
+  });
   return obj;
 };
 
@@ -90,8 +90,8 @@ const generateFakerList = (): FakerList => {
     if (ignore.indexOf(module) !== -1) {
       return;
     }
-    for (const method in (faker as any)[module]) {
-      if (typeof (faker as any)[module][method] === 'function') {
+    Object.keys(faker[module]).forEach(method => {
+      if (typeof faker[module][method] === 'function') {
         const fakerMethod: FakerItem = {
           value: ''
         };
@@ -100,7 +100,7 @@ const generateFakerList = (): FakerList => {
           fakerList.push(fakerMethod);
         }
       }
-    }
+    });
   });
 
   return fakerList;
