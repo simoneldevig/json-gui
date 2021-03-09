@@ -153,7 +153,7 @@ export default class QuickType extends Vue {
       if (result.state === 'granted' || result.state === 'prompt') {
         navigator.clipboard.writeText(newClip).then(() => {
           this.$notify({
-            title: 'Copied!',
+            title: 'Copied to clipboard ✌️',
             text: '',
             type: 'success'
           });
