@@ -5,7 +5,7 @@
   "getTests": {
     "timesToRepeat": 1
   },
-  "getPosts": {
+  "getPostss": {
     "type": "array",
     "timesToRepeat": 3,
     "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",

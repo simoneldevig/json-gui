@@ -11,6 +11,13 @@
   color: var(--maz-dark);
 }
 
+.maz-btn--secondary,
+.maz-btn--secondary.maz-btn--outline:hover:not(:disabled), 
+.maz-btn--secondary.maz-btn--outline:focus:not(:disabled), 
+.maz-btn--secondary.maz-btn--outline.maz-active:not(:disabled) {
+  color: var(--maz-dark);
+}
+
 .maz-sidebar__wrapper__close-btn button {
   background-color: var(--maz-bg-color);
 }

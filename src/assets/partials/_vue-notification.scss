@@ -7,16 +7,16 @@
 
   &.warn {
     border-left-color: var(--maz-danger);
-    background: var(--maz-bg-color-light);
+    background: var(--maz-hover-color);
   }
  
   &.error {
     border-left-color: var(--maz-error);
-    background: var(--maz-bg-color-light);
+    background: var(--maz-hover-color);
   }
  
   &.success {
     border-left-color: var(--maz-success);
-    background: var(--maz-bg-color-light);
+    background: var(--maz-hover-color);
   }
 }

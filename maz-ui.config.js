@@ -3,8 +3,8 @@ module.exports = {
   theme: {
     main: {
       primary: '#ffd700',
-      secondary: '#1CD1A1',
-      third: '#C41AF9',
+      secondary: '#12ABB0',
+      third: '#1d2d50',
       danger: '#ED4F32',
       success: '#3CB371',
       info: '#17A2B8',

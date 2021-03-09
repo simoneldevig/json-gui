@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MazBtn :title="`Add new ${type}`" rounded class="ml-2" size="mini" outline @click="addProperty(type)">+ {{ typeDisplayName }}</MazBtn>
+    <MazBtn :title="`Add new ${type}`" rounded class="ml-2" size="mini" color="secondary" outline @click="addProperty(type)">+ {{ typeDisplayName }}</MazBtn>
   </div>
 </template>
 

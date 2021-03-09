@@ -6,7 +6,7 @@
       outline
       size="mini"
       color="secondary"
-      class="mb-3"
+      class="model__btn mb-3"
     />
 
     <div class="p-relative">
@@ -166,6 +166,10 @@ export default class QuicktypeModel extends Vue {
 
 <style lang="scss">
 .model {
+  &__btn {
+    font-size: 11px;
+  }
+
   .model__copy {
     position: absolute;
     right: 5px;
