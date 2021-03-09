@@ -9,7 +9,8 @@ const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string): Ba
     } else {
       acc[val] = oldObject[val];
     }
-    if (typeof oldObject[val].value === 'object' && oldObject[val] && oldObject[val].type !== 'array') {
+
+    if (oldObject[val] && (oldObject[val].type === 'array' || oldObject[val].type === 'object')) {
       const clonedObject = Vue.prototype.$lodash.cloneDeep(acc[val].value);
       acc[val].value = renameObjectKey(clonedObject, oldKey, newKey);
     }
