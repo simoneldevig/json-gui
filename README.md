@@ -1,4 +1,8 @@
-# [W.I.P]
+# :warning: Work in progress :warning:
+
+A lot of bugs may occour... 
+
+Check the [issues](https://github.com/simoneldevig/json-gui/issues) page for progress and future features.
 
 <img src="/public/logo.png" alt="Logo" />
 
