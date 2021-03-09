@@ -22,7 +22,7 @@
     "@novicell/flexbox-grid": "^1.0.1",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/vuedraggable": "^2.23.2",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "copyfiles": "^2.2.0",
