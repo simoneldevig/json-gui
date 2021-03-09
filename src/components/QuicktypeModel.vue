@@ -31,7 +31,7 @@ import { BaseDTO, BaseResponseDTO } from '@/types/';
     Highlight
   }
 })
-export default class QuickType extends Vue {
+export default class QuicktypeModel extends Vue {
   @Prop({ type: String, required: true }) readonly id!: string;
 
   private cleanedModel: any = null;

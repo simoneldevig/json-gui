@@ -30,22 +30,22 @@
         <div v-show="isOpen || !isSubChild">
           <draggable v-model="sortable" class="property__content" handle=".drag-handle" @start="drag=true" @end="drag=false">
             <div v-for="(property, propName) in dataModel.value" :key="propName">
-              <string v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
-              <boolean v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
-              <model v-if="property.type === 'model'" :model="property" :property-name="propName" />
-              <recursive-collapse v-if="property.type === 'object' || property.type === 'array'" :depth="depth + 1" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
+              <BaseStringInput v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
+              <BaseBooleanInput v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
+              <ReferencedModel v-if="property.type === 'model'" :model="property" :property-name="propName" />
+              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :depth="depth + 1" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
             </div>
           </draggable>
 
           <div class="property__add-container rounded py-5 d-flex flex-column align-items-center">
             <p class="mb-3 text-gray">Add new property</p>
             <div class="d-flex justify-content-center">
-              <add-property type="string" @addProperty="addNewProperty" />
-              <add-property type="number" @addProperty="addNewProperty" />
-              <add-property type="boolean" @addProperty="addNewProperty" />
-              <add-property type="object" @addProperty="addNewProperty" />
-              <add-property type="array" @addProperty="addNewProperty" />
-              <add-property type="model" @addProperty="addNewProperty" />
+              <AddProperty type="string" @addProperty="addNewProperty" />
+              <AddProperty type="number" @addProperty="addNewProperty" />
+              <AddProperty type="boolean" @addProperty="addNewProperty" />
+              <AddProperty type="object" @addProperty="addNewProperty" />
+              <AddProperty type="array" @addProperty="addNewProperty" />
+              <AddProperty type="model" @addProperty="addNewProperty" />
             </div>
           </div>
         </div>
@@ -57,20 +57,20 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
-import string from '@/components/BaseStringInput.vue';
-import boolean from '@/components/BaseBooleanInput.vue';
-import model from '@/components/ReferencedModel.vue';
-import addProperty from '@/components/AddProperty.vue';
+import BaseStringInput from '@/components/BaseStringInput.vue';
+import BaseBooleanInput from '@/components/BaseBooleanInput.vue';
+import ReferencedModel from '@/components/ReferencedModel.vue';
+import AddProperty from '@/components/AddProperty.vue';
 import { renameObjectKey, generateGuid } from '../utils';
 import draggable from 'vuedraggable';
 import { BaseDTO } from '@/types/';
 
 @Component({
   components: {
-    string,
-    model,
-    boolean,
-    addProperty,
+    BaseStringInput,
+    ReferencedModel,
+    BaseBooleanInput,
+    AddProperty,
     draggable
   }
 })

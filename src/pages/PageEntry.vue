@@ -2,11 +2,11 @@
   <div>
     <div class="d-flex w-100">
       <div class="py-7 px-4 d-flex flex-grow-1">
-        <collapse v-if="currentModel && id" :id="id" class="w-100" :data="currentModel" :depth="1" :title="id" :index="0" :is-sub-child="false" />
+        <RecursiveCollapse v-if="currentModel && id" :id="id" class="w-100" :data="currentModel" :depth="1" :title="id" :index="0" :is-sub-child="false" />
       </div>
-      <previewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
+      <PreviewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
       <MazSidebar right :width="500" class="entry__model">
-        <quicktype-model :id="id" class="py-4 px-3" />
+        <QuicktypeModel :id="id" class="py-4 px-3" />
       </MazSidebar>
     </div>
     <div class="p-sticky entry__save py-2">
@@ -30,17 +30,17 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
-import collapse from '@/components/RecursiveCollapse.vue';
-import quicktypeModel from '@/components/QuicktypeModel.vue';
-import previewModal from '@/components/PreviewModal.vue';
+import RecursiveCollapse from '@/components/RecursiveCollapse.vue';
+import QuicktypeModel from '@/components/QuicktypeModel.vue';
+import PreviewModal from '@/components/PreviewModal.vue';
 import { BaseResponseDTO, BaseDTO } from '@/types';
 import { generateFakerValues } from '@/services/faker';
 
 @Component({
   components: {
-    collapse,
-    quicktypeModel,
-    previewModal
+    RecursiveCollapse,
+    QuicktypeModel,
+    PreviewModal
   }
 })
 export default class Entry extends Vue {

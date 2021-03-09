@@ -137,7 +137,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import EditItemModal from '@/components/EditItemModal.vue';
 import { mapMutations } from 'vuex';
 
 import { BaseResponseDTO } from '@/types';
@@ -148,9 +147,6 @@ import 'maz-ui/lib/css/base.css';
     ...mapMutations([
       'setFakerList'
     ])
-  },
-  components: {
-    EditItemModal
   }
 })
 export default class App extends Vue {
