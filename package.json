@@ -10,7 +10,8 @@
     "lint": "vue-cli-service lint --fix",
     "dev": "vue-cli-service serve",
     "generate-maz-theme": "maz get-theme",
-    "json-gui": "node ."
+    "json-gui": "node .",
+    "json-gui-test": "json-server json-server/db/db.json"
   },
   "main": "./server.js",
   "files": [
@@ -29,7 +30,7 @@
     "faker": "^4.1.0",
     "highlight.js": "^9.18.1",
     "http": "0.0.1-security",
-    "json-server": "^0.16.2",
+    "json-server": "^0.16.3",
     "lodash.clonedeep": "^4.5.0",
     "maz-ui": "^2.3.5",
     "minireset.css": "0.0.7",

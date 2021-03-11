@@ -1,0 +1,8 @@
+{
+  "port": 5000,
+  "static": "dist",
+  "host": "localhost",
+  "watch": true,
+  "routes": "",
+  "delay": 0
+}
