@@ -6,5 +6,6 @@ module.exports = {
   delay: 0,
   routes: {
     '/api/*': '/$1'
-  }
+  },
+  snapshotsDir: './json-server/snapshots'
 };
