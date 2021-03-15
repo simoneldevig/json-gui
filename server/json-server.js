@@ -4,10 +4,13 @@ const path = require('path');
 const chokidar = require('chokidar');
 const pause = require('connect-pause');
 const jsonServer = require('json-server');
-const jsonServerConfig = require('../json-server.config.js');
 const { isEqual } = require('lodash');
 const consola = require('consola');
 const chalk = require('chalk');
+let jsonServerConfig;
+if (fs.existsSync('./json-server.config.js')) {
+  jsonServerConfig = require('./json-server.config.js');
+}
 
 const log = {
   info: (message) => consola.info(chalk.bold('JSON-GUI'), message),
@@ -50,7 +53,7 @@ const middlewares = jsonServer.defaults(
 let externalMiddlewares;
 if (config.middlewares && config.middlewares.length) {
   externalMiddlewares = config.middlewares.map(function (m) {
-    console.log(`Loading, ${m}`);
+    log.success(`Loaded, ${m}`);
     return require(path.resolve(m));
   });
 }
