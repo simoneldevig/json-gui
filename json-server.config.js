@@ -7,5 +7,7 @@ module.exports = {
   routes: {
     '/api/*': '/$1'
   },
-  snapshotsDir: './json-server/snapshots'
+  snapshotsDir: './json-server/snapshots',
+  foreignKeySuffix: '_id',
+  id: 'id'
 };

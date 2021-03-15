@@ -5,9 +5,6 @@ const chokidar = require('chokidar');
 const pause = require('connect-pause');
 const jsonServer = require('json-server');
 const jsonServerConfig = require('./json-server.config.js');
-const db = 'json-server/db/db.json';
-const server = jsonServer.create();
-const router = jsonServer.router(db);
 const { isEqual } = require('lodash');
 
 const config = {
@@ -21,8 +18,15 @@ const config = {
   noCors: false,
   readOnly: true,
   snapshotsDir: './json-server/snapshots',
+  foreignKeySuffix: 'Id',
+  id: 'id',
   ...jsonServerConfig
 };
+
+// const db = 'json-server/db/db.json';
+const db = 'db.json';
+const server = jsonServer.create();
+const router = jsonServer.router(db, config.foreignKeySuffix);
 
 const middlewares = jsonServer.defaults(
   {
@@ -37,6 +41,7 @@ module.exports = () => {
   server.use(middlewares);
   server.use(pause(config.delay));
   server.use(jsonServer.rewriter(config.routes));
+  router.db._.id = config.id;
   server.use(router);
   server.listen(config.port, config.host, () => {
     console.log('JSON Server is running');
@@ -73,13 +78,6 @@ module.exports = () => {
     }
   });
 };
-
-// DELAY
-// var pause = require('connect-pause');
-// Add after jsonServer.use(middlewares))
-
-// pause in ms
-// jsonServer.use(pause(1000));
 
 // ForenKeySuffix
 // const router = jsonServer.router(data, {foreignKeySuffix: '_id'})
