@@ -20,11 +20,11 @@ const config = {
   snapshotsDir: './json-server/snapshots',
   foreignKeySuffix: 'Id',
   id: 'id',
+  middlewares: [],
   ...jsonServerConfig
 };
 
-// const db = 'json-server/db/db.json';
-const db = 'db.json';
+const db = 'json-server/db/db.json';
 const server = jsonServer.create();
 const router = jsonServer.router(db, config.foreignKeySuffix);
 
@@ -37,8 +37,20 @@ const middlewares = jsonServer.defaults(
   }
 );
 
+// Load external middlewares
+let externalMiddlewares;
+if (config.middlewares) {
+  externalMiddlewares = config.middlewares.map(function (m) {
+    console.log(`Loading, ${m}`);
+    return require(path.resolve(m));
+  });
+}
+
 module.exports = () => {
   server.use(middlewares);
+  if (externalMiddlewares.length) {
+    server.use(externalMiddlewares);
+  }
   server.use(pause(config.delay));
   server.use(jsonServer.rewriter(config.routes));
   router.db._.id = config.id;
@@ -78,12 +90,3 @@ module.exports = () => {
     }
   });
 };
-
-// ForenKeySuffix
-// const router = jsonServer.router(data, {foreignKeySuffix: '_id'})
-
-// ID
-// router.db._.id = '_id';
-
-// Middlewares
-// array of paths to be imported ane executed

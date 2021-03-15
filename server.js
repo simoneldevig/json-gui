@@ -28,7 +28,6 @@ const middlewares = defaults(
 );
 
 module.exports = () => {
-  console.log('hit');
   server.use(rewriter({
     '/json-gui/*': '/$1',
     '/api/*': '/db/$1'

@@ -9,5 +9,6 @@ module.exports = {
   },
   snapshotsDir: './json-server/snapshots',
   foreignKeySuffix: '_id',
-  id: 'id'
+  id: 'id',
+  middlewares: []
 };
