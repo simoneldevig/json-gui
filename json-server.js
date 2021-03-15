@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const chokidar = require('chokidar');
+const pause = require('connect-pause');
 const jsonServer = require('json-server');
 const jsonServerConfig = require('./json-server.config.js');
 const db = 'json-server/db/db.json';
@@ -34,19 +35,13 @@ const middlewares = jsonServer.defaults(
 
 module.exports = () => {
   server.use(middlewares);
+  server.use(pause(config.delay));
   server.use(jsonServer.rewriter(config.routes));
   server.use(router);
   server.listen(config.port, config.host, () => {
     console.log('JSON Server is running');
     // Snapshot
     console.log('Type s + enter at any time to create a snapshot of the database');
-
-    // Support nohup
-    // https://github.com/typicode/json-server/issues/221
-    process.stdin.on('error', () => {
-      console.log('Error, can\'t read from stdin');
-      console.log('Creating a snapshot from the CLI won\'t be possible');
-    });
     process.stdin.setEncoding('utf8');
     process.stdin.on('data', (chunk) => {
       if (chunk.trim().toLowerCase() === 's') {
@@ -78,17 +73,6 @@ module.exports = () => {
     }
   });
 };
-
-// WATCH
-// chokidar
-// .watch(config.db)
-// .on('change', function (file) {
-//     if (file === config.db) {
-//         var obj = JSON.parse(fs.readFileSync(file))
-//         console.info('Setting new DB state')
-//         router.db.setState(obj)
-//     }
-// })
 
 // DELAY
 // var pause = require('connect-pause');

@@ -26,6 +26,7 @@
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.5.1",
+    "connect-pause": "^0.1.0",
     "copyfiles": "^2.2.0",
     "core-js": "^3.6.5",
     "faker": "^4.1.0",
