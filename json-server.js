@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const path = require('path');
+const chokidar = require('chokidar');
 const jsonServer = require('json-server');
 const jsonServerConfig = require('./json-server.config.js');
+const db = 'json-server/db/db.json';
 const server = jsonServer.create();
-const router = jsonServer.router('./json-server/db/db.json');
+const router = jsonServer.router(db);
+const { isEqual } = require('lodash');
 
 const config = {
   port: 5000,
@@ -57,22 +60,24 @@ module.exports = () => {
         console.log(`Saved snapshot to ${path.relative(process.cwd(), file)}\n`);
       }
     });
+
+    if (config.watch) {
+      console.log('Watching...');
+
+      chokidar.watch(db).on('change', function (file) {
+        if (file === db) {
+          const obj = JSON.parse(fs.readFileSync(file));
+          // Compare .json file content with in memory database
+          const isDatabaseDifferent = !isEqual(obj, router.db.getState());
+          if (isDatabaseDifferent) {
+            console.log('DB has changed, reloading...');
+            router.db.setState(obj);
+          }
+        }
+      });
+    }
   });
 };
-
-// SNAPSHOT
-// process.stdin.setEncoding('utf8')
-//       process.stdin.on('data', (chunk) => {
-//         if (chunk.trim().toLowerCase() === 's') {
-//           const filename = `db-${Date.now()}.json`
-//           const file = path.join(argv.snapshots, filename)
-//           const state = app.db.getState()
-//           fs.writeFileSync(file, JSON.stringify(state, null, 2), 'utf-8')
-//           console.log(
-//             `  Saved snapshot to ${path.relative(process.cwd(), file)}\n`
-//           )
-//         }
-//       })
 
 // WATCH
 // chokidar
