@@ -8,10 +8,10 @@ const { isEqual } = require('lodash');
 const consola = require('consola');
 const chalk = require('chalk');
 let jsonServerConfig;
-if (fs.existsSync('./json-server.config.js')) {
-  jsonServerConfig = require('./json-server.config.js');
+const projectRoot = process.cwd();
+if (fs.existsSync(path.resolve(projectRoot, 'json-server.config.js'))) {
+  jsonServerConfig = require(path.resolve(projectRoot, 'json-server.config.js'));
 }
-
 const log = {
   info: (message) => consola.info(chalk.bold('JSON-GUI'), message),
   success: (message) => consola.success(chalk.bold('JSON-GUI'), message),
@@ -21,7 +21,6 @@ const log = {
 
 const config = {
   port: 5000,
-  static: 'dist',
   host: 'localhost',
   watch: true,
   routes: '',
@@ -42,7 +41,7 @@ const router = jsonServer.router(db, config.foreignKeySuffix);
 
 const middlewares = jsonServer.defaults(
   {
-    static: config.static,
+    static: 'dist',
     logger: config.logger,
     noCors: config.noCors,
     readOnly: config.readOnly

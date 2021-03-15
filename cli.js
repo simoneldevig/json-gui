@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
 const consola = require('consola');
+const path = require('path');
 const chalk = require('chalk');
 const jsonGui = require('./server/json-gui');
 const jsonServerModule = require('./server/json-server');
 const boxen = require('boxen');
 const fs = require('fs');
 let jsonServerConfig;
-if (fs.existsSync('./json-server.config.js')) {
-  jsonServerConfig = require('./json-server.config.js');
+const projectRoot = process.cwd();
+if (fs.existsSync(path.resolve(projectRoot, 'json-server.config.js'))) {
+  jsonServerConfig = require(path.resolve(projectRoot, 'json-server.config.js'));
 }
 const port = jsonServerConfig?.port || 5000;
 
