@@ -25,7 +25,7 @@
       <MazCard class="w-100 pb-3" max-width="none">
         <h3 class="p-3">Available endpoints</h3>
         <a v-for="(value, endpoint) in endpoints" :key="value.key" class="home__endpoint d-flex align-items-center justify-content-between px-3 py-2 " :title="endpoint" target="_blank" :href="`http://localhost:5000/api/${endpoint}`">
-          http://localhost:5000/api/{{ endpoint }}
+          {{ window.location.origin }}/{{ endpoint }}
 
           <MazBtn class="home__endpoint--btn" rounded size="mini">
             Open

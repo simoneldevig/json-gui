@@ -12,7 +12,7 @@ const projectRoot = process.cwd();
 if (fs.existsSync(path.resolve(projectRoot, 'json-server.config.js'))) {
   jsonServerConfig = require(path.resolve(projectRoot, 'json-server.config.js'));
 }
-const port = jsonServerConfig?.port || 5000;
+const port = jsonServerConfig && jsonServerConfig.port ? jsonServerConfig.port : 5000;
 
 const log = {
   info: (message) => consola.info(chalk.bold('JSON GUI'), message),
