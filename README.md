@@ -11,7 +11,7 @@
 </p>
 <br/>
 
-> Zero-coding mock and prototyping of REST API's with a GUI
+> Create REST API with a GUI
 
 - ⚡️ Create endpoints
 - ♻️ Create resuable models
