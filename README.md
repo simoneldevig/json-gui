@@ -48,9 +48,10 @@ npm run json-gui
 ```
 
 ## Future stuff (up for grabs)
-- [ ] Unit tests
-- [ ] Importing JSON from another source
-
+- [ ] [Unit tests](https://github.com/simoneldevig/json-gui/issues/2)
+- [ ] [Importing JSON from another source](https://github.com/simoneldevig/json-gui/issues/1)
+- [ ] [Easy deployment](https://github.com/simoneldevig/json-gui/issues/7)
+ 
 
 ## Running the project
 ``` bash
@@ -59,11 +60,11 @@ npm json-gui (fires up json-server)
 npm run dev (has to be run in seperate window)
 ```
 
-## Contributing To This Project
-Anyone and everyone is welcome to contribute. Just create a PR with your changes and I will have a look at it.
+## Contribution
+See [Contributing Guide](https://github.com/simoneldevig/json-gui/tree/master/.github/CONTRIBUTING.md).
 
 ## License
 Copyright © 2021 Simon Eldevig
 
-All source code is licensed under the [Mozilla Public License]().
+All source code is licensed under the [Mozilla Public License](https://github.com/simoneldevig/json-gui/blob/master/LICENSE).
 
