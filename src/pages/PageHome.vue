@@ -85,6 +85,8 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .home {
   &__endpoint {
+    font-size: 14px;
+
     &--btn {
       height: 30px;
       opacity: 0;
