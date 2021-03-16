@@ -1,3 +1,5 @@
 module.exports = {
-  lintOnSave: true
+  configureWebpack: (config) => {
+    config.resolve.symlinks = false;
+  }
 };
