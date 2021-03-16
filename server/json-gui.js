@@ -1,17 +1,20 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { join } = require('path');
+const path = require('path');
 const { writeFile } = require('fs');
 const { isEmpty } = require('lodash');
-const { create, router: _router, defaults, rewriter, bodyParser } = require('json-server');
+const jsonServer = require('json-server');
 const port = 5001;
+const config = require('./config');
+const projectRoot = process.cwd();
+
 const filePaths = {
-  endpoints: '../json-server/db/endpoints.json',
-  models: '../json-server/db/models.json',
-  db: '../json-server/db/db.json',
-  settings: '../json-server/db/settings.json'
+  endpoints: path.resolve(projectRoot, `${config.baseDir}/internals/endpoints.json`),
+  models: path.resolve(projectRoot, `${config.baseDir}/internals/models.json`),
+  db: path.resolve(projectRoot, `${config.baseDir}/db.json`),
+  settings: path.resolve(projectRoot, `${config.baseDir}/internals/settings.json`)
 };
-const server = create();
-const router = _router(
+
+const server = jsonServer.create();
+const router = jsonServer.router(
   {
     endpoints: require(filePaths.endpoints),
     models: require(filePaths.models),
@@ -19,20 +22,14 @@ const router = _router(
     settings: require(filePaths.settings)
   }
 );
-const middlewares = defaults(
-  {
-    static: join(__dirname, './dist')
-  }
-);
 
 module.exports = () => {
   return new Promise((resolve, reject) => {
-    server.use(rewriter({
-      '/json-gui/*': '/$1',
-      '/api/*': '/db/$1'
+    server.use(jsonServer.rewriter({
+      '/json-gui/*': '/$1'
     }));
-    server.use(middlewares);
-    server.use(bodyParser);
+    server.use(jsonServer.defaults());
+    server.use(jsonServer.bodyParser);
     server.all('/:type/:name', function (req, res) {
       const isPost = req.method === 'POST';
       const isDelete = req.method === 'DELETE';

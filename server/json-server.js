@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const path = require('path');
 const chokidar = require('chokidar');
@@ -7,11 +6,8 @@ const jsonServer = require('json-server');
 const { isEqual } = require('lodash');
 const consola = require('consola');
 const chalk = require('chalk');
-let jsonServerConfig;
-const projectRoot = process.cwd();
-if (fs.existsSync(path.resolve(projectRoot, 'json-server.config.js'))) {
-  jsonServerConfig = require(path.resolve(projectRoot, 'json-server.config.js'));
-}
+const config = require('./config');
+
 const log = {
   info: (message) => consola.info(chalk.bold('JSON-GUI'), message),
   success: (message) => consola.success(chalk.bold('JSON-GUI'), message),
@@ -19,23 +15,7 @@ const log = {
   error: (message) => consola.error(chalk.bold('JSON-GUI:'), message)
 };
 
-const config = {
-  port: 5000,
-  host: 'localhost',
-  watch: true,
-  routes: '',
-  delay: 0,
-  logger: true,
-  noCors: false,
-  readOnly: true,
-  snapshotsDir: './json-server/snapshots',
-  foreignKeySuffix: 'Id',
-  id: 'id',
-  middlewares: [],
-  ...jsonServerConfig
-};
-
-const db = 'json-server/db/db.json';
+const db = `${config.baseDir}/db.json`;
 const server = jsonServer.create();
 const router = jsonServer.router(db, config.foreignKeySuffix);
 

@@ -1,4 +1,5 @@
 module.exports = {
+  baseDir: 'json-gui',
   port: 5000,
   host: 'localhost',
   watch: true,
@@ -6,7 +7,7 @@ module.exports = {
   routes: {
     '/api/*': '/$1'
   },
-  snapshotsDir: './json-server/snapshots',
+  snapshotsDir: 'json-gui/snapshots',
   foreignKeySuffix: '_id',
   id: 'id',
   middlewares: []
