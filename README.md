@@ -48,9 +48,8 @@ npm run json-gui
 ```
 
 ## Future stuff (up for grabs)
-[ ] Unit tests
-
-[ ] Importing JSON from another source
+- [ ] Unit tests
+- [ ] Importing JSON from another source
 
 
 ## Running the project
