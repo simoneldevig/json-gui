@@ -28,7 +28,7 @@ module.exports = () => {
     server.use(jsonServer.rewriter({
       '/json-gui/*': '/$1'
     }));
-    server.use(jsonServer.defaults());
+    server.use(jsonServer.defaults({ logger: false }));
     server.use(jsonServer.bodyParser);
     server.all('/:type/:name', function (req, res) {
       const isPost = req.method === 'POST';

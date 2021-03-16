@@ -84,9 +84,6 @@
   "bugs": {
     "url": "https://github.com/simoneldevig/json-gui/issues"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "homepage": "https://github.com/simoneldevig/json-gui#readme",
   "license": "MIT",
   "lint-staged": {
