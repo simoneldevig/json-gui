@@ -25,8 +25,14 @@ Please use the following covention for branching:
 - **Hotfix/bugxfix branches** ➡ hotfix/[issue-id]-[your-branch-name]
 - **Docs branches** ➡ docs/[issue-id]-[your-branch-name]
 
+# Issues
+Please use the issue templates when creating issues. Issues that haven't used or filled out the template will be closed without further notice.
+
 # Creating pull-requests
-Please fill out the pull-request template when creating pull-requests. Pull-requests that hasn't used or filled out the template will be closed without further notice.
+Please fill out the pull-request template when creating pull-requests. Pull-requests that haven't used or filled out the template will be closed without further notice.
+
+# Commit convention
+When contributing to the project, your commits should use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention since commits is used to automatically generate changelogs.
 
 # Getting Started
 
