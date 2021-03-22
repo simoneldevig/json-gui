@@ -1,14 +1,26 @@
 {
   "posts": {
-    "type": "endpoint",
-    "id": "c4dc2eb6-0aae-4115-a5d8-e04d2c8d5631",
+    "type": "array",
+    "id": "7db2d950-753c-423c-a2ce-0c6adf057900",
     "value": {
-      "tuna": {
+      "fefef": {
         "type": "string",
-        "id": "227eea87-94f4-4d28-9c26-dc51483b2541",
-        "value": "faker.random.number()"
+        "id": "64a1bdaf-4bfe-4f29-8607-bdc21ce34f5c",
+        "value": ""
+      },
+      "sausages": {
+        "type": "array",
+        "id": "c89d0684-d7eb-4156-ba49-e96c84fe3fdb",
+        "value": {
+          "pizza": {
+            "type": "string",
+            "id": "e506deef-a4db-4d54-903e-e71e227b22a7",
+            "value": ""
+          }
+        },
+        "timesToRepeat": 1
       }
     },
-    "timesToRepeat": 3
+    "timesToRepeat": 5
   }
 }
