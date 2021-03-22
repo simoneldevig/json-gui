@@ -17,12 +17,12 @@
         "type": "string",
         "id": "63de01e5-6f8a-4377-9fa3-b36f68372e1f",
         "value": "faker.name.findName()"
+      },
+      "image": {
+        "type": "string",
+        "id": "676658a2-bbc1-41b8-8847-ff042a62ffc1",
+        "value": "faker.random.image()"
       }
     }
-  },
-  "test": {
-    "type": "model",
-    "id": "457b0382-0413-461c-9bd6-f19ab6a7300c",
-    "value": {}
   }
 }

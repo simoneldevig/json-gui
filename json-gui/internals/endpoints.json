@@ -3,22 +3,22 @@
     "type": "array",
     "id": "7db2d950-753c-423c-a2ce-0c6adf057900",
     "value": {
-      "fefef": {
-        "type": "string",
-        "id": "64a1bdaf-4bfe-4f29-8607-bdc21ce34f5c",
-        "value": ""
+      "post": {
+        "type": "model",
+        "id": "cb4de117-daf1-4d19-be1a-8c5a17c6f399",
+        "value": "04523378-8987-48bb-bd48-703b2b9c2ec9"
       },
-      "sausages": {
+      "mouse": {
         "type": "array",
-        "id": "c89d0684-d7eb-4156-ba49-e96c84fe3fdb",
+        "id": "86e7fe16-1def-4c17-84be-98972cbafdd0",
         "value": {
-          "pizza": {
+          "bike": {
             "type": "string",
-            "id": "e506deef-a4db-4d54-903e-e71e227b22a7",
-            "value": ""
+            "id": "de7ea9c4-efcc-4b98-9f64-e4b8b2486d7a",
+            "value": "faker.hacker.noun()"
           }
         },
-        "timesToRepeat": 1
+        "timesToRepeat": 4
       }
     },
     "timesToRepeat": 5

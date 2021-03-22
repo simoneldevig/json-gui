@@ -20,7 +20,7 @@
           <div class="pr-4">
             <MazBtn rounded size="sm" color="light" :loading="loading === 'preview'" @click="preview">Preview</MazBtn>
             <MazBtn class="ml-2" rounded size="sm" color="success" :loading="loading === 'save'" @click="save">Save</MazBtn>
-            <MazBtn class="ml-2" v-if="isEndpoint" rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate">Save and generate</MazBtn>
+            <MazBtn v-if="isEndpoint" class="ml-2" rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate">Save and generate</MazBtn>
           </div>
         </div>
       </div>
@@ -100,8 +100,8 @@ export default class Entry extends Vue {
       }
     };
 
-    saveAndGenerate () {
-      // this.save();
+    async saveAndGenerate () {
+      await this.save();
       this.loading = 'savegen';
 
       this.$store.dispatch('saveAndGenerate', {
