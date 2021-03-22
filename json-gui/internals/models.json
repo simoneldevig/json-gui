@@ -1,21 +1,28 @@
 {
-  "terser": {
-    "timesToRepeat": 1
-  },
   "post": {
-    "type": "object",
-    "id": "360b953a-dda9-4a1e-9a57-3537d1g2b815",
+    "type": "model",
+    "id": "04523378-8987-48bb-bd48-703b2b9c2ec9",
     "value": {
       "id": {
-        "type": "boolean",
-        "value": "random",
-        "id": "b232e21a-4cd4-48ce-9753-c48fb94e74b8"
+        "type": "number",
+        "id": "d7ffd91b-4321-4087-9445-a1e76588b37d",
+        "value": "faker.random.number()"
       },
-      "egegegg": {
+      "title": {
         "type": "string",
-        "id": "d60109c5-bca4-4c7e-b4eb-5de01a4c1655",
-        "value": ""
+        "id": "1e1c695d-68db-4541-89dc-bb6b24b2c2e7",
+        "value": "faker.random.word()"
+      },
+      "author": {
+        "type": "string",
+        "id": "63de01e5-6f8a-4377-9fa3-b36f68372e1f",
+        "value": "faker.name.findName()"
       }
     }
+  },
+  "test": {
+    "type": "model",
+    "id": "457b0382-0413-461c-9bd6-f19ab6a7300c",
+    "value": {}
   }
 }

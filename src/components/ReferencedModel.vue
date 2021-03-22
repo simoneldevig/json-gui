@@ -6,9 +6,10 @@
       <MazSearch
         v-model="internalPropertyName"
         :replace-on-select="true"
-        :initial-query="initialQuery"
+        :initial-query="selectedModel"
         :items="results"
         item-text="value"
+        item-value="value"
         :loading="loading"
         :no-label="true"
         clearable
@@ -28,6 +29,7 @@
 import PropertyEditor from '@/components/PropertyEditor.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { BaseDTO } from '@/types';
+import { company } from 'faker';
 
 @Component({
   components: {
@@ -47,6 +49,16 @@ export default class ReferencedModel extends Vue {
 
   get models (): any {
     return this.$store.state.models;
+  }
+
+  get selectedModel (): any {
+    let selectedModel;
+    Object.keys(this.models).forEach(key => {
+      if (this.models[key].id === this.model.value) {
+        selectedModel = key;
+      }
+    });
+    return selectedModel;
   }
 
   created () {
@@ -73,8 +85,8 @@ export default class ReferencedModel extends Vue {
     });
   }
 
-  updateModel (referencedModel: {value: string}) {
-    this.objectModel.value = this.models[referencedModel.value].id;
+  updateModel (referencedModel: string) {
+    this.objectModel.value = this.models[referencedModel].id;
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.propertyName,
       oldPropertyName: this.propertyName,

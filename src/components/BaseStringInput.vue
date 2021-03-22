@@ -7,17 +7,17 @@
       :initial-query="objectModel.value"
       :items="results"
       item-text="value"
+      item-value="value"
       :loading="loading"
       :no-label="true"
       clearable
       @request="querySearch"
-      @blur="updateModel"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import PropertyEditor from '@/components/PropertyEditor.vue';
 import { BaseDTO } from '@/types';
 import { FakerList } from '@/types/faker';
@@ -34,6 +34,15 @@ export default class BaseStringInput extends Vue {
   objectModel: BaseDTO = new BaseDTO();
   results: {[key: string]: any} = [];
   loading = false;
+
+  @Watch('objectModel', { deep: true })
+  objectModelChanged (): void {
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  }
 
   created () {
     this.objectModel = this.model;
@@ -56,14 +65,6 @@ export default class BaseStringInput extends Vue {
     return (fakerMethod: any) => {
       return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
     };
-  };
-
-  updateModel () {
-    this.$store.dispatch('updateModelProperty', {
-      propertyName: this.propertyName,
-      oldPropertyName: this.propertyName,
-      value: this.objectModel
-    });
   };
 }
 </script>

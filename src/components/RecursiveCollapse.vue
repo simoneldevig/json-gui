@@ -161,7 +161,6 @@ export default class RecursiveCollapse extends Vue {
     }
 
     addNewProperty (type: string, value: string): void {
-      console.log(type, value);
       let newProperty: BaseDTO = new BaseDTO();
       const propertyName: string = value;
       if (type !== 'object' && type !== 'array') {
@@ -209,13 +208,6 @@ export default class RecursiveCollapse extends Vue {
       });
     }
 
-    // importModel (modelToImport: string): void {
-    //   this.modelToImport = modelToImport;
-    //   this.newPropertyName = this.modelToImport;
-    //   this.addNewProperty('modelRef', this.models[this.modelToImport].id);
-    //   this.modelToImport = '';
-    // }
-
     updateModel (): void {
       this.$store.dispatch('updateModelProperty', {
         propertyName: this.newPropertyName,
@@ -225,7 +217,6 @@ export default class RecursiveCollapse extends Vue {
     }
 
     setDataModelValue (changedValueObject: any): void {
-      console.log(changedValueObject);
       if (
         changedValueObject.propertyName !== changedValueObject.oldPropertyName
       ) {

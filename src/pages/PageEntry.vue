@@ -17,10 +17,10 @@
             <span class="entry__breadcrumb">/</span>
             <span class="entry__breadcrumb">{{ $route.params.id }}</span>
           </div>
-          <div class="pr-7">
-            <MazBtn class="mr-2" rounded size="sm" color="light" :loading="loading === 'preview'" @click="preview">Preview</MazBtn>
-            <MazBtn class="mr-2" rounded size="sm" color="success" :loading="loading === 'save'" @click="save">Save</MazBtn>
-            <MazBtn rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate">Save and generate</MazBtn>
+          <div class="pr-4">
+            <MazBtn rounded size="sm" color="light" :loading="loading === 'preview'" @click="preview">Preview</MazBtn>
+            <MazBtn class="ml-2" rounded size="sm" color="success" :loading="loading === 'save'" @click="save">Save</MazBtn>
+            <MazBtn class="ml-2" v-if="isEndpoint" rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate">Save and generate</MazBtn>
           </div>
         </div>
       </div>
@@ -52,6 +52,10 @@ export default class Entry extends Vue {
     private previewData: any = null;
     private showPreviewDialog = false;
     $lodash: any;
+
+    get isEndpoint (): boolean {
+      return this.$route.params.type === 'endpoints';
+    }
 
     get entry (): BaseDTO {
       return this.$store.state[this.type] ? this.$store.state[this.type][this.id] : null;

@@ -52,12 +52,13 @@ const setFakerValues = (obj: BaseDTO) => {
 };
 
 const generateFakerValues = (obj: BaseDTO, timesToRepeat: number) => {
-  if (obj.type === 'array') {
+  if (obj.type === 'array' || obj.type === 'endpoint') {
     (obj as unknown as BaseDTO[]) = new Array(obj);
   }
   const originalObj = obj[0];
 
   [...Array(timesToRepeat)].forEach(() => {
+
     Object.keys(originalObj.value).forEach(key => {
       if (originalObj.value[key].type === 'array') {
         originalObj.value[key] = new Array(originalObj.value[key]);
