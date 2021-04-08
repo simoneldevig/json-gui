@@ -5,6 +5,9 @@ const jsonServer = require('json-server');
 const port = 5001;
 const config = require('./config');
 const projectRoot = process.cwd();
+const chokidar = require('chokidar');
+const { isEqual } = require('lodash');
+const fs = require('fs');
 
 const filePaths = {
   endpoints: path.resolve(projectRoot, `${config.baseDir}/internals/endpoints.json`),
@@ -30,7 +33,21 @@ module.exports = () => {
     }));
     server.use(jsonServer.defaults({ logger: false }));
     server.use(jsonServer.bodyParser);
-    server.all('/:type/:name', function (req, res) {
+
+    // Make sure to serve the latest changes by looking at the physical file
+    server.use('/:name', (req, _res, next) => {
+      const paramName = req.params.name;
+      if (req.method === 'GET' && paramName) {
+        const currentObj = JSON.parse(fs.readFileSync(filePaths[paramName]));
+        const state = router.db.getState();
+        state[paramName] = currentObj;
+        router.db.setState(state);
+      }
+      next();
+    });
+
+    // Support nested routes
+    server.use('/:type/:name', (req, res) => {
       const isPost = req.method === 'POST';
       const isDelete = req.method === 'DELETE';
       const isPut = req.method === 'PUT';
@@ -38,6 +55,7 @@ module.exports = () => {
         timesToRepeat: 1
       };
       const body = !isEmpty(req.body) ? req.body : defaultObject;
+      console.log(req.method);
       if (isPost || isDelete || isPut) {
         try {
           const state = router.db.getState();
@@ -84,6 +102,7 @@ module.exports = () => {
         const returnedObj = router.db.get(req.params.type)
           .get(req.params.name)
           .value();
+
         if (returnedObj) {
           res.status(200).jsonp(
             returnedObj
@@ -96,7 +115,7 @@ module.exports = () => {
 
     server.use(router);
     try {
-      server.listen(port, function () {
+      server.listen(port, () => {
         resolve();
       }).on('error', (err) => {
         throw new Error(err);

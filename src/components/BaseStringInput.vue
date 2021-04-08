@@ -69,7 +69,6 @@ export default class BaseStringInput extends Vue {
   };
 
   updateModel (value: string) {
-    console.log(value);
     this.objectModel.value = value;
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.propertyName,
