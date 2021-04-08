@@ -1,9 +1,9 @@
 {
   "name": "@simoneldevig/json-gui",
+  "description": "A GUI for easily creating mock api's via a UI with json-server",
   "version": "1.0.0-alpha.7",
   "private": false,
   "author": "Simon Eldevig",
-  "collaborator": "simoneldevig",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
