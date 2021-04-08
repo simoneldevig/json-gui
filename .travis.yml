@@ -15,7 +15,3 @@ before_script:
 script:
   - npm run lint
   - npm run build
-cache:
-  bundler: true
-  directories:
-  - node_modules # NPM packages
