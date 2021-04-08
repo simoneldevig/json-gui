@@ -1,22 +1,22 @@
 .vue-notification {
-  margin: 15px 30px;
+  margin: 15px 30px !important;
   border-radius: var(--maz-border-radius);
   box-shadow: 0 8px 16px rgba(0,0,0,.15);
-  font-weight: normal;
+  font-weight: normal !important;
   letter-spacing: 0.5px;
 
   &.warn {
-    border-left-color: var(--maz-danger);
-    background: var(--maz-hover-color);
+    border-left-color: var(--maz-danger) !important;
+    background: var(--maz-hover-color) !important;
   }
  
   &.error {
-    border-left-color: var(--maz-error);
-    background: var(--maz-hover-color);
+    border-left-color: var(--maz-error) !important;
+    background: var(--maz-hover-color) !important;
   }
  
   &.success {
-    border-left-color: var(--maz-success);
-    background: var(--maz-hover-color);
+    border-left-color: var(--maz-success) !important;
+    background: var(--maz-hover-color) !important;
   }
 }
