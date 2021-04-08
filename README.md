@@ -25,8 +25,8 @@ JSON GUI is a tool for making even easier mock up a full REST API for your proje
 
 Even though it's made for json-server, it can also be used as a JSON generator.
 
-## Demo
-TBA
+## How it looks
+<img src="public/screenshot.png?raw=true" alt="json-gui screenshot">
 
 ## Getting started
 
