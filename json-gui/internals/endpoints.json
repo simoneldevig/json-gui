@@ -7,18 +7,6 @@
         "type": "model",
         "id": "cb4de117-daf1-4d19-be1a-8c5a17c6f399",
         "value": "04523378-8987-48bb-bd48-703b2b9c2ec9"
-      },
-      "mouse": {
-        "type": "array",
-        "id": "86e7fe16-1def-4c17-84be-98972cbafdd0",
-        "value": {
-          "bike": {
-            "type": "string",
-            "id": "de7ea9c4-efcc-4b98-9f64-e4b8b2486d7a",
-            "value": "faker.hacker.noun()"
-          }
-        },
-        "timesToRepeat": 4
       }
     },
     "timesToRepeat": 5

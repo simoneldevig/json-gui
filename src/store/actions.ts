@@ -101,9 +101,9 @@ export default {
     });
   },
 
-  saveAndGenerate (context: any, props: any) {
+  async saveAndGenerate (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+    clonedObject = await generateFakerValues(clonedObject, clonedObject.timesToRepeat);
     axios({
       method: 'post',
       headers: {
