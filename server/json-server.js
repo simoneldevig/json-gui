@@ -21,7 +21,7 @@ const router = jsonServer.router(db, config.foreignKeySuffix);
 
 const middlewares = jsonServer.defaults(
   {
-    static: 'node_modules/json-gui/dist',
+    static: 'node_modules/@simoneldevig/json-gui/dist',
     logger: config.logger,
     noCors: config.noCors,
     readOnly: config.readOnly
