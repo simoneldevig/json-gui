@@ -12,7 +12,7 @@
 </p>
 <br/>
 
-> Create REST API with a GUI
+> Create a REST API with a GUI
 
 - ⚡️ Create endpoints
 - ♻️ Create resuable models
