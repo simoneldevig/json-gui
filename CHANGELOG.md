@@ -1,3 +1,10 @@
+### [0.0.3](https://github.com/simoneldevig/json-gui/compare/0.0.2...0.0.3) (2021-04-08)
+
+
+### Bug Fixes
+
+* set min height of body to 100vh ([e5ea035](https://github.com/simoneldevig/json-gui/commit/e5ea035714b82b183aa5cbf3cc497d413cbf6927))
+
 ### [0.0.2](https://github.com/simoneldevig/json-gui/compare/1.0.0-alpha.10...0.0.2) (2021-04-08)
 
 ## [1.0.0-alpha.10](https://github.com/simoneldevig/json-gui/compare/1.0.0-alpha.10...0.0.2) (2021-04-08)
