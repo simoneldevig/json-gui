@@ -90,7 +90,7 @@
     "url": "https://github.com/simoneldevig/json-gui/issues"
   },
   "homepage": "https://github.com/simoneldevig/json-gui#readme",
-  "license": "MIT",
+  "license": "Mozilla Public License Version 2.0",
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint",
