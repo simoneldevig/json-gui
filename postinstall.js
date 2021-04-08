@@ -3,8 +3,6 @@ const path = require('path');
 const copyfiles = require('copyfiles');
 const outDir = path.resolve(process.env.INIT_CWD);
 
-copyfiles(['./json-gui/**/*.json', outDir], { error: true, verbose: true }, function (err) {
-  if (err) {
-    console.error(err);
-  }
-});
+if (process.cwd() !== outDir) {
+  copyfiles(['./json-gui/**/*.json', outDir]);
+}
