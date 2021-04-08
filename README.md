@@ -76,9 +76,8 @@ module.exports = {
 
 ## Future stuff (up for grabs)
 - [ ] [Unit tests](https://github.com/simoneldevig/json-gui/issues/2)
-- [ ] [Importing JSON from another source](https://github.com/simoneldevig/json-gui/issues/1)
+- [ ] [JSON importer](https://github.com/simoneldevig/json-gui/issues/1)
 - [ ] [Easy deployment](https://github.com/simoneldevig/json-gui/issues/7)
- 
 
 ## Contribution
 See [Contributing Guide](https://github.com/simoneldevig/json-gui/tree/master/.github/CONTRIBUTING.md).
