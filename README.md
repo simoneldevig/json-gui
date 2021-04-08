@@ -1,5 +1,5 @@
 <p align="center">
-    <h1 align="center">Work in progress👷‍♂️</h1>
+    <h1 align="center">Currently in alpha👷‍♂️</h1>
 </p>
 
 <p align="center">
@@ -7,6 +7,7 @@
 </p>
 <br/>
 <p align="center">
+  <a href="https://www.npmjs.com/package/simoneldevig/json-gui"><img src="https://img.shields.io/npm/v/json-gui" alt="npm version"></a>
   <a href="https://nodejs.org/en/about/releases/"><img src="https://img.shields.io/badge/node-%3E%3D10-green" alt="node compatility"></a>
 </p>
 <br/>
@@ -23,6 +24,8 @@ JSON GUI is a tool for making even easier mock up a full REST API for your proje
 
 Even though it's made for json-server, it can also be used as a JSON generator.
 
+## Demo
+TBA
 
 ## Getting started
 
@@ -47,18 +50,34 @@ Add `"json-gui": "json-gui` to `scripts` property in `package.json` and do
 npm run json-gui
 ```
 
+## Configuration
+It's possible to configure the json-server implementation via a config file. 
+
+To configure the settings, simply create a file called json-server.config.js. All [json-server](https://github.com/typicode/json-server#cli-usage) CLI configurations are supported. The default config looks like this:
+
+```javascript
+module.exports = {
+  baseDir: 'json-gui', 						Directory where json-gui files are located
+  port: 5000, 								Set port  
+  host: 'localhost', 						Set host
+  watch: true, 								Watch for changes to db.json
+  routes: '', 								Path to custom routes file
+  delay: 0,									Add delay to responses (ms)
+  logger: true,								Show logs in console
+  noCors: false,							Disable Cross-Origin Resource Sharing  
+  readOnly: true,							Allow only GET requests (json-gui will overwrite posted data on generate)
+  snapshotsDir: 'json-gui/snapshots',		Set snapshots directory 
+  foreignKeySuffix: 'Id',					Set foreign key suffix, (e.g. _id as in post_id)
+  id: 'id',									Set database id property (e.g. _id)
+  middlewares: []							Relative paths to middleware files 
+};
+```
+
 ## Future stuff (up for grabs)
 - [ ] [Unit tests](https://github.com/simoneldevig/json-gui/issues/2)
 - [ ] [Importing JSON from another source](https://github.com/simoneldevig/json-gui/issues/1)
 - [ ] [Easy deployment](https://github.com/simoneldevig/json-gui/issues/7)
  
-
-## Running the project
-``` bash
-npm i
-npm json-gui (fires up json-server)
-npm run dev (has to be run in seperate window)
-```
 
 ## Contribution
 See [Contributing Guide](https://github.com/simoneldevig/json-gui/tree/master/.github/CONTRIBUTING.md).

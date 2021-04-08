@@ -5,8 +5,6 @@ const jsonServer = require('json-server');
 const port = 5001;
 const config = require('./config');
 const projectRoot = process.cwd();
-const chokidar = require('chokidar');
-const { isEqual } = require('lodash');
 const fs = require('fs');
 
 const filePaths = {

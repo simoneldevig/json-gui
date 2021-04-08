@@ -39,7 +39,7 @@ When contributing to the project, your commits should use the [Conventional Comm
 ``` bash
 npm i
 npm json-gui (fires up json-server)
-npm run dev (has to be run in seperate window)
+npm run dev (fires up vue app - has to be run in seperate terminal window)
 ```
 
 See [LICENSE](https://github.com/simoneldevig/json-gui/blob/master/LICENSE)
