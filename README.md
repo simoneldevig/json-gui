@@ -8,7 +8,7 @@
 <br/>
 <p align="center">
   <a href="https://travis-ci.org/simoneldevig/json-gui"><img src="https://travis-ci.org/simoneldevig/json-gui.svg?branch=master" alt="travis build"></a>
-  <a href="https://www.npmjs.com/package/simoneldevig/json-gui"><img src="https://img.shields.io/npm/v/simoneldevig/json-gui" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/@simoneldevig/json-gui"><img src="https://img.shields.io/npm/v/@simoneldevig/json-gui" alt="npm version"></a>
   <a href="https://nodejs.org/en/about/releases/"><img src="https://img.shields.io/badge/node-%3E%3D10-green" alt="node compatility"></a>
 </p>
 <br/>
@@ -33,7 +33,7 @@ Even though it's made for json-server, it can also be used as a JSON generator.
 **Install using npm**
 
 ``` bash
-npm i json-gui
+npm i @simoneldevig/json-gui
 ```
 
 

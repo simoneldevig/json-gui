@@ -1,8 +1,9 @@
 {
-  "name": "json-gui",
+  "name": "@simoneldevig/json-gui",
   "version": "1.0.0-alpha.3",
   "private": false,
   "author": "Simon Eldevig",
+  "collaborator": "simoneldevig",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -12,7 +13,8 @@
     "dev": "vue-cli-service serve",
     "generate-maz-theme": "maz get-theme",
     "json-gui": "node cli.js",
-    "postinstall": "node postinstall.js"
+    "postinstall": "node postinstall.js",
+    "release": "release-it"
   },
   "main": "./cli.js",
   "files": [
@@ -33,7 +35,6 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "babel-plugin-component": "^1.1.1",
     "@novicell/css-utils": "^2.0.0",
     "@novicell/flexbox-grid": "^1.0.1",
     "@types/faker": "^5.1.3",
@@ -53,6 +54,7 @@
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
     "axios": "^0.21.1",
+    "babel-plugin-component": "^1.1.1",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
@@ -68,6 +70,7 @@
     "minireset.css": "0.0.7",
     "node-sass": "^4.12.0",
     "quicktype-core": "^6.0.52",
+    "release-it": "^14.5.1",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue": "^2.6.11",
