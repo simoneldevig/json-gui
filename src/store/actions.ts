@@ -14,21 +14,21 @@ import { BaseDTO } from '@/types/index';
 
 export default {
   getModels (context: any) {
-    axios.get('http://localhost:5000/json-gui/models')
+    axios.get('http://localhost:5001/json-gui/models')
       .then(function (response) {
         context.commit('setModels', response);
       });
   },
 
   getEndpoints (context: any) {
-    axios.get('http://localhost:5000/json-gui/endpoints')
+    axios.get('http://localhost:5001/json-gui/endpoints')
       .then(function (response) {
         context.commit('setEndpoints', response);
       });
   },
 
   getSettings (context: any) {
-    axios.get('http://localhost:5000/json-gui/settings')
+    axios.get('http://localhost:5001/json-gui/settings')
       .then(function (response) {
         context.commit('setSettings', response);
       });
@@ -38,7 +38,6 @@ export default {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
     if (props.propertyName !== props.oldPropertyName) {
       clonedObject.value = renameObjectKey(clonedObject.value, props.oldPropertyName, props.propertyName);
-      console.log(clonedObject.value);
     }
     clonedObject = setObjectValue(clonedObject, props.value);
     context.commit('setCurrentModel', clonedObject);
@@ -67,7 +66,7 @@ export default {
         'content-type': 'application/json; charset=utf-8'
       },
       data: newItem,
-      url: `http://localhost:5000/json-gui/${props.type}s/${props.name}`
+      url: `http://localhost:5001/json-gui/${props.type}s/${props.name}`
     }).then(function () {
       if (props.type === 'endpoint') {
         context.dispatch('getEndpoints').then(function () {
@@ -91,7 +90,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/json-gui/${props.type}/${props.id}`,
+      url: `http://localhost:5001/json-gui/${props.type}/${props.id}`,
       data: context.state.currentModel
     }).then(function () {
       if (props.type === 'endpoints') {
@@ -102,15 +101,15 @@ export default {
     });
   },
 
-  saveAndGenerate (context: any, props: any) {
+  async saveAndGenerate (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+    clonedObject = await generateFakerValues(clonedObject, clonedObject.timesToRepeat);
     axios({
       method: 'post',
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/json-gui/${props.type}/${props.id}`,
+      url: `http://localhost:5001/json-gui/${props.type}/${props.id}`,
       data: clonedObject
     });
   },
@@ -121,7 +120,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: 'http://localhost:5000/json-gui/settings',
+      url: 'http://localhost:5001/json-gui/settings',
       data: props
     }).then(function () {
       context.dispatch('getSettings');
@@ -134,7 +133,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/json-gui/${props.type}/${props.name}`
+      url: `http://localhost:5001/json-gui/${props.type}/${props.name}`
     }).then(function () {
       if (props.type === 'endpoints') {
         context.dispatch('getEndpoints');
@@ -150,7 +149,7 @@ export default {
       headers: {
         'content-type': 'application/json; charset=utf-8'
       },
-      url: `http://localhost:5000/json-gui/${props.type}/${props.name}`,
+      url: `http://localhost:5001/json-gui/${props.type}/${props.name}`,
       data: props
     }).then(function () {
       if (props.type === 'endpoints') {

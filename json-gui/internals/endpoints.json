@@ -1,0 +1,14 @@
+{
+  "posts": {
+    "type": "array",
+    "id": "7db2d950-753c-423c-a2ce-0c6adf057900",
+    "value": {
+      "post": {
+        "type": "model",
+        "id": "cb4de117-daf1-4d19-be1a-8c5a17c6f399",
+        "value": "04523378-8987-48bb-bd48-703b2b9c2ec9"
+      }
+    },
+    "timesToRepeat": 5
+  }
+}

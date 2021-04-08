@@ -1,7 +1,7 @@
 <template>
   <MazDialog
-    v-model="dialogVisible"
-    width="70%"
+    v-model="isDialogVisivble"
+    :max-width="900"
     title="Preview"
     class="preview-modal"
     @close="$emit('close')"
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Highlight from 'vue-highlight-component';
 
 @Component({
@@ -27,6 +27,12 @@ import Highlight from 'vue-highlight-component';
 export default class PreviewModal extends Vue {
   @Prop({ type: Boolean, required: true }) readonly dialogVisible!: boolean;
   @Prop({ type: String, required: true }) readonly json!: string;
+  private isDialogVisivble = false;
+
+  @Watch('dialogVisible', { immediate: true })
+  visibilityChanged (): void {
+    this.isDialogVisivble = this.dialogVisible;
+  }
 
   copy () {
     const newClip = this.json;

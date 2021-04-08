@@ -2,22 +2,22 @@
   <div class="property mb-3">
     <PropertyEditor :property-name="propertyName" :model="model" />
     <MazSearch
-      v-model="objectModel.value"
+      :value="objectModel.value"
       :replace-on-select="true"
       :initial-query="objectModel.value"
       :items="results"
       item-text="value"
+      item-value="value"
       :loading="loading"
       :no-label="true"
       clearable
       @request="querySearch"
-      @blur="updateModel"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import PropertyEditor from '@/components/PropertyEditor.vue';
 import { BaseDTO } from '@/types';
 import { FakerList } from '@/types/faker';
@@ -35,6 +35,15 @@ export default class BaseStringInput extends Vue {
   results: {[key: string]: any} = [];
   loading = false;
 
+  @Watch('objectModel', { deep: true })
+  objectModelChanged (): void {
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  }
+
   created () {
     this.objectModel = this.model;
   }
@@ -50,6 +59,7 @@ export default class BaseStringInput extends Vue {
     // call callback function to return suggestions
     this.results = results;
     this.loading = false;
+    this.updateModel(queryString);
   };
 
   createFilter (queryString: string) {
@@ -58,12 +68,13 @@ export default class BaseStringInput extends Vue {
     };
   };
 
-  updateModel () {
+  updateModel (value: string) {
+    this.objectModel.value = value;
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.propertyName,
       oldPropertyName: this.propertyName,
       value: this.objectModel
     });
-  };
+  }
 }
 </script>

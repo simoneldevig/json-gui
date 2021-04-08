@@ -19,7 +19,7 @@
                     <span class="material-icons">delete</span>
                   </MazBtn>
                 </div>
-                <MazInput v-if="isEndpoint && dataModel.type !== 'object'" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="setModel" />
+                <MazInput v-if="isEndpoint && dataModel.type !== 'object'" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="updateModel" @click.stop />
               </div>
             </div>
             <small v-if="!isSubChild" class="d-block">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
@@ -61,7 +61,7 @@ import BaseStringInput from '@/components/BaseStringInput.vue';
 import BaseBooleanInput from '@/components/BaseBooleanInput.vue';
 import ReferencedModel from '@/components/ReferencedModel.vue';
 import AddProperty from '@/components/AddProperty.vue';
-import { renameObjectKey, generateGuid } from '../utils';
+import { generateGuid } from '../utils';
 import draggable from 'vuedraggable';
 import { BaseDTO } from '@/types/';
 
@@ -83,30 +83,14 @@ export default class RecursiveCollapse extends Vue {
     @Prop(Number) readonly depth!: number;
 
     dataModel: BaseDTO = new BaseDTO();
-    stringDialogVisible = false;
-    numberDialogVisible = false;
-    booleanDialogVisible = false;
-    objectDialogVisible = false;
-    arrayDialogVisible = false;
-    importDialogVisible = false;
     newPropertyName = '';
     editPropertyName = false;
     $lodash: any;
     isOpen = false;
     $eventBus: any;
-    modelToImport = '';
 
     get isEndpoint (): boolean {
       return this.$route.params.type === 'endpoints';
-    }
-
-    get backgroundColor () {
-      const opacity = 0.05 * this.depth;
-      return `rgba(255, 255, 255, ${opacity})`;
-    }
-
-    get dataModelSize (): number {
-      return Object.keys(this.dataModel).length;
     }
 
     get models (): any {
@@ -143,10 +127,6 @@ export default class RecursiveCollapse extends Vue {
       });
     }
 
-    setModel (): void {
-      this.$store.dispatch('setModel', this.dataModel);
-    }
-
     setCollapseState () {
       this.isOpen = !this.isOpen;
       localStorage.setItem(this.data.id, this.isOpen.toString());
@@ -161,7 +141,6 @@ export default class RecursiveCollapse extends Vue {
     }
 
     addNewProperty (type: string, value: string): void {
-      console.log(type, value);
       let newProperty: BaseDTO = new BaseDTO();
       const propertyName: string = value;
       if (type !== 'object' && type !== 'array') {
@@ -209,35 +188,12 @@ export default class RecursiveCollapse extends Vue {
       });
     }
 
-    // importModel (modelToImport: string): void {
-    //   this.modelToImport = modelToImport;
-    //   this.newPropertyName = this.modelToImport;
-    //   this.addNewProperty('modelRef', this.models[this.modelToImport].id);
-    //   this.modelToImport = '';
-    // }
-
     updateModel (): void {
       this.$store.dispatch('updateModelProperty', {
         propertyName: this.newPropertyName,
         oldPropertyName: this.propertyName,
         value: this.dataModel
       });
-    }
-
-    setDataModelValue (changedValueObject: any): void {
-      console.log(changedValueObject);
-      if (
-        changedValueObject.propertyName !== changedValueObject.oldPropertyName
-      ) {
-        this.dataModel = renameObjectKey(
-          this.dataModel,
-          changedValueObject.oldPropertyName,
-          changedValueObject.propertyName
-        );
-      }
-      this.dataModel[(changedValueObject.propertyName as string)].value =
-            changedValueObject.value;
-      this.setModel();
     }
 
     deleteProp (): void {

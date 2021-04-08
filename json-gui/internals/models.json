@@ -1,0 +1,28 @@
+{
+  "post": {
+    "type": "model",
+    "id": "04523378-8987-48bb-bd48-703b2b9c2ec9",
+    "value": {
+      "id": {
+        "type": "number",
+        "id": "d7ffd91b-4321-4087-9445-a1e76588b37d",
+        "value": "faker.random.number()"
+      },
+      "title": {
+        "type": "string",
+        "id": "1e1c695d-68db-4541-89dc-bb6b24b2c2e7",
+        "value": "faker.random.word()"
+      },
+      "author": {
+        "type": "string",
+        "id": "63de01e5-6f8a-4377-9fa3-b36f68372e1f",
+        "value": "faker.name.findName()"
+      },
+      "image": {
+        "type": "string",
+        "id": "676658a2-bbc1-41b8-8847-ff042a62ffc1",
+        "value": "faker.random.image()"
+      }
+    }
+  }
+}

@@ -6,16 +6,18 @@
       <MazSearch
         v-model="internalPropertyName"
         :replace-on-select="true"
-        :initial-query="initialQuery"
+        :initial-query="selectedModel"
         :items="results"
         item-text="value"
+        item-value="value"
         :loading="loading"
         :no-label="true"
         clearable
         @request="querySearch"
         @input="updateModel"
+        @clear="clearModel"
       />
-      <router-link :to="`/models/${propertyName}`" class="referenced-model__btn text-decoration-none">
+      <router-link v-if="(typeof models[selectedModel] !== 'undefined')" :to="`/models/${selectedModel}`" class="referenced-model__btn text-decoration-none">
         <MazBtn size="mini" color="grey" rounded>
           <small>Go to model...</small>
         </MazBtn>
@@ -49,6 +51,16 @@ export default class ReferencedModel extends Vue {
     return this.$store.state.models;
   }
 
+  get selectedModel (): any {
+    let selectedModel;
+    Object.keys(this.models).forEach(key => {
+      if (this.models[key].id === this.model.value) {
+        selectedModel = key;
+      }
+    });
+    return selectedModel;
+  }
+
   created () {
     this.internalPropertyName = this.model.value ? this.propertyName : '';
     this.initialQuery = this.model.value ? this.propertyName : '';
@@ -73,8 +85,17 @@ export default class ReferencedModel extends Vue {
     });
   }
 
-  updateModel (referencedModel: {value: string}) {
-    this.objectModel.value = this.models[referencedModel.value].id;
+  updateModel (referencedModel: string) {
+    this.objectModel.value = this.models[referencedModel].id;
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  }
+
+  clearModel () {
+    this.objectModel.value = '';
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.propertyName,
       oldPropertyName: this.propertyName,

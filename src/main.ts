@@ -8,11 +8,10 @@ import '@/plugins/event-bus.ts';
 import './assets/main.scss';
 
 // Import lodash
-import cloneDeep from 'lodash.clonedeep';
 import lodash from 'lodash';
 
 const lodashBundle = {
-  cloneDeep,
+  cloneDeep: lodash.cloneDeep,
   lodash
 };
 
