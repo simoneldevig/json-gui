@@ -9,9 +9,9 @@ language: ruby
 rvm:
   - 2.2
 before_install:
-  - nvm i node
+  - nvm install node
 before_script:
-  - npm i
+  - npm install
 script:
   - npm run lint
   - npm run build
