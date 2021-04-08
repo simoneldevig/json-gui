@@ -18,9 +18,9 @@
             <span class="entry__breadcrumb">{{ $route.params.id }}</span>
           </div>
           <div class="pr-4">
-            <MazBtn rounded size="sm" color="light" :loading="loading === 'preview'" @click="preview">Preview</MazBtn>
-            <MazBtn class="ml-2" rounded size="sm" color="success" :loading="loading === 'save'" @click="save">Save</MazBtn>
-            <MazBtn v-if="isEndpoint" class="ml-2" rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate">Save and generate</MazBtn>
+            <MazBtn rounded size="sm" color="default" :loading="loading === 'preview'" @click="preview('preview')">Preview</MazBtn>
+            <MazBtn class="ml-2" rounded size="sm" color="success" :loading="loading === 'save'" @click="save('save')">Save</MazBtn>
+            <MazBtn v-if="isEndpoint" class="ml-2" rounded size="sm" color="primary" :loading="loading === 'savegen'" @click="saveAndGenerate('savegen')">Save and generate</MazBtn>
           </div>
         </div>
       </div>
@@ -74,16 +74,46 @@ export default class Entry extends Vue {
       this.$store.dispatch('setModel', this.entry);
     };
 
-    async save () {
-      this.loading = 'save';
+    async save (loadingState: string) {
+      this.loading = loadingState;
       try {
         await this.$store.dispatch('saveData', {
           type: this.type,
           id: this.id
         }).then(() => {
+          if (loadingState === 'save') {
+            this.$notify({
+              title: 'Success',
+              text: 'Your model changes was saved!',
+              type: 'success'
+            });
+          }
+        });
+      } catch (ex) {
+        // eslint-disable-next-line no-console
+        console.error(ex);
+        this.$notify({
+          title: 'Warning',
+          text: 'An error happened. Please check the console',
+          type: 'warning'
+        });
+      } finally {
+        this.loading = '';
+      }
+    };
+
+    async saveAndGenerate (loadingState: string) {
+      this.loading = loadingState;
+
+      try {
+        await this.save(loadingState);
+        await this.$store.dispatch('saveAndGenerate', {
+          type: 'db',
+          id: this.id
+        }).then(() => {
           this.$notify({
             title: 'Success',
-            text: 'Your model changes was saved!',
+            text: 'Your endpoint has been generated!',
             type: 'success'
           });
         });
@@ -100,26 +130,17 @@ export default class Entry extends Vue {
       }
     };
 
-    async saveAndGenerate () {
-      await this.save();
-      this.loading = 'savegen';
+    async preview (loadingState: string) {
+      this.loading = loadingState;
 
-      this.$store.dispatch('saveAndGenerate', {
-        type: 'db',
-        id: this.id
-      });
-      this.loading = '';
-    };
-
-    preview () {
-      this.loading = 'preview';
-      let clonedObject = this.$lodash.cloneDeep(this.currentModel);
-      clonedObject = generateFakerValues(clonedObject, clonedObject.timesToRepeat);
-      this.previewData = JSON.stringify(clonedObject, null, 2);
-      this.$nextTick(() => {
+      // Fix issue with loading state not being set
+      setTimeout(async () => {
+        let clonedObject = this.$lodash.cloneDeep(this.currentModel);
+        clonedObject = await generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+        this.previewData = JSON.stringify(clonedObject, null, 2);
         this.loading = '';
         this.showPreviewDialog = true;
-      });
+      }, 0);
     }
 
     closePreview () {

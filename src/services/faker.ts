@@ -2,6 +2,7 @@ import Vue from 'vue';
 import store from '../store';
 import { BaseDTO } from '@/types';
 import { FakerItem, FakerList } from '@/types/faker';
+import { reject } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const faker = require('faker');
 
@@ -51,33 +52,39 @@ const setFakerValues = (obj: BaseDTO) => {
   return obj;
 };
 
-const generateFakerValues = (obj: BaseDTO, timesToRepeat: number) => {
-  if (obj.type === 'array') {
-    (obj as unknown as BaseDTO[]) = new Array(obj);
-  }
-  const originalObj = obj[0];
-
-  [...Array(timesToRepeat)].forEach(() => {
-    Object.keys(originalObj.value).forEach(key => {
-      if (originalObj.value[key].type === 'array') {
-        originalObj.value[key] = new Array(originalObj.value[key]);
-        const originalChildObj = originalObj.value[key][0];
-
-        if (originalObj.value[key].length < originalChildObj.timesToRepeat) {
-          generateFakerValues(originalObj.value[key], originalChildObj.timesToRepeat);
-        }
+async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
+  return new Promise((resolve) => {
+    try {
+      if (obj.type === 'array') {
+        (obj as unknown as BaseDTO[]) = new Array(obj);
       }
-    });
-    const clonedObject = Vue.prototype.$lodash.cloneDeep(originalObj.value);
-    const mutatedObj = setFakerValues(clonedObject);
-    obj.push(mutatedObj);
+      const originalObj = obj[0];
 
-    // Remove the original model object
-    if (obj.length === timesToRepeat + 1) {
-      obj.shift();
+      [...Array(timesToRepeat)].forEach(() => {
+        Object.keys(originalObj.value).forEach(key => {
+          if (originalObj.value[key].type === 'array') {
+            originalObj.value[key] = new Array(originalObj.value[key]);
+            const originalChildObj = originalObj.value[key][0];
+
+            if (originalObj.value[key].length < originalChildObj.timesToRepeat) {
+              generateFakerValues(originalObj.value[key], originalChildObj.timesToRepeat);
+            }
+          }
+        });
+        const clonedObject = Vue.prototype.$lodash.cloneDeep(originalObj.value);
+        const mutatedObj = setFakerValues(clonedObject);
+        obj.push(mutatedObj);
+
+        // Remove the original model object
+        if (obj.length === timesToRepeat + 1) {
+          obj.shift();
+        }
+      });
+      resolve(obj);
+    } catch (error) {
+      reject(error);
     }
   });
-  return obj;
 };
 
 const generateFakerList = (): FakerList => {

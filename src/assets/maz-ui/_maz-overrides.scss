@@ -12,9 +12,13 @@
 }
 
 .maz-btn--secondary,
+.maz-btn--default,
 .maz-btn--secondary.maz-btn--outline:hover:not(:disabled), 
 .maz-btn--secondary.maz-btn--outline:focus:not(:disabled), 
-.maz-btn--secondary.maz-btn--outline.maz-active:not(:disabled) {
+.maz-btn--secondary.maz-btn--outline.maz-active:not(:disabled),
+.maz-btn--default:hover:not(:disabled),
+.maz-btn--default:focus:not(:disabled),
+.maz-btn--default.maz-active:not(:disabled) {
   color: var(--maz-dark);
 }
 
@@ -46,4 +50,8 @@
 
 .maz-radio [type='radio']:not(:checked)+label::before {
   border-color: var(--maz-text-color);
+}
+
+.maz-dialog__container {
+  width: 100%;
 }

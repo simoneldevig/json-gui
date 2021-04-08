@@ -55,7 +55,6 @@ module.exports = () => {
         timesToRepeat: 1
       };
       const body = !isEmpty(req.body) ? req.body : defaultObject;
-      console.log(req.method);
       if (isPost || isDelete || isPut) {
         try {
           const state = router.db.getState();
