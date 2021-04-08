@@ -2,7 +2,7 @@
   <div class="property mb-3">
     <PropertyEditor :property-name="propertyName" :model="model" />
     <MazSearch
-      v-model="objectModel.value"
+      :value="objectModel.value"
       :replace-on-select="true"
       :initial-query="objectModel.value"
       :items="results"
@@ -59,6 +59,7 @@ export default class BaseStringInput extends Vue {
     // call callback function to return suggestions
     this.results = results;
     this.loading = false;
+    this.updateModel(queryString);
   };
 
   createFilter (queryString: string) {
@@ -66,5 +67,15 @@ export default class BaseStringInput extends Vue {
       return (fakerMethod.value.toLowerCase().includes(queryString.toLowerCase()));
     };
   };
+
+  updateModel (value: string) {
+    console.log(value);
+    this.objectModel.value = value;
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  }
 }
 </script>

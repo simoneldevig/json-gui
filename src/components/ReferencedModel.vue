@@ -15,8 +15,9 @@
         clearable
         @request="querySearch"
         @input="updateModel"
+        @clear="clearModel"
       />
-      <router-link :to="`/models/${propertyName}`" class="referenced-model__btn text-decoration-none">
+      <router-link v-if="(typeof models[selectedModel] !== 'undefined')" :to="`/models/${selectedModel}`" class="referenced-model__btn text-decoration-none">
         <MazBtn size="mini" color="grey" rounded>
           <small>Go to model...</small>
         </MazBtn>
@@ -29,7 +30,6 @@
 import PropertyEditor from '@/components/PropertyEditor.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { BaseDTO } from '@/types';
-import { company } from 'faker';
 
 @Component({
   components: {
@@ -87,6 +87,15 @@ export default class ReferencedModel extends Vue {
 
   updateModel (referencedModel: string) {
     this.objectModel.value = this.models[referencedModel].id;
+    this.$store.dispatch('updateModelProperty', {
+      propertyName: this.propertyName,
+      oldPropertyName: this.propertyName,
+      value: this.objectModel
+    });
+  }
+
+  clearModel () {
+    this.objectModel.value = '';
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.propertyName,
       oldPropertyName: this.propertyName,
