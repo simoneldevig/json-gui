@@ -1,3 +1,14 @@
+### [0.0.4](https://github.com/simoneldevig/json-gui/compare/0.0.3...0.0.4) (2021-04-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* Resolve issue with creating and generating new endpoints
+
+### Bug Fixes
+
+* Resolve issue with creating and generating new endpoints ([04bc9e8](https://github.com/simoneldevig/json-gui/commit/04bc9e8b2e813e98a53ad6bc2c41a49e97902902))
+
 ### [0.0.3](https://github.com/simoneldevig/json-gui/compare/0.0.2...0.0.3) (2021-04-08)
 
 
