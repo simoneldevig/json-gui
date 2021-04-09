@@ -55,7 +55,7 @@ const setFakerValues = (obj: BaseDTO) => {
 async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
   return new Promise((resolve) => {
     try {
-      if (obj.type === 'array') {
+      if (obj.type === 'array' || obj.type === 'endpoint') {
         (obj as unknown as BaseDTO[]) = new Array(obj);
       }
       const originalObj = obj[0];
