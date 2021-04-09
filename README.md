@@ -16,7 +16,7 @@
 > Create a REST API with a GUI
 
 - ⚡️ Create endpoints
-- ♻️ Create resuable models
+- ♻️ Create reusable models
 - ➕ Add property types (string, number, boolean, object, array)
 - 🦄 [Faker.js](https://github.com/marak/Faker.js/) integration for quickly adding random data
 - 🔌 [Quicktype.io](https://quicktype.io/) integration for converting models and endpoints to C# and TypeScript (properly more to come)
