@@ -1,18 +1,11 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
 const consola = require('consola');
-const path = require('path');
 const chalk = require('chalk');
-const jsonGui = require('./server/json-gui');
-const jsonServerModule = require('./server/json-server');
+const nodemon = require('nodemon');
 const boxen = require('boxen');
-const fs = require('fs');
-let jsonServerConfig;
-const projectRoot = process.cwd();
-if (fs.existsSync(path.resolve(projectRoot, 'json-server.config.js'))) {
-  jsonServerConfig = require(path.resolve(projectRoot, 'json-server.config.js'));
-}
-const port = jsonServerConfig && jsonServerConfig.port ? jsonServerConfig.port : 5000;
+const jsonGui = require('./server/json-gui');
+const config = require('./server/config');
 
 const log = {
   info: (message) => consola.info(chalk.bold('JSON GUI'), message),
@@ -21,8 +14,11 @@ const log = {
   error: (message) => consola.error(chalk.bold('JSON GUI:'), message)
 };
 
-Promise.all([jsonServerModule(), jsonGui()]).then(() => {
-  const greeting = chalk.white(chalk.yellow.bold('Firing up JSON GUI 🔥🔥') + '\n\nRunning at ' + chalk.blue.underline(`http://localhost:${port}`));
+Promise.all([jsonGui(), nodemon({
+  script: './server/json-server.js',
+  watch: !config.watch ? false : `${config.baseDir}/db.json`
+})]).then(() => {
+  const greeting = chalk.white(chalk.yellow.bold('Firing up JSON GUI 🔥🔥') + '\n\nRunning at ' + chalk.blue.underline(`http://localhost:${config.port}`));
   const boxenOptions = {
     borderColor: 'yellow',
     padding: 1,
@@ -34,7 +30,7 @@ Promise.all([jsonServerModule(), jsonGui()]).then(() => {
   const msgBox = boxen(greeting, boxenOptions);
   console.log(msgBox);
   log.info('Type s + enter at any time to create a snapshot of the database');
-  if (!jsonServerConfig || jsonServerConfig.watch) {
+  if (config.watch) {
     log.info('Watching for changes...');
   }
 }).catch((error) => {
