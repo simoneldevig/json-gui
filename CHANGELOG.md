@@ -1,3 +1,16 @@
+### [0.0.5](https://github.com/simoneldevig/json-gui/compare/0.0.4...0.0.5) (2021-04-11)
+
+
+### Bug Fixes
+
+* Make sure that it navigates to newly created endpoints and models ([3da7dce](https://github.com/simoneldevig/json-gui/commit/3da7dce6bcbd866754666b75e940c953ea599020))
+* Resolve issue with newly created endpoints returning 404 ([6998c06](https://github.com/simoneldevig/json-gui/commit/6998c062ff2d9be4bf28fda810a2ca33a0bf3f44))
+
+
+### Docs
+
+* Fix typo ([b94dbbb](https://github.com/simoneldevig/json-gui/commit/b94dbbb17fda9e64808e574394bb1e789a49c50b))
+
 ### [0.0.4](https://github.com/simoneldevig/json-gui/compare/0.0.3...0.0.4) (2021-04-09)
 
 
