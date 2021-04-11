@@ -71,13 +71,13 @@ export default {
       if (props.type === 'endpoint') {
         context.dispatch('getEndpoints').then(function () {
           router.push({
-            path: props.name
+            path: `/endpoints/${props.name}`
           });
         });
       } else if (props.type === 'model') {
         context.dispatch('getModels').then(function () {
           router.push({
-            path: props.name
+            path: `/models/${props.name}`
           });
         });
       }

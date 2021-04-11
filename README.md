@@ -1,5 +1,6 @@
 <p align="center">
     <h1 align="center">Currently in alpha👷‍♂️</h1>
+    <p align="center"><i>Bugs may occur<i></p>
 </p>
 
 <p align="center">
