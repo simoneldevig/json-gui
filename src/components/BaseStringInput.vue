@@ -12,6 +12,7 @@
       :no-label="true"
       clearable
       @request="querySearch"
+      @input="updateModel"
     />
   </div>
 </template>
@@ -59,7 +60,6 @@ export default class BaseStringInput extends Vue {
     // call callback function to return suggestions
     this.results = results;
     this.loading = false;
-    this.updateModel(queryString);
   };
 
   createFilter (queryString: string) {
