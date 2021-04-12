@@ -9,7 +9,14 @@
                 <h1 v-show="!editPropertyName" class="h3">{{ propertyName }}</h1>
                 <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />
               </div>
-              <h1 v-else class="h3">{{ id }}</h1>
+              <div v-else class="d-flex justify-content-between w-100">
+                <h1 class="h3">{{ id }}</h1>
+                <a v-if="isEndpoint" :href="endpointUrl" target="blank" class="mr-2">
+                  <MazBtn size="mini" color="grey" rounded>
+                    <small>Open</small>
+                  </MazBtn>
+                </a>
+              </div>
               <div class="d-flex align-items-center">
                 <div v-if="isSubChild" class="property__actions">
                   <MazBtn title="Rename" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click.stop="editPropName">
@@ -95,6 +102,10 @@ export default class RecursiveCollapse extends Vue {
 
     get models (): any {
       return this.$store.state.models;
+    }
+
+    get endpointUrl (): string {
+      return `${window.location.origin}/${this.id}`;
     }
 
     get sortable () {
