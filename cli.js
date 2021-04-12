@@ -16,7 +16,7 @@ const log = {
 };
 
 Promise.all([jsonGui(), nodemon({
-  script: path.resolve(process.cwd(), '/server/json-server.js'),
+  script: path.resolve(process.env.INIT_CWD || '', './server/json-server.js'),
   watch: !config.watch ? false : `${config.baseDir}/db.json`
 })]).then(() => {
   const greeting = chalk.white(chalk.yellow.bold('Firing up JSON GUI 🔥🔥') + '\n\nRunning at ' + chalk.blue.underline(`http://localhost:${config.port}`));

@@ -1,0 +1,2 @@
+storage: ./storage
+max_body_size: 1000mb
