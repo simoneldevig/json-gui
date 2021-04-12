@@ -134,13 +134,23 @@ export default {
         'content-type': 'application/json; charset=utf-8'
       },
       url: `http://localhost:5001/json-gui/${props.type}/${props.name}`
-    }).then(function () {
-      if (props.type === 'endpoints') {
-        context.dispatch('getEndpoints');
-      } else if (props.type === 'models') {
-        context.dispatch('getModels');
-      }
     });
+
+    if (props.type === 'endpoints') {
+      await axios({
+        method: 'delete',
+        headers: {
+          'content-type': 'application/json; charset=utf-8'
+        },
+        url: `http://localhost:5001/json-gui/db/${props.name}`
+      });
+    }
+
+    if (props.type === 'endpoints') {
+      context.dispatch('getEndpoints');
+    } else if (props.type === 'models') {
+      context.dispatch('getModels');
+    }
   },
 
   async editEntry (context: any, props: any) {
