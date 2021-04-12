@@ -6,7 +6,6 @@ const nodemon = require('nodemon');
 const boxen = require('boxen');
 const jsonGui = require('./server/json-gui');
 const config = require('./server/config');
-const path = require('path');
 
 const log = {
   info: (message) => consola.info(chalk.bold('JSON GUI'), message),
@@ -16,7 +15,7 @@ const log = {
 };
 
 Promise.all([jsonGui(), nodemon({
-  script: path.resolve(process.env.INIT_CWD || '', './server/json-server.js'),
+  script: require.resolve('./server/json-server.js'),
   watch: !config.watch ? false : `${config.baseDir}/db.json`
 })]).then(() => {
   const greeting = chalk.white(chalk.yellow.bold('Firing up JSON GUI 🔥🔥') + '\n\nRunning at ' + chalk.blue.underline(`http://localhost:${config.port}`));
