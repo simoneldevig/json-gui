@@ -1,3 +1,11 @@
+### [0.0.6](https://github.com/simoneldevig/json-gui/compare/0.0.5...0.0.6) (2021-04-12)
+
+
+### Bug Fixes
+
+* Make sure to resolve correct path ([e1b850d](https://github.com/simoneldevig/json-gui/commit/e1b850d5d10c12de1e511ec78bfe69305d5391a3))
+* Resolve issue with path to json-server.js ([2cee565](https://github.com/simoneldevig/json-gui/commit/2cee5650da6a23dd469e2d7b5f284391e850e852))
+
 ### [0.0.5](https://github.com/simoneldevig/json-gui/compare/0.0.4...0.0.5) (2021-04-11)
 
 
