@@ -1,3 +1,17 @@
+## [0.1.0](https://github.com/simoneldevig/json-gui/compare/0.0.6...0.1.0) (2021-04-12)
+
+
+### Features
+
+* Add button with link to endpoint on the specific endpoint ([1233640](https://github.com/simoneldevig/json-gui/commit/1233640ab5783b3b996491fa4878f695110b8fec))
+* Use hash routing ([7ccb17b](https://github.com/simoneldevig/json-gui/commit/7ccb17b9d6fb9431abb97c054ae67f7f2b9a4370))
+
+
+### Bug Fixes
+
+* Make sure to delete the endpoint in the db as well ([7b2fb24](https://github.com/simoneldevig/json-gui/commit/7b2fb24ac9d7f8715421229486261f1226cf78e7))
+* Resolve issuse with selected value from input search not being set ([3c792c1](https://github.com/simoneldevig/json-gui/commit/3c792c123a60e73595fd4cb5bd09a221119942d6))
+
 ### [0.0.6](https://github.com/simoneldevig/json-gui/compare/0.0.5...0.0.6) (2021-04-12)
 
 
