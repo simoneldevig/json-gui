@@ -112,15 +112,18 @@
       :width="600"
       :title="`Edit ${editItemName}`"
     >
-      <MazInput
-        ref="editInput"
-        v-model="newItemName"
-        placeholder="Edit your item name"
-        class="mb-3"
-        clearable
-        @input="setnewItemName"
-        @keyup.enter="setnewItemName"
-      />
+      <div class="mb-3">
+        <MazInput
+          ref="editInput"
+          v-model="newItemName"
+          placeholder="Edit your item name"
+          clearable
+          :error="entryValidationResult.touched && !entryValidationResult.valid"
+          @input="setnewItemName"
+          @keyup.enter="setnewItemName"
+        />
+        <span v-if="entryValidationResult.touched && !entryValidationResult.valid" class="validation-error">{{ entryValidationResult.validationMessage }}</span>
+      </div>
 
       <span slot="footer" class="d-flex justify-content-between w-100">
         <MazBtn rounded size="sm" :loading="isLoading" color="danger" @click="deleteEntry">
@@ -214,26 +217,31 @@ export default class App extends Vue {
   }
 
   async editEntry () {
-    this.editDialogVisible = false;
-    await this.$store.dispatch('editEntry', {
-      type: this.editType,
-      name: this.editItemName,
-      newName: this.newItemName
-    }).then(() => {
-      this.$notify({
-        title: `${this.editItemName} has been renamed`,
-        text: '',
-        type: 'success'
-      });
-      if (this.$route.params.id === this.editItemName) {
-        this.$router.push(`/${this.editType}/${this.newItemName}`);
-      }
+    this.entryValidationResult = validateEntry(this.newItemType, this.newItemName);
 
-      this.newItemType = '';
-      this.newItemName = '';
-      this.editItemName = '';
-      this.editType = '';
-    });
+    if (this.entryValidationResult.valid) {
+      this.editDialogVisible = false;
+      await this.$store.dispatch('editEntry', {
+        type: this.editType,
+        name: this.editItemName,
+        newName: this.newItemName
+      }).then(() => {
+        this.$notify({
+          title: `${this.editItemName} has been renamed`,
+          text: '',
+          type: 'success'
+        });
+        if (this.$route.params.id === this.editItemName) {
+          this.$router.push(`/${this.editType}/${this.newItemName}`);
+        }
+
+        this.newItemType = '';
+        this.newItemName = '';
+        this.editItemName = '';
+        this.editType = '';
+      });
+    }
+
   };
 
   createNewItem () {
