@@ -93,7 +93,7 @@
           clearable
           :error="entryValidationResult.touched && !entryValidationResult.valid"
           @input="setnewItemName"
-          @keyup.enter="setnewItemName"
+          @keyup.enter="createNewItem"
         />
         <span v-if="entryValidationResult.touched && !entryValidationResult.valid" class="validation-error">{{ entryValidationResult.validationMessage }}</span>
       </div>
@@ -120,7 +120,7 @@
           clearable
           :error="entryValidationResult.touched && !entryValidationResult.valid"
           @input="setnewItemName"
-          @keyup.enter="setnewItemName"
+          @keyup.enter="editEntry"
         />
         <span v-if="entryValidationResult.touched && !entryValidationResult.valid" class="validation-error">{{ entryValidationResult.validationMessage }}</span>
       </div>
@@ -195,6 +195,7 @@ export default class App extends Vue {
   }
 
   setnewItemName (newItemName: string) {
+    this.entryValidationResult = {};
     this.newItemName = newItemName;
   };
 

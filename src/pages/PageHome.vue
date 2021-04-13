@@ -3,22 +3,30 @@
     <div class="col-xs-6">
       <MazCard class="w-100 p-3" max-width="none">
         <h3 class="mb-3">Settings</h3>
-        <MazInput
-          v-model="settings.quicktypeNameSpace"
-          placeholder="Quicktype namespace"
-          autocomplete="Enter the namespace to use for generated models with Quicktype"
-          class="mb-3"
-          clearable
-        />
-        <div class="d-flex align-items-center">
-          <span class="mr-3">Dark mode</span>
-          <MazSwitch v-if="settings && settings.darkMode" v-model="settings.darkMode" />
-        </div>
-        <div class="flex justify-end mt-3">
-          <MazBtn rounded size="sm" :loading="isSaving" @click="save">
-            {{ buttonText }}
-          </MazBtn>
-        </div>
+        <ValidationObserver v-slot="{ handleSubmit }">
+          <form @submit.prevent="handleSubmit(save)">
+            <ValidationProvider v-slot="{ errors, invalid }" tag="div" class="mb-3" rules="required|alpha">
+              <MazInput
+                v-model="settings.quicktypeNameSpace"
+                placeholder="Quicktype namespace"
+                :error="invalid"
+                autocomplete="Enter the namespace to use for generated models with Quicktype"
+                clearable
+              />
+              <span v-if="invalid" class="validation-error">{{ errors[0] }}</span>
+            </ValidationProvider>
+
+            <div class="d-flex align-items-center">
+              <span class="mr-3">Dark mode</span>
+              <MazSwitch v-if="settings && settings.darkMode" v-model="settings.darkMode" />
+            </div>
+            <div class="flex justify-end mt-3">
+              <MazBtn rounded size="sm" :loading="isSaving" type="submit">
+                {{ buttonText }}
+              </MazBtn>
+            </div>
+          </form>
+        </ValidationObserver>
       </MazCard>
     </div>
     <div class="col-xs-6">

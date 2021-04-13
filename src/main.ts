@@ -2,9 +2,10 @@ import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import '@/plugins/maz-ui.ts';
-import '@/plugins/vue-notification.ts';
-import '@/plugins/event-bus.ts';
+import '@/plugins/maz-ui';
+import '@/plugins/vue-notification';
+import '@/plugins/event-bus';
+import '@/plugins/vee-validate';
 import './assets/main.scss';
 
 // Import lodash

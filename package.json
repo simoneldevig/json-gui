@@ -32,6 +32,7 @@
     "copyfiles": "^2.2.0",
     "json-server": "^0.16.3",
     "nodemon": "^2.0.7",
+    "vee-validate": "^3.4.5",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
