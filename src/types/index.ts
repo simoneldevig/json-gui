@@ -18,3 +18,9 @@ export class BaseDTO {
 export interface BaseResponseDTO {
   endpoints: BaseDTO;
 }
+
+export interface ValidationResult {
+  valid?: boolean;
+  validationMessage?: string;
+  touched?: boolean;
+}

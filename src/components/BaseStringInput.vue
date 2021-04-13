@@ -11,6 +11,9 @@
       :loading="loading"
       :no-label="true"
       clearable
+      :debounce="true"
+      :required="true"
+      :no-required-symbol="true"
       @request="querySearch"
       @input="updateModel"
     />

@@ -83,16 +83,20 @@
       v-model="createDialogVisible"
       :width="600"
       :title="`Create new ${newItemType}`"
+      @closed="resetDialogState"
     >
-      <MazInput
-        ref="createInput"
-        v-model="newItemName"
-        placeholder="Insert your new item name"
-        class="mb-3"
-        clearable
-        @input="setnewItemName"
-        @keyup.enter="setnewItemName"
-      />
+      <div class="mb-3">
+        <MazInput
+          ref="createInput"
+          v-model="newItemName"
+          placeholder="Insert your new item name"
+          clearable
+          :error="entryValidationResult.touched && !entryValidationResult.valid"
+          @input="setnewItemName"
+          @keyup.enter="setnewItemName"
+        />
+        <span v-if="entryValidationResult.touched && !entryValidationResult.valid" class="validation-error">{{ entryValidationResult.validationMessage }}</span>
+      </div>
       <span slot="footer" class="dialog-footer">
         <MazBtn rounded size="sm" color="grey" class="mr-2" @click="createDialogVisible=false">
           Cancel
@@ -139,7 +143,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapMutations } from 'vuex';
 
-import { BaseResponseDTO } from '@/types';
+import { BaseResponseDTO, ValidationResult } from '@/types';
+import { validateEntry } from '@/utils/validator';
 import 'maz-ui/lib/css/base.css';
 
 @Component({
@@ -159,6 +164,7 @@ export default class App extends Vue {
   private isLoading = false;
   private activeCollapse: string[] = [];
   private hasLeftSidebarOpen = true;
+  private entryValidationResult: ValidationResult = {};
   setFakerList!: () => any;
 
   created () {
@@ -231,14 +237,22 @@ export default class App extends Vue {
   };
 
   createNewItem () {
-    this.createDialogVisible = false;
-    this.$store.dispatch('createNewItem', {
-      type: this.newItemType,
-      name: this.newItemName
-    });
-    this.newItemType = '';
-    this.newItemName = '';
+    this.entryValidationResult = validateEntry(this.newItemType, this.newItemName);
+    if (this.entryValidationResult.valid) {
+      this.createDialogVisible = false;
+      this.$store.dispatch('createNewItem', {
+        type: this.newItemType,
+        name: this.newItemName
+      });
+      this.newItemType = '';
+      this.newItemName = '';
+    }
   };
+
+  resetDialogState () {
+    this.newItemName = '';
+    this.entryValidationResult = {};
+  }
 
   async deleteEntry () {
     this.isLoading = true;
