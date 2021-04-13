@@ -4,7 +4,12 @@
       <span v-show="!editPropertyName" class="property-editor__name d-flex align-items-center">{{ propertyName }}
         <span class="property-editor__type" :class="`property-editor__type--${model.type}`">{{ model.type }}</span>
       </span>
-      <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />
+      <ValidationObserver v-slot="{ handleSubmit }">
+        <ValidationProvider v-slot="{ errors, invalid }" tag="div" class="d-flex align-items-center" rules="required|alpha">
+          <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" :error="invalid" placeholder="Property name" size="sm" @change="handleSubmit(updateModel)" @blur="handleSubmit(close)" />
+          <span v-if="invalid" class="validation-error ml-2">{{ errors[0] }}</span>
+        </ValidationProvider>
+      </ValidationObserver>
     </div>
     <div :class="{'property__actions': !editPropertyName}">
       <MazBtn v-if="!hideEdit" title="Rename" fab outline size="mini" class="property__actions--btn mr-2" color="primary" @click="editPropName">
@@ -57,6 +62,10 @@ export default class PropertyEditor extends Vue {
   created () {
     this.newPropertyName = this.propertyName;
   };
+
+  close () {
+    this.editPropertyName = false;
+  }
 
   mounted () {
     this.$eventBus.$on('TRIGGER_PROPERTY_EDIT', (id: string) => {
