@@ -12,7 +12,7 @@
         />
         <div class="d-flex align-items-center">
           <span class="mr-3">Dark mode</span>
-          <MazSwitch v-model="settings.darkMode" />
+          <MazSwitch v-if="settings && settings.darkMode" v-model="settings.darkMode" />
         </div>
         <div class="flex justify-end mt-3">
           <MazBtn rounded size="sm" :loading="isSaving" @click="save">
