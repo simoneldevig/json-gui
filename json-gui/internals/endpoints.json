@@ -10,5 +10,11 @@
       }
     },
     "timesToRepeat": 5
+  },
+  "test": {
+    "type": "endpoint",
+    "id": "d48c4509-9591-459d-ab8f-a9fbd8dacb87",
+    "value": {},
+    "timesToRepeat": 1
   }
 }

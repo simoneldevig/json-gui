@@ -16,14 +16,14 @@
       </div>
 
       <div>
-        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('endpoints')">
-          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('endpoints')}">
+        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('endpoint')">
+          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('endpoint')}">
             arrow_right
           </span>
           Endpoints
         </div>
         <MazTransitionExpand>
-          <div v-show="activeCollapse.includes('endpoints')">
+          <div v-show="activeCollapse.includes('endpoint')">
             <router-link v-for="(value, propertyName) in endpoints" :key="propertyName" :to="'/endpoints/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
               <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
@@ -31,7 +31,7 @@
                 </span>
                 {{ propertyName }}
               </span>
-              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'endpoints')">
+              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'endpoint')">
                 more_horiz
               </span>
             </router-link>
@@ -46,14 +46,14 @@
       </div>
 
       <div>
-        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('models')">
-          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('models')}">
+        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('model')">
+          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('model')}">
             arrow_right
           </span>
           Models
         </div>
         <MazTransitionExpand>
-          <div v-show="activeCollapse.includes('models')">
+          <div v-show="activeCollapse.includes('model')">
             <router-link v-for="(value, propertyName) in models" :key="propertyName" :to="'/models/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
               <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
@@ -61,7 +61,7 @@
                 </span>
                 {{ propertyName }}
               </span>
-              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'models')">
+              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'model')">
                 more_horiz
               </span>
             </router-link>
@@ -79,66 +79,70 @@
     <div class="container-fluid content">
       <router-view />
     </div>
-    <MazDialog
-      v-model="createDialogVisible"
-      :width="600"
-      :title="`Create new ${newItemType}`"
-      @closed="resetDialogState"
-    >
-      <div class="mb-3">
-        <MazInput
-          ref="createInput"
-          v-model="newItemName"
-          placeholder="Insert your new item name"
-          clearable
-          :error="entryValidationResult.touched && !entryValidationResult.valid"
-          @input="setnewItemName"
-          @keyup.enter="createNewItem"
-        />
-        <span v-if="entryValidationResult.touched && !entryValidationResult.valid" class="validation-error">{{ entryValidationResult.validationMessage }}</span>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <MazBtn rounded size="sm" color="grey" class="mr-2" @click="createDialogVisible=false">
-          Cancel
-        </MazBtn>
-        <MazBtn rounded size="sm" :loading="isLoading" @click="createNewItem">
-          Create
-        </MazBtn>
-      </span>
-    </MazDialog>
-
-    <MazDialog
-      v-model="editDialogVisible"
-      :width="600"
-      :title="`Edit ${editItemName}`"
-    >
-      <div class="mb-3">
-        <MazInput
-          ref="editInput"
-          v-model="newItemName"
-          placeholder="Edit your item name"
-          clearable
-          :error="entryValidationResult.touched && !entryValidationResult.valid"
-          @input="setnewItemName"
-          @keyup.enter="editEntry"
-        />
-        <span v-if="entryValidationResult.touched && !entryValidationResult.valid" class="validation-error">{{ entryValidationResult.validationMessage }}</span>
-      </div>
-
-      <span slot="footer" class="d-flex justify-content-between w-100">
-        <MazBtn rounded size="sm" :loading="isLoading" color="danger" @click="deleteEntry">
-          Delete item
-        </MazBtn>
-        <div>
-          <MazBtn rounded size="sm" color="grey" class="mr-2" @click="editDialogVisible=false">
+    <ValidationObserver v-slot="{ handleSubmit }">
+      <MazDialog
+        v-model="createDialogVisible"
+        :width="600"
+        :title="`Create new ${newItemType}`"
+        @closed="resetDialogState"
+      >
+        <ValidationProvider v-slot="{ errors, invalid, touched }" class="mb-3" tag="div" :rules="`required|alpha|${newItemType}`">
+          <MazInput
+            ref="createInput"
+            v-model="newItemName"
+            placeholder="Insert your new item name"
+            clearable
+            :error="touched && invalid"
+            @input="setnewItemName"
+            @keyup.enter="createNewItem"
+          />
+          <span v-if="touched && invalid" class="validation-error">{{ errors[0] }}</span>
+        </ValidationProvider>
+        <span slot="footer" class="dialog-footer">
+          <MazBtn rounded size="sm" color="grey" class="mr-2" @click="createDialogVisible=false">
             Cancel
           </MazBtn>
-          <MazBtn rounded size="sm" :loading="isLoading" color="success" @click="editEntry">
-            Save
+          <MazBtn rounded size="sm" :loading="isLoading" @click="handleSubmit(createNewItem)">
+            Create
           </MazBtn>
-        </div>
-      </span>
-    </MazDialog>
+        </span>
+      </MazDialog>
+    </ValidationObserver>
+
+    <ValidationObserver v-slot="{ handleSubmit }">
+      <MazDialog
+        v-model="editDialogVisible"
+        :width="600"
+        :title="`Edit ${editItemName}`"
+      >
+        <ValidationProvider v-slot="{ errors, invalid, touched }" class="mb-3" tag="div" :rules="`required|alpha|${editType}`">
+          <MazInput
+            ref="editInput"
+            v-model="newItemName"
+            placeholder="Edit your item name"
+            clearable
+            :error="touched && invalid"
+            @input="setnewItemName"
+            @keyup.enter="editEntry"
+          />
+          <span v-if="touched && invalid" class="validation-error">{{ errors[0] }}</span>
+        </ValidationProvider>
+
+        <span slot="footer" class="d-flex justify-content-between w-100">
+          <MazBtn rounded size="sm" :loading="isLoading" color="danger" @click="deleteEntry">
+            Delete item
+          </MazBtn>
+          <div>
+            <MazBtn rounded size="sm" color="grey" class="mr-2" @click="editDialogVisible=false">
+              Cancel
+            </MazBtn>
+            <MazBtn rounded size="sm" :loading="isLoading" color="success" @click="handleSubmit(editEntry)">
+              Save
+            </MazBtn>
+          </div>
+        </span>
+      </MazDialog>
+    </ValidationObserver>
   </div>
 </template>
 
@@ -146,8 +150,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapMutations } from 'vuex';
 
-import { BaseResponseDTO, ValidationResult } from '@/types';
-import { validateEntry } from '@/utils/validator';
+import { BaseResponseDTO } from '@/types';
 import 'maz-ui/lib/css/base.css';
 
 @Component({
@@ -167,7 +170,6 @@ export default class App extends Vue {
   private isLoading = false;
   private activeCollapse: string[] = [];
   private hasLeftSidebarOpen = true;
-  private entryValidationResult: ValidationResult = {};
   setFakerList!: () => any;
 
   created () {
@@ -195,7 +197,6 @@ export default class App extends Vue {
   }
 
   setnewItemName (newItemName: string) {
-    this.entryValidationResult = {};
     this.newItemName = newItemName;
   };
 
@@ -218,49 +219,40 @@ export default class App extends Vue {
   }
 
   async editEntry () {
-    this.entryValidationResult = validateEntry(this.newItemType, this.newItemName);
-
-    if (this.entryValidationResult.valid) {
-      this.editDialogVisible = false;
-      await this.$store.dispatch('editEntry', {
-        type: this.editType,
-        name: this.editItemName,
-        newName: this.newItemName
-      }).then(() => {
-        this.$notify({
-          title: `${this.editItemName} has been renamed`,
-          text: '',
-          type: 'success'
-        });
-        if (this.$route.params.id === this.editItemName) {
-          this.$router.push(`/${this.editType}/${this.newItemName}`);
-        }
-
-        this.newItemType = '';
-        this.newItemName = '';
-        this.editItemName = '';
-        this.editType = '';
+    this.editDialogVisible = false;
+    await this.$store.dispatch('editEntry', {
+      type: `${this.editType}s`,
+      name: this.editItemName,
+      newName: this.newItemName
+    }).then(() => {
+      this.$notify({
+        title: `${this.editItemName} has been renamed`,
+        text: '',
+        type: 'success'
       });
-    }
+      if (this.$route.params.id === this.editItemName) {
+        this.$router.push(`/${this.editType}/${this.newItemName}`);
+      }
 
+      this.newItemType = '';
+      this.newItemName = '';
+      this.editItemName = '';
+      this.editType = '';
+    });
   };
 
   createNewItem () {
-    this.entryValidationResult = validateEntry(this.newItemType, this.newItemName);
-    if (this.entryValidationResult.valid) {
-      this.createDialogVisible = false;
-      this.$store.dispatch('createNewItem', {
-        type: this.newItemType,
-        name: this.newItemName
-      });
-      this.newItemType = '';
-      this.newItemName = '';
-    }
+    this.createDialogVisible = false;
+    this.$store.dispatch('createNewItem', {
+      type: this.newItemType,
+      name: this.newItemName
+    });
+    this.newItemType = '';
+    this.newItemName = '';
   };
 
   resetDialogState () {
     this.newItemName = '';
-    this.entryValidationResult = {};
   }
 
   async deleteEntry () {
