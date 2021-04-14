@@ -258,7 +258,7 @@ export default class App extends Vue {
   async deleteEntry () {
     this.isLoading = true;
     await this.$store.dispatch('deleteEntry', {
-      type: this.editType,
+      type: `${this.editType}s`,
       name: this.editItemName
     }).then(() => {
       this.$notify({
