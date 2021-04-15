@@ -86,13 +86,13 @@
         :title="`Create new ${newItemType}`"
         @closed="resetDialogState"
       >
-        <ValidationProvider v-slot="{ errors, invalid, touched }" class="mb-3" tag="div" :rules="`required|alpha|${newItemType}`">
+        <ValidationProvider v-slot="{ errors, invalid, touched }" :mode="newItemName.length ? 'aggressive' : 'passive'" class="mb-3" tag="div" :rules="`required|alpha|${newItemType}`">
           <MazInput
             ref="createInput"
             v-model="newItemName"
             placeholder="Insert your new item name"
             clearable
-            :error="touched && invalid"
+            :error="touched && invalid && errors.length > 0"
             @input="setnewItemName"
             @keyup.enter="createNewItem"
           />
@@ -115,13 +115,13 @@
         :width="600"
         :title="`Edit ${editItemName}`"
       >
-        <ValidationProvider v-slot="{ errors, invalid, touched }" class="mb-3" tag="div" :rules="`required|alpha|${editType}`">
+        <ValidationProvider v-slot="{ errors, invalid, touched }" :mode="newItemName !== editItemName ? 'aggressive' : 'passive'" class="mb-3" tag="div" :rules="`required|alpha|${editType}`">
           <MazInput
             ref="editInput"
             v-model="newItemName"
             placeholder="Edit your item name"
             clearable
-            :error="touched && invalid"
+            :error="touched && invalid && errors.length > 0"
             @input="setnewItemName"
             @keyup.enter="editEntry"
           />
