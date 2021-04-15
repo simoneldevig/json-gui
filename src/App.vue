@@ -115,7 +115,7 @@
         :width="600"
         :title="`Edit ${editItemName}`"
       >
-        <ValidationProvider v-slot="{ errors, invalid, touched }" :mode="newItemName !== editItemName ? 'aggressive' : 'passive'" class="mb-3" tag="div" :rules="`required|alpha|${editType}`">
+        <ValidationProvider v-slot="{ errors, invalid, touched }" :mode="newItemName !== editItemName ? 'aggressive' : 'passive'" class="mb-3" tag="div" :rules="newItemName !== editItemName ? `required|alpha|${editType}` : 'required|alpha'">
           <MazInput
             ref="editInput"
             v-model="newItemName"
