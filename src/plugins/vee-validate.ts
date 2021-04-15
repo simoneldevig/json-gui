@@ -30,5 +30,13 @@ extend('model', value => {
   return true;
 });
 
+extend('property', (value, siblings) => {
+  if (siblings.includes(value)) {
+    return `A property with the name ${value} already exist`;
+  }
+
+  return true;
+});
+
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);

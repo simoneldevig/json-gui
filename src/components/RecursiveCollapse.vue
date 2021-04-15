@@ -37,10 +37,10 @@
         <div v-show="isOpen || !isSubChild">
           <draggable v-model="sortable" class="property__content" handle=".drag-handle" @start="drag=true" @end="drag=false">
             <div v-for="(property, propName) in dataModel.value" :key="propName">
-              <BaseStringInput v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" />
-              <BaseBooleanInput v-if="property.type === 'boolean'" :model="property" :property-name="propName" />
-              <ReferencedModel v-if="property.type === 'model'" :model="property" :property-name="propName" />
-              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :depth="depth + 1" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" />
+              <BaseStringInput v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" :siblings="siblings" />
+              <BaseBooleanInput v-if="property.type === 'boolean'" :model="property" :property-name="propName" :siblings="siblings" />
+              <ReferencedModel v-if="property.type === 'model'" :model="property" :property-name="propName" :siblings="siblings" />
+              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :depth="depth + 1" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" :siblings="siblings" />
             </div>
           </draggable>
 
@@ -102,6 +102,10 @@ export default class RecursiveCollapse extends Vue {
 
     get models (): any {
       return this.$store.state.models;
+    }
+
+    get siblings (): string[] {
+      return Object.keys(this.data.value);
     }
 
     get endpointUrl (): string {

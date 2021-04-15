@@ -1,6 +1,6 @@
 <template>
   <div class="property mb-3">
-    <PropertyEditor :property-name="propertyName" :model="model" />
+    <PropertyEditor :property-name="propertyName" :model="model" :siblings="siblings" />
     <MazSearch
       :value="objectModel.value"
       :replace-on-select="true"
@@ -34,6 +34,7 @@ import { FakerList } from '@/types/faker';
 export default class BaseStringInput extends Vue {
   @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
   @Prop({ type: String, required: true }) readonly propertyName!: string;
+  @Prop({ type: Array, required: true }) readonly siblings!: string[];
 
   objectModel: BaseDTO = new BaseDTO();
   results: {[key: string]: any} = [];

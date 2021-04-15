@@ -5,8 +5,8 @@
         <span class="property-editor__type" :class="`property-editor__type--${model.type}`">{{ model.type }}</span>
       </span>
       <ValidationObserver v-slot="{ handleSubmit }">
-        <ValidationProvider v-slot="{ errors, invalid }" tag="div" class="d-flex align-items-center" rules="required|alpha">
-          <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" :error="invalid" placeholder="Property name" size="sm" @change="handleSubmit(updateModel)" @blur="handleSubmit(close)" />
+        <ValidationProvider v-slot="{ errors, touched, invalid }" tag="div" class="d-flex align-items-center" :rules="propertyName !== newPropertyName ? `property:${siblings}|required|alpha` : 'required|alpha'">
+          <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" :error="touched && invalid" placeholder="Property name" size="sm" @change="handleSubmit(updateModel)" @blur="handleSubmit(close)" />
           <span v-if="invalid" class="validation-error ml-2">{{ errors[0] }}</span>
         </ValidationProvider>
       </ValidationObserver>
@@ -30,6 +30,8 @@ import { BaseDTO } from '@/types/';
 export default class PropertyEditor extends Vue {
   @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
   @Prop({ type: String, required: true }) readonly propertyName!: string;
+  @Prop({ type: Array, required: true }) readonly siblings!: string[];
+
   @Prop(Boolean) readonly hideEdit: boolean = false;
 
   editPropertyName = false;
