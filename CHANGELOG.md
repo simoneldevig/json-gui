@@ -1,3 +1,33 @@
+### [0.1.1](https://github.com/simoneldevig/json-gui/compare/0.1.0...0.1.1) (2021-04-20)
+
+
+### Features
+
+* Add validation to endpoint and models creation ([a4d0981](https://github.com/simoneldevig/json-gui/commit/a4d0981c467421e2f1f832ab47279dcf34b28a20))
+* Add validation to entry editor ([c3a6c2e](https://github.com/simoneldevig/json-gui/commit/c3a6c2e4dbc8c07a79a7a72096aba10c6e1e4a85))
+* Add validation to properties as well ([2c266db](https://github.com/simoneldevig/json-gui/commit/2c266dbe48654c6eb59124423f4d38cab8244b63))
+* Add validation to property editor ([37d6b31](https://github.com/simoneldevig/json-gui/commit/37d6b3111b024cffafd62db7715399cae2b830a4))
+* Add vee validate to settings inputs ([93162fc](https://github.com/simoneldevig/json-gui/commit/93162fc4f75cf105059514e5ec96dd2784271ab2))
+* Improve endpoint and model validation ([3acdeff](https://github.com/simoneldevig/json-gui/commit/3acdeffe402657b3cfb82236f8dd851fe981faf4))
+
+
+### Bug Fixes
+
+* Allow changing back the model/endpoint name to org name ([60ff987](https://github.com/simoneldevig/json-gui/commit/60ff98700ea0ad6798c35f982c36b0b583a07da5))
+* Clear dialog state on close ([94ff840](https://github.com/simoneldevig/json-gui/commit/94ff840bec64bd4c8b14009cb61a965bcb25b3e7))
+* Resolve console error on switch ([939416e](https://github.com/simoneldevig/json-gui/commit/939416e889bd3f316ba509a06735286260a5ba56))
+* Set correct item name on delete ([56db46c](https://github.com/simoneldevig/json-gui/commit/56db46c58628f4d0d6a5790c59f6ea5e8e3665a8))
+
+
+### Docs
+
+* Fix italic readme ([71e0fec](https://github.com/simoneldevig/json-gui/commit/71e0feccd972f2332bc4c26cf80c1b7027eee2a2))
+
+
+### Refactor
+
+* Refactor endpoint and model validation to vee-validate ([0eb9aba](https://github.com/simoneldevig/json-gui/commit/0eb9abaf2c95ec8b30c960abc147801643568bd3))
+
 ## [0.1.0](https://github.com/simoneldevig/json-gui/compare/0.0.6...0.1.0) (2021-04-12)
 
 
