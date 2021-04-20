@@ -1,6 +1,6 @@
 {
   "posts": {
-    "type": "endpoint",
+    "type": "array",
     "id": "7db2d950-753c-423c-a2ce-0c6adf057900",
     "value": {
       "post": {
