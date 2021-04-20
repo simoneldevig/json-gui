@@ -114,6 +114,7 @@
         v-model="editDialogVisible"
         :width="600"
         :title="`Edit ${editItemName}`"
+        @closed="resetDialogState"
       >
         <ValidationProvider v-slot="{ errors, invalid, touched }" :mode="newItemName !== editItemName ? 'aggressive' : 'passive'" class="mb-3" tag="div" :rules="newItemName !== editItemName ? `required|alpha|${editType}` : 'required|alpha'">
           <MazInput
@@ -252,6 +253,7 @@ export default class App extends Vue {
   };
 
   resetDialogState () {
+    this.editItemName = '';
     this.newItemName = '';
   }
 
