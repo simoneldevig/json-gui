@@ -26,7 +26,7 @@
                     <span class="material-icons">delete</span>
                   </MazBtn>
                 </div>
-                <MazInput v-if="isEndpoint && dataModel.type !== 'object'" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="updateModel" @click.stop />
+                <MazInput v-if="isEndpoint || isSubChild" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="updateModel" @click.stop />
               </div>
             </div>
             <small v-if="!isSubChild" class="d-block">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>
@@ -40,7 +40,7 @@
               <BaseStringInput v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" :siblings="siblings" />
               <BaseBooleanInput v-if="property.type === 'boolean'" :model="property" :property-name="propName" :siblings="siblings" />
               <ReferencedModel v-if="property.type === 'model'" :model="property" :property-name="propName" :siblings="siblings" />
-              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :depth="depth + 1" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" :siblings="siblings" />
+              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" :siblings="siblings" />
             </div>
           </draggable>
 

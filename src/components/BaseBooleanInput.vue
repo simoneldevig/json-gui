@@ -1,6 +1,6 @@
 <template>
   <div class="boolean mb-3 property">
-    <PropertyEditor :property-name="propertyName" :model="model" />
+    <PropertyEditor :property-name="propertyName" :model="model" :siblings="siblings" />
 
     <div class="boolean__inputs d-flex">
       <MazRadio v-model="objectModel.value" radio-value="true" name="true" class="mr-3" @change="updateModel">true</MazRadio>
@@ -24,6 +24,7 @@ import { BaseDTO } from '@/types';
 export default class BooleanInput extends Vue {
   @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
   @Prop({ type: String, required: true }) readonly propertyName!: string;
+  @Prop({ type: Array, required: true }) readonly siblings!: string[];
 
   objectModel: BaseDTO = new BaseDTO();
   editPropertyName = false;
