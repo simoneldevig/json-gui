@@ -16,14 +16,14 @@
       </div>
 
       <div>
-        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('endpoint')">
-          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('endpoint')}">
+        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('endpoints')">
+          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('endpoints')}">
             arrow_right
           </span>
           Endpoints
         </div>
         <MazTransitionExpand>
-          <div v-show="activeCollapse.includes('endpoint')">
+          <div v-show="activeCollapse.includes('endpoints')">
             <router-link v-for="(value, propertyName) in endpoints" :key="propertyName" :to="'/endpoints/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
               <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
@@ -46,14 +46,14 @@
       </div>
 
       <div>
-        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('model')">
-          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('model')}">
+        <div class="navigation__menu-item d-flex align-items-center pr-3 pl-6 py-2 p-relative" @click="setCollapseItem('models')">
+          <span class="material-icons mr-2 navigation__menu-icon p-absolute" :class="{'navigation__menu-icon--open': activeCollapse.includes('models')}">
             arrow_right
           </span>
           Models
         </div>
         <MazTransitionExpand>
-          <div v-show="activeCollapse.includes('model')">
+          <div v-show="activeCollapse.includes('models')">
             <router-link v-for="(value, propertyName) in models" :key="propertyName" :to="'/models/' + propertyName" class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center justify-content-between pr-3 pl-6 py-2">
               <span class="d-flex align-items-center">
                 <span class="material-icons mr-2">
@@ -98,6 +98,7 @@
             @keyup.enter="createNewItem"
           />
           <MazSelect
+            v-if="selectedItemType === 'endpoint'"
             v-model="selectedItemType"
             placeholder="Choose property type"
             :options="propertyTypeOptions"
@@ -246,11 +247,6 @@ export default class App extends Vue {
       if (this.$route.params.id === this.editItemName) {
         this.$router.push(`/${this.editType}/${this.newItemName}`);
       }
-
-      this.newItemType = '';
-      this.newItemName = '';
-      this.editItemName = '';
-      this.editType = '';
     });
   };
 
@@ -258,15 +254,17 @@ export default class App extends Vue {
     this.createDialogVisible = false;
     this.$store.dispatch('createNewItem', {
       type: this.newItemType,
+      propertyType: this.newItemType === 'endpoint' ? this.selectedItemType : 'model',
       name: this.newItemName
     });
-    this.newItemType = '';
-    this.newItemName = '';
   };
 
   resetDialogState () {
     this.editItemName = '';
     this.newItemName = '';
+    this.selectedItemType = '';
+    this.newItemType = '';
+    this.editType = '';
   }
 
   async deleteEntry () {

@@ -56,7 +56,7 @@ export default {
 
   createNewItem (context: any, props: any) {
     const newItem = new BaseDTO({
-      type: props.type,
+      type: props.propertyType,
       id: generateGuid(),
       timesToRepeat: props.type === 'endpoint' ? 1 : undefined
     });
