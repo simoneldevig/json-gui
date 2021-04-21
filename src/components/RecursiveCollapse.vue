@@ -26,7 +26,7 @@
                     <span class="material-icons">delete</span>
                   </MazBtn>
                 </div>
-                <MazInput v-if="isEndpoint || isSubChild" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="updateModel" @click.stop />
+                <MazInput v-if="dataModel.type === 'array'" v-model="dataModel.timesToRepeat" title="Repeat" class="property__repeat d-flex justify-content-center" placeholder="Repeat" size="sm" type="number" :min="1" @change="updateModel" @click.stop />
               </div>
             </div>
             <small v-if="!isSubChild" class="d-block">To use values from faker.js, simply insert faker.js functions into the inputs. E.g. faker.name.findName() <br>docs can be found here: <a href="https://github.com/marak/Faker.js/">https://github.com/marak/Faker.js</a></small>

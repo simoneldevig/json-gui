@@ -98,7 +98,7 @@
             @keyup.enter="createNewItem"
           />
           <MazSelect
-            v-if="selectedItemType === 'endpoint'"
+            v-if="newItemType === 'endpoint'"
             v-model="selectedItemType"
             placeholder="Choose property type"
             :options="propertyTypeOptions"
@@ -262,7 +262,7 @@ export default class App extends Vue {
   resetDialogState () {
     this.editItemName = '';
     this.newItemName = '';
-    this.selectedItemType = '';
+    this.selectedItemType = 'array';
     this.newItemType = '';
     this.editType = '';
   }
@@ -283,8 +283,6 @@ export default class App extends Vue {
       }
       this.isLoading = false;
       this.editDialogVisible = false;
-      this.editType = '';
-      this.editItemName = '';
     });
   }
 
