@@ -92,9 +92,15 @@
             v-model="newItemName"
             placeholder="Insert your new item name"
             clearable
+            class="mb-3"
             :error="touched && invalid && errors.length > 0"
             @input="setnewItemName"
             @keyup.enter="createNewItem"
+          />
+          <MazSelect
+            v-model="selectedItemType"
+            placeholder="Choose property type"
+            :options="propertyTypeOptions"
           />
           <span v-if="touched && invalid" class="validation-error">{{ errors[0] }}</span>
         </ValidationProvider>
@@ -166,6 +172,12 @@ export default class App extends Vue {
   private editDialogVisible = false;
   private newItemName = '';
   private newItemType = '';
+  private selectedItemType = 'array';
+  private propertyTypeOptions: any = [
+    { label: 'Array', value: 'array' },
+    { label: 'Object', value: 'object' }
+  ];
+
   private editItemName = '';
   private editType = '';
   private isLoading = false;
