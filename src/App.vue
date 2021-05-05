@@ -245,7 +245,7 @@ export default class App extends Vue {
         id: newItemName,
         payload: duplicate
       }).then(() => {
-        this.$router.push(`${itemType}/${newItemName}`);
+        this.$router.push(`/${itemType}/${newItemName}`);
       });
     } catch (ex) {
       // eslint-disable-next-line no-console
