@@ -54,6 +54,19 @@ const generateGuid = () => {
   });
 };
 
+const resetObjectIds = (obj: BaseDTO) => {
+  if (typeof obj === 'object') {
+    Object.keys(obj).forEach(key => {
+      if (typeof obj[key] === 'object') {
+        resetObjectIds(obj[key]);
+      } else if (key === 'id') {
+        obj[key] = generateGuid();
+      }
+    });
+  }
+  return obj;
+};
+
 const addToObject = (obj: any, key: any, value: any, index: any) => {
   // Create a temp object and index variable
   const temp: any = {};
@@ -84,5 +97,6 @@ export {
   setObjectValue,
   generateGuid,
   deleteObject,
-  addToObject
+  addToObject,
+  resetObjectIds
 };

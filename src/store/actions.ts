@@ -168,5 +168,22 @@ export default {
         context.dispatch('getModels');
       }
     });
+  },
+
+  async duplicateEntry (context: any, props: any) {
+    await axios({
+      method: 'post',
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      },
+      url: `http://localhost:5001/json-gui/${props.type}/${props.id}`,
+      data: props.payload
+    }).then(function () {
+      if (props.type === 'endpoints') {
+        context.dispatch('getEndpoints');
+      } else if (props.type === 'models') {
+        context.dispatch('getModels');
+      }
+    });
   }
 };

@@ -31,9 +31,14 @@
                 </span>
                 {{ propertyName }}
               </span>
-              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'endpoint')">
-                more_horiz
-              </span>
+              <div class="d-flex">
+                <span class="material-icons navigation__menu-settings p-1 rounded mr-1" title="Duplicate" @click.prevent="duplicate(propertyName, 'endpoints')">
+                  content_copy
+                </span>
+                <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'endpoint')">
+                  more_horiz
+                </span>
+              </div>
             </router-link>
             <div class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center pr-3 pl-6 py-2" @click="openNewItemDialog('endpoint')">
               <span class="material-icons mr-2">
@@ -61,9 +66,14 @@
                 </span>
                 {{ propertyName }}
               </span>
-              <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'model')">
-                more_horiz
-              </span>
+              <div class="d-flex">
+                <span class="material-icons navigation__menu-settings p-1 rounded mr-1" title="Duplicate" @click.prevent="duplicate(propertyName, 'models')">
+                  content_copy
+                </span>
+                <span class="material-icons navigation__menu-settings p-1 rounded" title="Settings" @click.prevent="openEditItemDialog(propertyName, 'model')">
+                  more_horiz
+                </span>
+              </div>
             </router-link>
             <div class="navigation__menu-item navigation__menu-item--sub d-flex align-items-center pr-3 pl-6 py-2" @click="openNewItemDialog('model')">
               <span class="material-icons mr-2">
@@ -159,6 +169,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { mapMutations } from 'vuex';
 
 import { BaseResponseDTO } from '@/types';
+import { resetObjectIds } from '@/utils';
 import 'maz-ui/lib/css/base.css';
 
 @Component({
@@ -220,6 +231,31 @@ export default class App extends Vue {
     this.$nextTick(() => {
       (this.$refs.createInput as any).focusInput();
     });
+  }
+
+  async duplicate (itemName: string, itemType: string) {
+    const duplicate = resetObjectIds(Vue.prototype.$lodash.cloneDeep((this as any)[itemType][itemName]));
+    const numberOfDuplicates = Object.keys((this as any)[itemType]).filter((x: string|string[]) => x.includes(itemName)).length;
+
+    const newItemName = `${itemName}-copy${numberOfDuplicates > 1 ? numberOfDuplicates : ''}`;
+
+    try {
+      await this.$store.dispatch('duplicateEntry', {
+        type: itemType,
+        id: newItemName,
+        payload: duplicate
+      }).then(() => {
+        this.$router.push(`${itemType}/${newItemName}`);
+      });
+    } catch (ex) {
+      // eslint-disable-next-line no-console
+      console.error(ex);
+      this.$notify({
+        title: 'Warning',
+        text: 'An error happened. Please check the console',
+        type: 'warning'
+      });
+    }
   }
 
   openEditItemDialog (itemName: string, itemType: string) {
