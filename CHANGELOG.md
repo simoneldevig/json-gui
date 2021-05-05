@@ -1,3 +1,10 @@
+### [0.3.1](https://github.com/simoneldevig/json-gui/compare/0.3.0...0.3.1) (2021-05-05)
+
+
+### Bug Fixes
+
+* resolve issue with incorrect path after duplicating an entry ([f269d91](https://github.com/simoneldevig/json-gui/commit/f269d91df0df87698c4ced44e3132fb794a553d8))
+
 ## [0.3.0](https://github.com/simoneldevig/json-gui/compare/0.1.1...0.3.0) (2021-05-05)
 
 
