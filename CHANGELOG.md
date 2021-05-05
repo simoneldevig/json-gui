@@ -1,3 +1,19 @@
+## [0.3.0](https://github.com/simoneldevig/json-gui/compare/0.1.1...0.3.0) (2021-05-05)
+
+
+### Features
+
+* Add property type selector ([39afd46](https://github.com/simoneldevig/json-gui/commit/39afd46bca17464eaa9db4eba12be686c3d5cdc0))
+* Add support for object in endpoint root ([f668eae](https://github.com/simoneldevig/json-gui/commit/f668eae824f46ef18a2ccc83117422fe4260fd18))
+* Make it possible to create array or object as endpoint property type ([d643f66](https://github.com/simoneldevig/json-gui/commit/d643f660689186e5f5345bcad01fa7a2a441f55e))
+* make it possible to duplicate entries ([f82c682](https://github.com/simoneldevig/json-gui/commit/f82c682868e320bafa5b38052120af930183fe11))
+
+
+### Bug Fixes
+
+* Make sure to parse siblings to child components ([5df248e](https://github.com/simoneldevig/json-gui/commit/5df248e26fda0f4b21f19a0801b3b9372cfb8dd7))
+* Resolve issue with generating nested arrays ([e9fa154](https://github.com/simoneldevig/json-gui/commit/e9fa15457742452a68be8ee42e007fd056c57371))
+
 ### [0.1.1](https://github.com/simoneldevig/json-gui/compare/0.1.0...0.1.1) (2021-04-20)
 
 
