@@ -73,6 +73,7 @@ import draggable from 'vuedraggable';
 import { BaseDTO } from '@/types/';
 
 @Component({
+  name: 'RecursiveCollapse',
   components: {
     BaseStringInput,
     ReferencedModel,
@@ -87,7 +88,6 @@ export default class RecursiveCollapse extends Vue {
     @Prop({ type: Boolean, required: true, default: false }) readonly isSubChild!: boolean;
     @Prop(String) readonly propertyName!: string;
     @Prop(String) readonly parentEntry!: string;
-    @Prop(Number) readonly depth!: number;
 
     dataModel: BaseDTO = new BaseDTO();
     newPropertyName = '';

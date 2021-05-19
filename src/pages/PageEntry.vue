@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex w-100">
       <div class="py-7 px-4 d-flex flex-grow-1 min-vh-100">
-        <RecursiveCollapse v-if="currentModel && id" :id="id" class="w-100" :data="currentModel" :depth="1" :title="id" :index="0" :is-sub-child="false" />
+        <RecursiveCollapse v-if="currentModel && id" :id="id" class="w-100" :data="currentModel" :title="id" :is-sub-child="false" />
       </div>
       <PreviewModal v-if="previewData" :json="previewData" :dialog-visible="showPreviewDialog" @close="closePreview" />
       <MazSidebar right :width="500" class="entry__model">
