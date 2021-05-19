@@ -1,3 +1,10 @@
+### [0.3.3](https://github.com/simoneldevig/json-gui/compare/0.3.2...0.3.3) (2021-05-19)
+
+
+### Bug Fixes
+
+* resolve issues with objects and arrays ([bc3c54a](https://github.com/simoneldevig/json-gui/commit/bc3c54abe9716e01cb779e28e0249076867aa819))
+
 ### [0.3.2](https://github.com/simoneldevig/json-gui/compare/0.3.1...0.3.2) (2021-05-19)
 
 
