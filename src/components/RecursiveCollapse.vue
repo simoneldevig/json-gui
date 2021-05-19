@@ -7,7 +7,7 @@
             <div class="d-flex align-items-center justify-content-between" :class="{'mb-3' : !isSubChild}">
               <div v-if="isSubChild">
                 <h1 v-show="!editPropertyName" class="h3">{{ propertyName }}</h1>
-                <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="editPropertyName = false" />
+                <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" placeholder="Property name" size="sm" @change="updateModel" @blur="closePropEditor" />
               </div>
               <div v-else class="d-flex justify-content-between w-100">
                 <h1 class="h3">{{ id }}</h1>
@@ -143,8 +143,10 @@ export default class RecursiveCollapse extends Vue {
     }
 
     setCollapseState () {
-      this.isOpen = !this.isOpen;
-      localStorage.setItem(this.data.id, this.isOpen.toString());
+      if (!this.editPropertyName) {
+        this.isOpen = !this.isOpen;
+        localStorage.setItem(this.data.id, this.isOpen.toString());
+      }
     }
 
     editPropName (): void {
@@ -209,6 +211,12 @@ export default class RecursiveCollapse extends Vue {
         oldPropertyName: this.propertyName,
         value: this.dataModel
       });
+    }
+
+    closePropEditor (): void {
+      setTimeout(() => {
+        this.editPropertyName = false;
+      }, 100);
     }
 
     deleteProp (): void {
