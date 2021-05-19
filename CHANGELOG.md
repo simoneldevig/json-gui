@@ -1,3 +1,17 @@
+### [0.3.2](https://github.com/simoneldevig/json-gui/compare/0.3.1...0.3.2) (2021-05-19)
+
+
+### Bug Fixes
+
+* do not override files if they exist on install ([770bbc6](https://github.com/simoneldevig/json-gui/commit/770bbc61728f8b807d24873c791a204185ccc914))
+* resolve issue with non-faker inputs ([229c156](https://github.com/simoneldevig/json-gui/commit/229c156210a31f199e6375300728d1d4e5c8a5a5))
+* resolve issue with the recursive collapse component not rendering in prod ([796bef4](https://github.com/simoneldevig/json-gui/commit/796bef412caa9e11532dc539a0c8b50885d3cb9d))
+
+
+### Docs
+
+* bump to beta ([b8fb5c9](https://github.com/simoneldevig/json-gui/commit/b8fb5c961440f0ef68f394f0acce850c83516c34))
+
 ### [0.3.1](https://github.com/simoneldevig/json-gui/compare/0.3.0...0.3.1) (2021-05-05)
 
 
