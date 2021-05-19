@@ -11,11 +11,12 @@
       :loading="loading"
       :no-label="true"
       clearable
-      :debounce="true"
+      :debounce="false"
       :required="true"
       :no-required-symbol="true"
       @request="querySearch"
       @input="updateModel"
+      @change="updateModel($event.target.value)"
     />
   </div>
 </template>
