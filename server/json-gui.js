@@ -31,8 +31,8 @@ module.exports = () => {
       '/json-gui/*': '/$1'
     }));
     server.use(jsonServer.defaults({ logger: false }));
-    server.use(bodyParser.json({ limit: '50mb' }));
-    server.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+    server.use(bodyParser.json({ limit: '100mb' }));
+    server.use(bodyParser.urlencoded({ limit: '100mb', extended: true, parameterLimit: 100000 }));
 
     // Make sure to serve the latest changes by looking at the physical file
     server.use('/:name', (req, _res, next) => {
