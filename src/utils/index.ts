@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { BaseDTO } from '@/types';
+import store from '../store';
 
 const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string): BaseDTO => {
   const newObject = Object.keys(oldObject).reduce((acc: { [key: string]: BaseDTO }, val) => {
@@ -32,6 +33,29 @@ const setObjectValue = (obj: BaseDTO, newObj: BaseDTO) => {
   }
   return obj;
 };
+
+async function replaceModelRefs (obj: BaseDTO) {
+  return new Promise((resolve, reject) => {
+    try {
+      if (typeof obj.value === 'object') {
+        Object.keys(obj.value).forEach(async key => {
+          if (obj.value[key].type === 'model' && obj.value[key].value) {
+            const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(store.state.models).find(x => (x as BaseDTO).id === obj.value[key].value));
+            const remappedValues: any = await replaceModelRefs(referencedModel);
+            remappedValues.type = 'object';
+            delete obj.value[key];
+            obj.value[key] = remappedValues;
+          } else {
+            replaceModelRefs(obj.value[key]);
+          }
+        });
+      }
+      resolve(obj);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 const deleteObject = (obj: BaseDTO, idToDelete: string) => {
   if (typeof obj === 'object') {
@@ -98,5 +122,6 @@ export {
   generateGuid,
   deleteObject,
   addToObject,
-  resetObjectIds
+  resetObjectIds,
+  replaceModelRefs
 };

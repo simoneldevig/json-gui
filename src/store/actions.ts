@@ -4,7 +4,8 @@ import {
   renameObjectKey,
   setObjectValue,
   deleteObject,
-  generateGuid
+  generateGuid,
+  replaceModelRefs
 } from '@/utils';
 import {
   generateFakerValues
@@ -103,7 +104,9 @@ export default {
 
   async saveAndGenerate (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
-    clonedObject = await generateFakerValues(clonedObject, clonedObject.timesToRepeat);
+    const result: any = await replaceModelRefs(clonedObject);
+    clonedObject = await generateFakerValues(result, result.timesToRepeat);
+
     axios({
       method: 'post',
       headers: {

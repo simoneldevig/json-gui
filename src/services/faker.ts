@@ -1,8 +1,6 @@
 import Vue from 'vue';
-import store from '../store';
 import { BaseDTO } from '@/types';
 import { FakerItem, FakerList } from '@/types/faker';
-import { reject } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const faker = require('faker');
 
@@ -10,13 +8,6 @@ const setFakerValues = (obj: BaseDTO) => {
   if (typeof obj === 'object') {
     Object.keys(obj).forEach(key => {
       if (typeof (obj[key]) === 'object') {
-        if (obj[key].type === 'model') {
-          const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(store.state.models).find(x => (x as BaseDTO).id === obj[key].value));
-          const generatedData = setFakerValues((referencedModel as any).value);
-          delete obj[key];
-          obj[key] = generatedData;
-        }
-
         if (obj[key].type === 'object' || obj[key].type === 'array') {
           const generatedData = setFakerValues(obj[key].value);
           delete obj[key];
@@ -53,9 +44,9 @@ const setFakerValues = (obj: BaseDTO) => {
 };
 
 async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     try {
-      if (obj.type === 'array' || obj.type === 'object' || obj.type === 'endpoint') {
+      if (obj.type === 'array' || obj.type === 'object') {
         (obj as unknown as BaseDTO[]) = new Array(obj);
       }
 
@@ -70,6 +61,8 @@ async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
             if (originalObj.value[key].length < originalChildObj.timesToRepeat || originalChildObj.type === 'array') {
               generateFakerValues(originalObj.value[key], originalChildObj.timesToRepeat);
             }
+          } else if ((originalObj.value[key].type === 'object') && originalObj.value[key].value) {
+            generateFakerValues(originalObj.value[key], 1);
           }
         });
         const clonedObject = Vue.prototype.$lodash.cloneDeep(originalObj.value);
@@ -86,6 +79,7 @@ async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
       if (originalObj.type === 'object') {
         generatedData = obj[0];
       }
+
       resolve(generatedData);
     } catch (error) {
       reject(error);

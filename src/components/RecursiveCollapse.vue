@@ -235,7 +235,7 @@ export default class RecursiveCollapse extends Vue {
 .property {
   &__add-container {
     margin: 15px;
-    opacity: 0.5;
+    opacity: 0.2;
     background: var(--maz-background-color);
     border: 2px dotted var(--maz-muted-color);
     transition: opacity 0.3s ease-in-out;
