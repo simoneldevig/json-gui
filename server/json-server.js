@@ -5,6 +5,7 @@ const jsonServer = require('json-server');
 const consola = require('consola');
 const chalk = require('chalk');
 const config = require('./config');
+const bodyParser = require('body-parser');
 
 const log = {
   info: (message) => consola.info(chalk.bold('JSON-GUI'), message),
@@ -42,6 +43,10 @@ server.use(middlewares);
 if (externalMiddlewares) {
   server.use(externalMiddlewares);
 }
+
+// Enable huge payloads
+server.use(bodyParser.json({ limit: '50mb' }));
+server.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
 // Set delay
 server.use(pause(config.delay));

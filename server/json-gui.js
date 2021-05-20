@@ -6,6 +6,7 @@ const port = 5001;
 const config = require('./config');
 const projectRoot = process.cwd();
 const fs = require('fs');
+const bodyParser = require('body-parser');
 
 const filePaths = {
   endpoints: path.resolve(projectRoot, `${config.baseDir}/internals/endpoints.json`),
@@ -30,7 +31,8 @@ module.exports = () => {
       '/json-gui/*': '/$1'
     }));
     server.use(jsonServer.defaults({ logger: false }));
-    server.use(jsonServer.bodyParser);
+    server.use(bodyParser.json({ limit: '50mb' }));
+    server.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
     // Make sure to serve the latest changes by looking at the physical file
     server.use('/:name', (req, _res, next) => {
