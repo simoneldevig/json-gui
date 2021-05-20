@@ -1,3 +1,10 @@
+### [0.3.4](https://github.com/simoneldevig/json-gui/compare/0.3.3...0.3.4) (2021-05-20)
+
+
+### Bug Fixes
+
+* resolve issue with generating nested arrays ([93090f5](https://github.com/simoneldevig/json-gui/commit/93090f5b75d417f970c0a401199cb6de318b8274))
+
 ### [0.3.3](https://github.com/simoneldevig/json-gui/compare/0.3.2...0.3.3) (2021-05-19)
 
 
