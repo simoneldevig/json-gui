@@ -1,3 +1,10 @@
+### [0.3.5](https://github.com/simoneldevig/json-gui/compare/0.3.4...0.3.5) (2021-05-20)
+
+
+### Features
+
+* enable support for huge payloads ([6a07049](https://github.com/simoneldevig/json-gui/commit/6a07049bca343b73f5df2bd4c796e00c6c6084c1))
+
 ### [0.3.4](https://github.com/simoneldevig/json-gui/compare/0.3.3...0.3.4) (2021-05-20)
 
 
