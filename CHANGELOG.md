@@ -1,3 +1,15 @@
+### [0.3.7](https://github.com/simoneldevig/json-gui/compare/0.3.6...0.3.7) (2021-07-25)
+
+
+### Features
+
+* make it possible to remove keys from objects and models ([e857681](https://github.com/simoneldevig/json-gui/commit/e8576810dff2f4aef2141a0cdba62c539ac12d1d))
+
+
+### Bug Fixes
+
+* resolve issue with nested property names ([9199ffa](https://github.com/simoneldevig/json-gui/commit/9199ffa5746303beb3fc626b9fab5ea13c5cbc3c))
+
 ### [0.3.6](https://github.com/simoneldevig/json-gui/compare/0.3.5...0.3.6) (2021-05-20)
 
 ### [0.3.5](https://github.com/simoneldevig/json-gui/compare/0.3.4...0.3.5) (2021-05-20)
