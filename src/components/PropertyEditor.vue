@@ -5,13 +5,17 @@
         <span class="property-editor__type" :class="`property-editor__type--${model.type}`">{{ model.type }}</span>
       </span>
       <ValidationObserver v-slot="{ handleSubmit }">
-        <ValidationProvider v-slot="{ errors, touched, invalid }" tag="div" class="d-flex align-items-center" :rules="propertyName !== newPropertyName ? `property:${siblings}|required|alpha` : 'required|alpha'">
+        <ValidationProvider v-slot="{ errors, touched, invalid }" tag="div" class="d-flex align-items-center" :rules="propertyName !== newPropertyName ? `property:${siblings}required|alpha` : 'required|alpha'">
           <MazInput v-show="editPropertyName" ref="propertyName" v-model="newPropertyName" :error="touched && invalid" placeholder="Property name" size="sm" @change="handleSubmit(updateModel)" @blur="handleSubmit(close)" />
           <span v-if="invalid" class="validation-error ml-2">{{ errors[0] }}</span>
         </ValidationProvider>
       </ValidationObserver>
     </div>
-    <div :class="{'property__actions': !editPropertyName}">
+    <div :class="{'property__actions d-flex align-items-center': !editPropertyName}">
+      <div v-if="model.type === 'object' || model.type === 'model'" class="mr-2 d-flex align-items-center">
+        <small class="mr-2">Remove key</small>
+        <MazSwitch v-model="localModel.removeKey" />
+      </div>
       <MazBtn v-if="!hideEdit" title="Rename" fab outline size="mini" class="property__actions--btn mr-2" color="primary" @click="editPropName">
         <span class="material-icons">edit</span>
       </MazBtn>
@@ -37,6 +41,8 @@ export default class PropertyEditor extends Vue {
   editPropertyName = false;
   newPropertyName = '';
   $eventBus: any;
+  localModel = new BaseDTO();
+  removeKey = false;
 
   editPropName () {
     this.editPropertyName = !this.editPropertyName;
@@ -51,7 +57,7 @@ export default class PropertyEditor extends Vue {
     this.$store.dispatch('updateModelProperty', {
       propertyName: this.newPropertyName,
       oldPropertyName: this.propertyName,
-      value: this.model
+      value: this.localModel
     });
   };
 
@@ -62,6 +68,7 @@ export default class PropertyEditor extends Vue {
   };
 
   created () {
+    this.localModel = this.model;
     this.newPropertyName = this.propertyName;
   };
 
