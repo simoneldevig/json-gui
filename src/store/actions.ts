@@ -38,7 +38,7 @@ export default {
   updateModelProperty (context: any, props: any) {
     let clonedObject = Vue.prototype.$lodash.cloneDeep(context.state.currentModel);
     if (props.propertyName !== props.oldPropertyName) {
-      clonedObject.value = renameObjectKey(clonedObject.value, props.oldPropertyName, props.propertyName);
+      clonedObject.value = renameObjectKey(clonedObject.value, props.oldPropertyName, props.propertyName, props.value);
     }
     clonedObject = setObjectValue(clonedObject, props.value);
     context.commit('setCurrentModel', clonedObject);

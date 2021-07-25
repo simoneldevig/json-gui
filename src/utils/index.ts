@@ -2,9 +2,9 @@ import Vue from 'vue';
 import { BaseDTO } from '@/types';
 import store from '../store';
 
-const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string): BaseDTO => {
+const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string, value: BaseDTO): BaseDTO => {
   const newObject = Object.keys(oldObject).reduce((acc: { [key: string]: BaseDTO }, val) => {
-    if (val === oldKey) {
+    if (val === oldKey && value.id === oldObject[oldKey]?.id) {
       acc[newKey] = oldObject[oldKey];
     } else {
       acc[val] = oldObject[val];
@@ -12,7 +12,7 @@ const renameObjectKey = (oldObject: BaseDTO, oldKey: string, newKey: string): Ba
 
     if (oldObject[val] && acc[val] && (oldObject[val].type === 'array' || oldObject[val].type === 'object')) {
       const clonedObject = Vue.prototype.$lodash.cloneDeep(acc[val].value);
-      acc[val].value = renameObjectKey(clonedObject, oldKey, newKey);
+      acc[val].value = renameObjectKey(clonedObject, oldKey, newKey, value);
     }
 
     return acc;
