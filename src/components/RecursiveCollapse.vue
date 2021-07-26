@@ -21,7 +21,7 @@
                 <div v-if="isSubChild" class="property__actions d-flex align-items-center">
                   <div v-if="dataModel.type === 'object' || dataModel.type === 'model'" class="mr-2 d-flex align-items-center">
                     <small class="mr-2">Remove key</small>
-                    <MazSwitch v-if="dataModel.removeKey" v-model="dataModel.removeKey" />
+                    <MazSwitch v-if="dataModel" v-model="dataModel.removeKey" />
                   </div>
                   <MazBtn title="Rename" fab outline size="mini" class="mr-2 property__actions--btn" color="primary" @click.stop="editPropName">
                     <span class="material-icons">edit</span>

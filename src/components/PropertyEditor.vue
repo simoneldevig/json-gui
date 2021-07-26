@@ -14,7 +14,7 @@
     <div :class="{'property__actions d-flex align-items-center': !editPropertyName}">
       <div v-if="model.type === 'object' || model.type === 'model'" class="mr-2 d-flex align-items-center">
         <small class="mr-2">Remove key</small>
-        <MazSwitch v-if="localModel.removeKey" v-model="localModel.removeKey" />
+        <MazSwitch v-if="localModel" v-model="localModel.removeKey" />
       </div>
       <MazBtn v-if="!hideEdit" title="Rename" fab outline size="mini" class="property__actions--btn mr-2" color="primary" @click="editPropName">
         <span class="material-icons">edit</span>
