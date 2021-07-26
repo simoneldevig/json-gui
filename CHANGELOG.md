@@ -1,3 +1,5 @@
+### [0.3.9](https://github.com/simoneldevig/json-gui/compare/0.3.8...0.3.9) (2021-07-26)
+
 ### [0.3.8](https://github.com/simoneldevig/json-gui/compare/0.3.7...0.3.8) (2021-07-26)
 
 
