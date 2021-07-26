@@ -1,3 +1,10 @@
+### [0.3.8](https://github.com/simoneldevig/json-gui/compare/0.3.7...0.3.8) (2021-07-26)
+
+
+### Bug Fixes
+
+* improve check ([24ecd7b](https://github.com/simoneldevig/json-gui/commit/24ecd7b1d6bde55f97e418b0c2aa3cd098910303))
+
 ### [0.3.7](https://github.com/simoneldevig/json-gui/compare/0.3.6...0.3.7) (2021-07-25)
 
 
