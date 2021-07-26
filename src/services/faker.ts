@@ -9,7 +9,11 @@ const setFakerValues = (obj: BaseDTO) => {
     Object.keys(obj).forEach((key) => {
       if (typeof (obj[key]) === 'object') {
         if (obj[key].type === 'object' || obj[key].type === 'array') {
-          const generatedData = setFakerValues(obj[key].value);
+          let generatedData = setFakerValues(obj[key].value);
+          if (obj[key].removeKey) {
+            const propKey = Object.keys(generatedData)[0];
+            generatedData = generatedData[propKey];
+          }
           delete obj[key];
           obj[key] = generatedData;
         }
@@ -67,12 +71,7 @@ async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
         });
         const clonedObject = Vue.prototype.$lodash.cloneDeep(originalObj.value);
         const mutatedObj = setFakerValues(clonedObject);
-        if (clonedObject.removeKey) {
-          const key = Object.keys(mutatedObj)[0];
-          obj.push(mutatedObj[key]);
-        } else {
-          obj.push(mutatedObj);
-        }
+        obj.push(mutatedObj);
 
         // Remove the original model object
         if (obj.length === timesToRepeat + 1) {

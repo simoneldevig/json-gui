@@ -47,10 +47,10 @@ export default class Entry extends Vue {
     @Prop({ type: String, required: true }) readonly type!: string;
     @Prop({ type: String, required: true }) readonly id!: string;
 
-    private loading = '';
-    private dataContent!: BaseResponseDTO;
-    private previewData: any = null;
-    private showPreviewDialog = false;
+    loading = '';
+    dataContent!: BaseResponseDTO;
+    previewData: any = null;
+    showPreviewDialog = false;
     $lodash: any;
 
     get isEndpoint (): boolean {

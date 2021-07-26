@@ -26,8 +26,9 @@ const setObjectValue = (obj: BaseDTO, newObj: BaseDTO) => {
     Object.keys(obj).forEach(key => {
       if (typeof obj[key] === 'object') {
         setObjectValue(obj[key], newObj);
-      } else if (key === 'value' && obj.id === newObj.id) {
-        obj[key] = newObj.value;
+      } else if (obj.id === newObj.id) {
+        obj.removeKey = newObj.removeKey;
+        obj.value = newObj.value;
       }
     });
   }
@@ -43,6 +44,7 @@ async function replaceModelRefs (obj: BaseDTO) {
             const referencedModel = Vue.prototype.$lodash.cloneDeep(Object.values(store.state.models).find(x => (x as BaseDTO).id === obj.value[key].value));
             const remappedValues: any = await replaceModelRefs(referencedModel);
             remappedValues.type = 'object';
+            remappedValues.removeKey = obj.value[key].removeKey || false;
             delete obj.value[key];
             obj.value[key] = remappedValues;
           } else {
