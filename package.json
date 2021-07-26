@@ -1,7 +1,7 @@
 {
   "name": "@simoneldevig/json-gui",
   "description": "A GUI for easily creating mock api's via a UI with json-server",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "private": false,
   "author": "Simon Eldevig",
   "scripts": {

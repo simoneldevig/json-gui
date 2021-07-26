@@ -1,3 +1,10 @@
+### [0.3.10](https://github.com/simoneldevig/json-gui/compare/0.3.9...0.3.10) (2021-07-26)
+
+
+### Bug Fixes
+
+* resolve issue with remove key feature only working on arrrays ([401c82e](https://github.com/simoneldevig/json-gui/commit/401c82ee9075953a11fffe78746f2a7eb57c928e))
+
 ### [0.3.9](https://github.com/simoneldevig/json-gui/compare/0.3.8...0.3.9) (2021-07-26)
 
 ### [0.3.8](https://github.com/simoneldevig/json-gui/compare/0.3.7...0.3.8) (2021-07-26)
