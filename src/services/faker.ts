@@ -10,12 +10,24 @@ const setFakerValues = (obj: BaseDTO) => {
       if (typeof (obj[key]) === 'object') {
         if (obj[key].type === 'object' || obj[key].type === 'array') {
           let generatedData = setFakerValues(obj[key].value);
-          if (obj[key].removeKey) {
+          if (obj[key].removeKey && Object.keys(generatedData).length === 1) {
             const propKey = Object.keys(generatedData)[0];
             generatedData = generatedData[propKey];
           }
           delete obj[key];
           obj[key] = generatedData;
+        }
+
+        if (Array.isArray(obj[key]) && Object.keys(obj[key][0]).length === 1) {
+          const flattenedArray: any = [];
+          obj[key].forEach((item: any) => {
+            const propKeys: string[] = Object.keys(item);
+            propKeys.forEach((propKey: string) => {
+              flattenedArray.push(obj[key][0][propKey]);
+            });
+          });
+          delete obj[key];
+          obj[key] = flattenedArray;
         }
 
         if ((obj[key].type === 'string' || obj[key].type === 'number') && obj[key].value.toString().startsWith('faker')) {
