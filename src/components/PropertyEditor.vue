@@ -12,7 +12,7 @@
       </ValidationObserver>
     </div>
     <div :class="{'property__actions d-flex align-items-center': !editPropertyName}">
-      <div v-if="model.type === 'object' || model.type === 'model'" class="mr-2 d-flex align-items-center">
+      <div v-if="keyIsRemoveable" class="mr-2 d-flex align-items-center">
         <small class="mr-2">Remove key</small>
         <MazSwitch v-model="localModel.removeKey" @input="updateModel" />
       </div>
@@ -35,6 +35,7 @@ export default class PropertyEditor extends Vue {
   @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
   @Prop({ type: String, required: true }) readonly propertyName!: string;
   @Prop({ type: Array, required: true }) readonly siblings!: string[];
+  @Prop({ type: Boolean, required: false }) readonly keyIsRemoveable!: boolean;
 
   @Prop(Boolean) readonly hideEdit: boolean = false;
 

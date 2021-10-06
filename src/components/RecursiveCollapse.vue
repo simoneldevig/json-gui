@@ -37,10 +37,10 @@
         <div v-show="isOpen || !isSubChild">
           <draggable v-model="sortable" class="property__content" handle=".drag-handle" @start="drag=true" @end="drag=false">
             <div v-for="(property, propName) in dataModel.value" :key="propName">
-              <BaseStringInput v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" :siblings="siblings" />
-              <BaseBooleanInput v-if="property.type === 'boolean'" :model="property" :property-name="propName" :siblings="siblings" />
-              <ReferencedModel v-if="property.type === 'model'" :model="property" :property-name="propName" :siblings="siblings" />
-              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" :siblings="siblings" />
+              <BaseStringInput v-if="property.type === 'string' || property.type === 'number'" ref="string" :model="property" :property-name="propName" :siblings="siblings" :parent="dataModel" />
+              <BaseBooleanInput v-if="property.type === 'boolean'" :model="property" :property-name="propName" :siblings="siblings" :parent="dataModel" />
+              <ReferencedModel v-if="property.type === 'model'" :model="property" :property-name="propName" :siblings="siblings" :parent="dataModel" />
+              <RecursiveCollapse v-if="property.type === 'object' || property.type === 'array'" :data="property" :parent-entry="id" :is-sub-child="true" :property-name="propName" :siblings="siblings" :parent="dataModel" />
             </div>
           </draggable>
 
@@ -84,6 +84,7 @@ import { BaseDTO } from '@/types/';
 })
 export default class RecursiveCollapse extends Vue {
     @Prop({ type: Object, required: true }) readonly data!: BaseDTO;
+    @Prop({ type: Object }) readonly parent!: BaseDTO;
     @Prop({ type: String, default: '' }) readonly id!: string;
     @Prop({ type: Boolean, required: true, default: false }) readonly isSubChild!: boolean;
     @Prop(String) readonly propertyName!: string;

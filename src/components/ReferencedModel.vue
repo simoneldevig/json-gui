@@ -1,6 +1,6 @@
 <template>
   <div class="referenced-model mb-3 property">
-    <PropertyEditor :property-name="propertyName" :model="model" :siblings="siblings" :hide-property-edit="true" />
+    <PropertyEditor :property-name="propertyName" :key-is-removeable="parent.type !== 'array'" :model="model" :siblings="siblings" :hide-property-edit="true" />
 
     <div class="p-relative">
       <MazSearch
@@ -38,6 +38,7 @@ import { BaseDTO } from '@/types';
 })
 export default class ReferencedModel extends Vue {
   @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
+  @Prop({ type: Object, required: true }) readonly parent!: BaseDTO;
   @Prop({ type: String, required: true }) readonly propertyName!: string;
   @Prop({ type: Array, required: true }) readonly siblings!: string[];
 

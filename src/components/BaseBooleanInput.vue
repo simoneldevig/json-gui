@@ -23,6 +23,7 @@ import { BaseDTO } from '@/types';
 })
 export default class BooleanInput extends Vue {
   @Prop({ type: Object, required: true }) readonly model!: BaseDTO;
+  @Prop({ type: Object, required: true }) readonly parent!: BaseDTO;
   @Prop({ type: String, required: true }) readonly propertyName!: string;
   @Prop({ type: Array, required: true }) readonly siblings!: string[];
 
