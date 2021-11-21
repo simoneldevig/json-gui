@@ -18,7 +18,7 @@ const setFakerValues = (obj: BaseDTO) => {
           obj[key] = generatedData;
         }
 
-        if (Array.isArray(obj[key]) && Object.keys(obj[key][0]).length === 1) {
+        if (Array.isArray(obj[key]) && (Object.keys(obj[key][0]).length === 1 || !Object.keys(obj[key][0]).every((val, _i, arr) => val === arr[0]))) {
           const flattenedArray: any = [];
           obj[key].forEach((item: any) => {
             const propKeys: string[] = Object.keys(item);
