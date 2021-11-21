@@ -94,6 +94,15 @@ async function generateFakerValues (obj: BaseDTO, timesToRepeat: number) {
       let generatedData = obj;
       if (originalObj.type === 'object') {
         generatedData = obj[0];
+      } else if (originalObj.type === 'array') {
+        const flattenedArray: any = [];
+        generatedData.forEach((item: any, index: number) => {
+          const propKeys: string[] = Object.keys(item);
+          propKeys.forEach((propKey: string) => {
+            flattenedArray.push(generatedData[index][propKey]);
+          });
+        });
+        generatedData = flattenedArray;
       }
 
       resolve(generatedData);
