@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="app d-flex" :class="{'maz-is-dark': typeof settings !== 'undefined' && settings.darkMode}">
+  <div id="app" class="app d-flex maz-is-dark">
     <notifications />
     <MazSidebar
       v-model="hasLeftSidebarOpen"

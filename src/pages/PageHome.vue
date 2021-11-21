@@ -16,10 +16,6 @@
               <span v-if="invalid" class="validation-error">{{ errors[0] }}</span>
             </ValidationProvider>
 
-            <div class="d-flex align-items-center">
-              <span class="mr-3">Dark mode</span>
-              <MazSwitch v-if="settings && settings.darkMode" v-model="settings.darkMode" />
-            </div>
             <div class="flex justify-end mt-3">
               <MazBtn rounded size="sm" :loading="isSaving" type="submit">
                 {{ buttonText }}
@@ -51,8 +47,7 @@ import { MazList, MazListItem } from 'maz-ui';
 @Component({ components: { MazList, MazListItem } })
 export default class Home extends Vue {
   private settings = {
-    quicktypenamespace: '',
-    darkMode: true
+    quicktypenamespace: ''
   };
 
   private isSaving = false;
